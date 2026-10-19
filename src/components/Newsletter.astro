@@ -1,0 +1,151 @@
+---
+// Newsletter Section
+---
+
+<section
+  id="newsletter"
+  class="py-20 bg-[#0A1B12] text-[#F6F1E7] border-b border-[#1E4631] relative overflow-hidden"
+  aria-labelledby="newsletter-heading"
+>
+  <!-- Ambient Botanical Glow -->
+  <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[38rem] h-[38rem] bg-[#1F4D36]/20 rounded-full blur-[130px]" aria-hidden="true"></div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <span class="reveal text-xs uppercase tracking-widest font-semibold text-[#C9A15A] block mb-2">
+      The Hearth Circle
+    </span>
+    <h2
+      id="newsletter-heading"
+      class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4"
+    >
+      Stories, Harvests & Invitations
+    </h2>
+    <p class="reveal text-sm sm:text-base text-[#A9C4A0] leading-relaxed max-w-xl mx-auto mb-8">
+      Subscribe to receive intimate first access to our seasonal tasting menus, guest winemaker dinners, and stories from our 42 partner farms.
+    </p>
+
+    <!-- Interactive Newsletter Form -->
+    <div class="reveal card-dark p-6 sm:p-10 border border-[#C9A15A]/30 max-w-2xl mx-auto shadow-2xl text-left">
+      <!-- Success Banner -->
+      <div id="nl-alert-success" class="hidden p-5 rounded-xl bg-emerald-950/80 border border-emerald-600 text-center space-y-2">
+        <span class="text-2xl block">🌿</span>
+        <h3 class="font-serif text-lg font-bold text-white">Welcome to the Hearth Circle</h3>
+        <p class="text-xs text-emerald-200">
+          We have recorded your email. You will receive our upcoming Spring Harvest editorial shortly.
+        </p>
+      </div>
+
+      <!-- Error Banner -->
+      <div id="nl-alert-error" class="hidden p-3.5 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs mb-4">
+        <span id="nl-error-message">Please enter a valid email address.</span>
+      </div>
+
+      <!-- Form -->
+      <form id="newsletter-form" class="space-y-4" novalidate>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            id="nl-email"
+            name="email"
+            required
+            placeholder="Enter your email address..."
+            class="flex-1 px-4 py-3.5 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white placeholder-[#5A6D61] text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+          />
+          <button
+            id="nl-submit-btn"
+            type="submit"
+            class="btn-gold py-3.5 px-7 text-xs uppercase tracking-wider font-semibold cursor-pointer shrink-0 flex items-center justify-center gap-2"
+          >
+            <span id="nl-spinner" class="hidden w-4 h-4 border-2 border-[#0F2A1D] border-t-transparent rounded-full animate-spin"></span>
+            <span id="nl-btn-text">Join The Circle</span>
+          </button>
+        </div>
+
+        <!-- Preference Checkboxes -->
+        <div class="pt-3 border-t border-[#1E4631]/60 flex flex-wrap gap-4 text-xs text-[#A9C4A0]">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="pref-menus" checked class="rounded border-[#1E4631] text-[#C9A15A] focus:ring-[#C9A15A] bg-[#0A1B12]" />
+            <span>Seasonal Menus</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="pref-events" checked class="rounded border-[#1E4631] text-[#C9A15A] focus:ring-[#C9A15A] bg-[#0A1B12]" />
+            <span>Winemaker Dinners</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="pref-recipes" class="rounded border-[#1E4631] text-[#C9A15A] focus:ring-[#C9A15A] bg-[#0A1B12]" />
+            <span>Botanical Recipes</span>
+          </label>
+        </div>
+      </form>
+
+      <p class="text-[10px] text-[#A9C4A0]/60 mt-4 text-center">
+        Zero spam. Unsubscribe at any time. Connected to <code class="text-[#C9A15A]">src/lib/api.ts</code> (supports Laravel <code class="text-[#C9A15A]">/newsletter</code> route).
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { joinNewsletter, apiConfigured, ApiError } from '../lib/api';
+
+  const nlForm = document.getElementById('newsletter-form') as HTMLFormElement | null;
+  const nlEmail = document.getElementById('nl-email') as HTMLInputElement | null;
+  const nlSubmitBtn = document.getElementById('nl-submit-btn') as HTMLButtonElement | null;
+  const nlSpinner = document.getElementById('nl-spinner');
+  const nlBtnText = document.getElementById('nl-btn-text');
+  const nlAlertSuccess = document.getElementById('nl-alert-success');
+  const nlAlertError = document.getElementById('nl-alert-error');
+  const nlErrorMsg = document.getElementById('nl-error-message');
+
+  function setLoading(loading: boolean) {
+    if (nlSubmitBtn) nlSubmitBtn.disabled = loading;
+    if (loading) {
+      nlSpinner?.classList.remove('hidden');
+      if (nlBtnText) nlBtnText.textContent = 'Subscribing...';
+    } else {
+      nlSpinner?.classList.add('hidden');
+      if (nlBtnText) nlBtnText.textContent = 'Join The Circle';
+    }
+  }
+
+  nlForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    nlAlertError?.classList.add('hidden');
+
+    const email = nlEmail?.value.trim() || '';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRegex.test(email)) {
+      if (nlErrorMsg) nlErrorMsg.textContent = 'Please enter a valid email address.';
+      nlAlertError?.classList.remove('hidden');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (apiConfigured) {
+        await joinNewsletter({ email });
+        nlForm.classList.add('hidden');
+        nlAlertSuccess?.classList.remove('hidden');
+      } else {
+        // Simulated demo timeout
+        await new Promise((r) => setTimeout(r, 600));
+        nlForm.classList.add('hidden');
+        nlAlertSuccess?.classList.remove('hidden');
+      }
+    } catch (err: any) {
+      let msg = 'Failed to subscribe.';
+      if (err instanceof ApiError) {
+        msg = err.getFormattedValidationMessage();
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      if (nlErrorMsg) nlErrorMsg.textContent = msg;
+      nlAlertError?.classList.remove('hidden');
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>

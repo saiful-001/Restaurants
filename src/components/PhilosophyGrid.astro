@@ -1,0 +1,62 @@
+---
+import { WHY_DINE_REASONS } from '../data/restaurant';
+---
+
+<section
+  id="experience"
+  class="py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)] relative"
+  aria-labelledby="philosophy-heading"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] block mb-2">
+        Why Dine at Verdant Hearth
+      </span>
+      <h2
+        id="philosophy-heading"
+        class="reveal text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[var(--text-main)] mb-4"
+      >
+        Rooted in Uncompromising Craft
+      </h2>
+      <p class="reveal text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+        Four guiding principles shape every flame we kindle, every seed we source, and every bottle we unseal.
+      </p>
+    </div>
+
+    <!-- 4 Value Columns Linking to /why/[slug] -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+      {WHY_DINE_REASONS.map((item, idx) => (
+        <a
+          href={`/why/${item.slug}`}
+          class="reveal card-clean p-7 flex flex-col justify-between group focus-within:ring-2 focus-within:ring-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all duration-300"
+          style={`transition-delay: ${idx * 100}ms;`}
+        >
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="text-3xl font-extrabold text-[var(--accent-gold)] group-hover:scale-110 transition-transform">
+                {item.num}
+              </span>
+              <div class="w-8 h-8 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] flex items-center justify-center text-xs font-semibold">
+                ✦
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors mb-3">
+              {item.title}
+            </h3>
+
+            <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+              {item.shortDescription}
+            </p>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-[var(--border-color)]/60 text-[11px] font-bold uppercase tracking-wider text-[var(--accent-gold)] flex items-center gap-1 group-hover:translate-x-1.5 transition-transform">
+            <span>Learn More</span>
+            <span>→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

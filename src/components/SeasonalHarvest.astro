@@ -1,0 +1,236 @@
+---
+import { SEASONAL_HARVEST, FULL_MENU } from '../data/restaurant';
+
+const featuredDish = FULL_MENU.find((d) => d.slug === SEASONAL_HARVEST.featuredDishSlug) || FULL_MENU[0];
+const seasonalCards = FULL_MENU.filter((d) => SEASONAL_HARVEST.dishSlugs.includes(d.slug));
+---
+
+<section
+  id="seasonal-harvest"
+  class="py-16 lg:py-24 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-color)] relative overflow-hidden"
+  aria-labelledby="seasonal-harvest-heading"
+>
+  <!-- Ambient botanical blur glow -->
+  <div class="pointer-events-none absolute -top-24 right-1/4 w-96 h-96 rounded-full bg-[#A9C4A0]/15 blur-3xl -z-10" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -bottom-24 left-10 w-96 h-96 rounded-full bg-[var(--accent-gold)]/10 blur-3xl -z-10" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Editorial Header -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#2A6647]/10 dark:bg-[#A9C4A0]/15 border border-[#2A6647]/20 dark:border-[#A9C4A0]/30 text-[#2A6647] dark:text-[#A9C4A0] text-xs font-bold uppercase tracking-wider mb-4 reveal-fade">
+          <span class="w-2 h-2 rounded-full bg-[#2A6647] dark:bg-[#A9C4A0] animate-ping" aria-hidden="true"></span>
+          <span>{SEASONAL_HARVEST.seasonLabel}</span>
+        </div>
+
+        <h2 id="seasonal-harvest-heading" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--text-main)] tracking-tight leading-tight mb-4 reveal">
+          {SEASONAL_HARVEST.seasonTitle}
+          <span class="block text-xl sm:text-2xl text-[var(--accent-gold)] font-medium mt-1">
+            {SEASONAL_HARVEST.subtitle}
+          </span>
+        </h2>
+
+        <p class="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed reveal" style="transition-delay: 120ms;">
+          {SEASONAL_HARVEST.story}
+        </p>
+      </div>
+
+      <!-- Partner Farms Badges -->
+      <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0 reveal" style="transition-delay: 200ms;">
+        <span class="text-xs uppercase tracking-wider text-[var(--text-muted)] font-bold mb-1">
+          Rooted In Regenerative Soil:
+        </span>
+        <div class="flex flex-wrap gap-2">
+          {SEASONAL_HARVEST.farms.map((f) => (
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)] shadow-sm">
+              <span class="text-[var(--accent-gold)]">🌾</span>
+              <span>{f.name}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Seasonal Ingredients Strip (Chips with animated staggered entrance) -->
+    <div class="mb-14 p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] shadow-sm reveal" style="transition-delay: 250ms;">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)]">
+          Peak Spring Harvest Ingredients:
+        </span>
+        <span class="text-xs text-[var(--text-muted)]">
+          Gathered at sunrise across the Cascade foothills
+        </span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        {SEASONAL_HARVEST.ingredients.map((ing, idx) => (
+          <div
+            class="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]/70 hover:border-[#2A6647] transition-colors"
+            style={`transition-delay: ${idx * 60}ms;`}
+          >
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#2A6647] dark:text-[#A9C4A0] block mb-1">
+              {ing.tag}
+            </span>
+            <strong class="text-xs sm:text-sm font-bold text-[var(--text-main)] block mb-1">
+              {ing.name}
+            </strong>
+            <p class="text-[11px] text-[var(--text-muted)] leading-tight">
+              {ing.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Featured Seasonal Dish (Large Editorial Layout: Image + Narrative) -->
+    {featuredDish && (
+      <div class="card-clean overflow-hidden mb-12 shadow-xl border-2 border-[#2A6647]/30 dark:border-[#A9C4A0]/30 reveal" style="transition-delay: 300ms;">
+        <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
+          
+          <div class="lg:col-span-7 relative aspect-[16/10] lg:aspect-[16/11] overflow-hidden bg-[var(--bg-muted)]">
+            <img
+              src={featuredDish.image}
+              alt={featuredDish.name}
+              width={1000}
+              height={700}
+              loading="lazy"
+              onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+              class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+            
+            <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#2A6647] text-[#F6F1E7] shadow-md">
+              Featured Spring Masterpiece
+            </span>
+
+            <span class="absolute bottom-4 right-4 text-2xl font-extrabold text-white drop-shadow-md">
+              ${featuredDish.price}
+            </span>
+          </div>
+
+          <div class="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[var(--brand-mid)]/10 text-[var(--accent-gold)]">
+                  Limited Daily Portions
+                </span>
+                {featuredDish.dietary.map((tag) => (
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[var(--bg-primary)] text-[var(--text-muted)] border border-[var(--border-color)]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <h3 class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] mb-3 leading-snug">
+                {featuredDish.name}
+              </h3>
+
+              <p class="text-sm text-[var(--text-muted)] leading-relaxed mb-6">
+                {featuredDish.longDescription}
+              </p>
+
+              <div class="p-3.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-muted)] mb-6">
+                <strong class="text-[var(--text-main)] block mb-1">Sommelier Cellar Pairing:</strong>
+                <span>{featuredDish.pairing}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <a
+                href={`/menu/${featuredDish.slug}`}
+                class="btn-gold text-xs uppercase tracking-wider font-bold py-3.5 px-6"
+              >
+                <span>View Dish Details</span>
+                <span class="ml-1">→</span>
+              </a>
+              <a
+                href="/reservation"
+                class="btn-outline-gold text-xs uppercase tracking-wider font-bold py-3.5 px-6"
+              >
+                Reserve Table
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    )}
+
+    <!-- Row of 4 Seasonal Dish Cards Linking to Detail Pages -->
+    <div class="mb-14">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
+          More Spring Harvest Creations
+        </h3>
+        <a href="/menu#cat-seasonal" class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)] hover:underline">
+          View Seasonal Category →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {seasonalCards.map((dish) => (
+          <a
+            href={`/menu/${dish.slug}`}
+            class="card-clean overflow-hidden group flex flex-col justify-between hover:border-[#2A6647] hover:shadow-xl transition-all duration-300"
+          >
+            <div>
+              <div class="relative aspect-[4/3] overflow-hidden bg-[var(--bg-muted)]">
+                <img
+                  src={dish.image}
+                  alt={dish.name}
+                  width={500}
+                  height={375}
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                  class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                />
+                <span class="absolute bottom-2.5 right-3 font-extrabold text-lg text-white drop-shadow-md">
+                  ${dish.price}
+                </span>
+                <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#2A6647] text-[#E4ECE2]">
+                  Spring Harvest
+                </span>
+              </div>
+
+              <div class="p-4">
+                <div class="flex flex-wrap gap-1 mb-2">
+                  {dish.dietary.map((tag) => (
+                    <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--brand-mid)]/10 text-[var(--accent-gold)]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h4 class="font-bold text-base text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors mb-1 line-clamp-1">
+                  {dish.name}
+                </h4>
+                <p class="text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
+                  {dish.shortDescription}
+                </p>
+              </div>
+            </div>
+
+            <div class="px-4 pb-4 pt-0 flex items-center justify-between text-xs font-semibold text-[var(--accent-gold)]">
+              <span>View Dish & Ingredients</span>
+              <span>→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Section CTA -->
+    <div class="text-center">
+      <a
+        href="/menu#cat-seasonal"
+        class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#2A6647] hover:bg-[#1F4D36] text-[#F6F1E7] text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md"
+      >
+        <span>Explore All Spring Harvest Specials on the Menu</span>
+        <span>→</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+

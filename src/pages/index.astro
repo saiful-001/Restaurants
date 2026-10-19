@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import HighlightsMarquee from '../components/HighlightsMarquee.astro';
+import AboutSection from '../components/AboutSection.astro';
+import SignatureDishes from '../components/SignatureDishes.astro';
+import SeasonalHarvest from '../components/SeasonalHarvest.astro';
+import MenuSection from '../components/MenuSection.astro';
+import ChefsSpecial from '../components/ChefsSpecial.astro';
+import PhilosophyGrid from '../components/PhilosophyGrid.astro';
+import CulinaryTeam from '../components/CulinaryTeam.astro';
+import GalleryLightbox from '../components/GalleryLightbox.astro';
+import SpecialOffers from '../components/SpecialOffers.astro';
+import TestimonialsCarousel from '../components/TestimonialsCarousel.astro';
+import ReservationSection from '../components/ReservationSection.astro';
+import HoursLocation from '../components/HoursLocation.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import InstagramStrip from '../components/InstagramStrip.astro';
+import Newsletter from '../components/Newsletter.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout>
+  <!-- 1. Top Announcement Bar (Dismissible) -->
+  <AnnouncementBar />
+
+  <!-- 2. Sticky Navigation -->
+  <Navbar />
+
+  <main id="main-content">
+    <!-- 3. Hero Section (Masked per-word reveal + Asymmetric Image Collage) -->
+    <Hero />
+
+    <!-- 4. Highlights Marquee Strip -->
+    <HighlightsMarquee />
+
+    <!-- 5. About / Our Story & Animated Metric Counters -->
+    <AboutSection />
+
+    <!-- 6. Signature Dishes Cards -->
+    <SignatureDishes />
+
+    <!-- 7. Seasonal Spring Harvest Section (Section 7) -->
+    <SeasonalHarvest />
+
+    <!-- 8. Full Menu with Animated Category Tabs & Dietary Filters -->
+    <MenuSection />
+
+    <!-- 9. Chef's Special Feature -->
+    <ChefsSpecial />
+
+    <!-- 10. Why Choose Us / Culinary Pillars (Section 8 with /why/[slug] links) -->
+    <PhilosophyGrid />
+
+    <!-- 11. Culinary Team & Artisans of Flame (Section 9 with /artisans/[slug] links) -->
+    <CulinaryTeam />
+
+    <!-- 12. Gallery with Asymmetric Grid & Accessible Lightbox Dialog -->
+    <GalleryLightbox />
+
+    <!-- 13. Special Offers & Private Dining Events -->
+    <SpecialOffers />
+
+    <!-- 14. Testimonials Carousel -->
+    <TestimonialsCarousel />
+
+    <!-- 15. Interactive Reservation Form (Connected to API Service) -->
+    <ReservationSection />
+
+    <!-- 16. Opening Hours & Location (Live Open Status & Google Maps) -->
+    <HoursLocation />
+
+    <!-- 17. FAQ Accordion -->
+    <FAQAccordion />
+
+    <!-- 18. Instagram Photo Strip -->
+    <InstagramStrip />
+
+    <!-- 19. Newsletter Signup -->
+    <Newsletter />
+
+    <!-- 20. Final Dramatic CTA -->
+    <FinalCTA />
+  </main>
+
+  <!-- 21. Comprehensive Footer -->
+  <Footer />
+</BaseLayout>

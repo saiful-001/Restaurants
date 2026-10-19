@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Navbar from '../components/Navbar.astro';
+import PageHero from '../components/PageHero.astro';
+import PhilosophyGrid from '../components/PhilosophyGrid.astro';
+import CulinaryTeam from '../components/CulinaryTeam.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import {
+  RESTAURANT_INFO,
+  TIMELINE_MILESTONES,
+  LOCAL_SUPPLIERS
+} from '../data/restaurant';
+import { IMAGES } from '../data/images';
+---
+
+<BaseLayout
+  title="Our Story, Heritage & Craft — Verdant Hearth"
+  desc="Discover our 14-year journey of live wood-fired cooking, our team of artisans, and our 42 regenerative partner farms in the Pacific Northwest."
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content">
+    <!-- Page Hero -->
+    <PageHero
+      badge="About Us"
+      title="Ancient Fire, Living Soil & Restorative Craft"
+      description="Founded in 2012 in Portland's Hearth Quarter, Verdant Hearth was created as an antidote to industrial gastronomy."
+      bgImage={IMAGES.bannerAbout.url}
+    />
+
+    <!-- Narrative & Overlapping Images -->
+    <section class="py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          <div class="lg:col-span-6 relative">
+            <div class="relative w-full max-w-lg mx-auto">
+              <div class="reveal rounded-3xl overflow-hidden shadow-2xl border-4 border-[var(--bg-surface)] aspect-[4/5] w-[82%]">
+                <img
+                  src={IMAGES.aboutDining.url}
+                  alt={IMAGES.aboutDining.alt}
+                  width={900}
+                  height={1100}
+                  loading="lazy"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="reveal absolute -bottom-8 right-0 w-[55%] aspect-square rounded-2xl overflow-hidden shadow-2xl border-4 border-[var(--bg-surface)] z-20">
+                <img
+                  src={IMAGES.aboutChefCooking.url}
+                  alt={IMAGES.aboutChefCooking.alt}
+                  width={700}
+                  height={700}
+                  loading="lazy"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 flex flex-col items-start">
+            <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] mb-3">
+              Our Founding Philosophy
+            </span>
+            <h2 class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-main)] mb-6">
+              "We Do Not Tame the Flame; We Listen to It."
+            </h2>
+            <div class="reveal space-y-4 text-base text-[var(--text-muted)] leading-relaxed mb-8">
+              <p>
+                When Chef Julian Thorne opened Verdant Hearth in 2012, many warned that running a high-volume kitchen without gas burners or electric heating elements was impractical. Yet, fire brought an irreplaceable alchemy: a sweetness from charred alderwood and a delicate aroma of burning orchard clippings.
+              </p>
+              <p>
+                Over the past 14 years, our kitchen has evolved into an ecosystem. We harvest from our on-site edible botanical garden minutes before service and maintain closed-loop composting partnerships with growers across the Willamette Valley.
+              </p>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="reveal w-full grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-[var(--border-color)]">
+              {RESTAURANT_INFO.stats.map((stat) => (
+                <div class="p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-center">
+                  <div class="font-serif font-bold text-2xl text-[var(--accent-gold)]">
+                    {stat.value}{stat.suffix}
+                  </div>
+                  <div class="text-[11px] text-[var(--text-muted)] mt-1 font-medium leading-tight">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Chef Quote Spotlight -->
+    <section class="py-16 bg-[#0F2A1D] text-[#F6F1E7] border-b border-[#1E4631] text-center">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <span class="text-3xl text-[#C9A15A] block mb-4">❝</span>
+        <blockquote class="font-serif italic text-xl sm:text-2xl lg:text-3xl text-white leading-relaxed mb-6">
+          Food cooked over live wood has memory. It carries the sunlight stored within the grain of the tree and the quiet whisper of Oregon forests directly to your palate.
+        </blockquote>
+        <cite class="not-italic block font-bold text-base text-[#C9A15A]">
+          Julian Thorne — Executive Chef & Founder
+        </cite>
+      </div>
+    </section>
+
+    <!-- Interactive Historical Timeline -->
+    <section class="py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)]" aria-labelledby="timeline-heading">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] block mb-2">
+            Chronology
+          </span>
+          <h2 id="timeline-heading" class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-main)] mb-4">
+            Fourteen Years in the Smoke
+          </h2>
+          <p class="reveal text-sm sm:text-base text-[var(--text-muted)]">
+            Key milestones in our evolution from a modest hearth fire to a nationally recognized culinary destination.
+          </p>
+        </div>
+
+        <div class="relative border-l-2 border-[var(--accent-gold)]/40 ml-4 sm:ml-32 space-y-12">
+          {TIMELINE_MILESTONES.map((item, idx) => (
+            <div class="reveal relative pl-8 sm:pl-10" style={`transition-delay: ${idx * 100}ms;`}>
+              <!-- Dot Indicator -->
+              <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#0F2A1D] border-2 border-[var(--accent-gold)]"></span>
+              
+              <!-- Year Label -->
+              <span class="font-serif font-bold text-lg sm:text-xl text-[var(--accent-gold)] block mb-1 sm:absolute sm:-left-28 sm:top-0 sm:text-right sm:w-20">
+                {item.year}
+              </span>
+
+              <div class="card-clean p-6">
+                <h3 class="font-serif text-xl font-bold text-[var(--text-main)] mb-2">
+                  {item.title}
+                </h3>
+                <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Culinary Pillars -->
+    <PhilosophyGrid />
+
+    <!-- Culinary Masters (Team of 6) -->
+    <CulinaryTeam />
+
+    <!-- Local Suppliers Section -->
+    <section class="py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)]" aria-labelledby="suppliers-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] block mb-2">
+            Regenerative Ecosystem
+          </span>
+          <h2 id="suppliers-heading" class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-main)] mb-4">
+            Our Growers, Foragers & Fishers
+          </h2>
+          <p class="reveal text-sm sm:text-base text-[var(--text-muted)]">
+            We work directly with 42 generational producers across Oregon and Washington who prioritize soil vitality over yield.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {LOCAL_SUPPLIERS.map((supplier, idx) => (
+            <div class="reveal card-clean p-7 flex flex-col justify-between" style={`transition-delay: ${idx * 90}ms;`}>
+              <div>
+                <div class="flex items-baseline justify-between gap-4 mb-2">
+                  <h3 class="font-serif text-xl font-bold text-[var(--text-main)]">
+                    {supplier.name}
+                  </h3>
+                  <span class="text-xs font-semibold text-[var(--accent-gold)] px-2 py-0.5 rounded-full bg-[var(--brand-mid)]/10 border border-[var(--border-color)] shrink-0">
+                    {supplier.partnershipYears} Years Partner
+                  </span>
+                </div>
+                <span class="text-xs font-medium text-[var(--text-muted)] block mb-3">
+                  📍 {supplier.location} · <strong>Specialty:</strong> {supplier.specialty}
+                </span>
+                <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  {supplier.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Clear Call to Action -->
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</BaseLayout>
+

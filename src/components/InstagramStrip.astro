@@ -1,0 +1,61 @@
+---
+import { IMAGES } from '../data/images';
+import { RESTAURANT_INFO } from '../data/restaurant';
+import { DIARY_ENTRIES } from '../data/diary';
+
+const instaPhotos = IMAGES.gallery.slice(0, 6).map((img, i) => ({
+  ...img,
+  likes: ['482', '614', '531', '729', '890', '412'][i],
+  comments: ['28', '42', '35', '51', '64', '19'][i],
+  diarySlug: DIARY_ENTRIES[i]?.slug
+}));
+---
+
+<section
+  class="py-16 bg-[var(--bg-primary)] border-b border-[var(--border-color)] overflow-hidden"
+  aria-label="Visual Diary"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
+    <span class="text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] block mb-1">
+      Visual Diary
+    </span>
+    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[var(--text-main)] mb-1">
+      Follow the Fire
+    </h2>
+    <p class="text-xs sm:text-sm text-[var(--text-muted)]">
+      Click any photo to read the full story
+    </p>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 px-2 sm:px-4 max-w-7xl mx-auto">
+    {instaPhotos.map((photo) => (
+      <a
+        href={photo.diarySlug ? `/diary/${photo.diarySlug}` : '/gallery'}
+        class="group relative aspect-square overflow-hidden rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] shadow-xs block"
+      >
+        <img
+          src={photo.url}
+          alt={photo.alt}
+          width={photo.width}
+          height={photo.height}
+          loading="lazy"
+          class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+        />
+        <div class="absolute inset-0 bg-[var(--bg-dark)]/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 text-white p-3 text-center">
+          <div class="flex items-center gap-3 text-xs font-semibold text-[var(--text-on-dark)]">
+            <span class="flex items-center gap-1">
+              <span class="text-[var(--accent-gold)]">♥</span> {photo.likes}
+            </span>
+            <span class="flex items-center gap-1">
+              <span class="text-[var(--accent-sage)]">💬</span> {photo.comments}
+            </span>
+          </div>
+          <span class="text-[10px] text-[var(--text-on-dark-muted)] line-clamp-2">
+            {photo.alt}
+          </span>
+          <span class="text-[10px] font-bold text-[var(--accent-gold)] mt-1">Read Story →</span>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

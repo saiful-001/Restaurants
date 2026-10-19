@@ -1,0 +1,170 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import { RESTAURANT_INFO } from '../data/restaurant';
+
+interface Props {
+  title?: string;
+  desc?: string;
+  ogImage?: string;
+}
+
+const {
+  title = `${RESTAURANT_INFO.name} — ${RESTAURANT_INFO.tagline}`,
+  desc = RESTAURANT_INFO.shortDesc,
+  ogImage = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'
+} = Astro.props;
+
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : 'https://verdanthearth.example.com';
+
+const restaurantSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  'name': RESTAURANT_INFO.name,
+  'description': RESTAURANT_INFO.shortDesc,
+  'image': ogImage,
+  'telephone': RESTAURANT_INFO.phone,
+  'email': RESTAURANT_INFO.email,
+  'address': {
+    '@type': 'PostalAddress',
+    'streetAddress': RESTAURANT_INFO.address.street,
+    'addressLocality': RESTAURANT_INFO.address.city,
+    'addressRegion': RESTAURANT_INFO.address.state,
+    'postalCode': RESTAURANT_INFO.address.zip,
+    'addressCountry': 'US'
+  },
+  'servesCuisine': ['Botanical', 'Wood-Fired', 'Pacific Northwest', 'Farm-to-Table', 'Modern American'],
+  'priceRange': '$$$',
+  'hasMenu': `${new URL('/menu', canonicalURL).href}`,
+  'openingHoursSpecification': [
+    {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday'],
+      'opens': '17:00',
+      'closes': '22:00'
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': ['Thursday', 'Friday'],
+      'opens': '17:00',
+      'closes': '23:30'
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': 'Saturday',
+      'opens': '10:30',
+      'closes': '23:30'
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      'dayOfWeek': 'Sunday',
+      'opens': '11:00',
+      'closes': '21:00'
+    }
+  ],
+  'aggregateRating': {
+    '@type': 'AggregateRating',
+    'ratingValue': RESTAURANT_INFO.rating.toString(),
+    'reviewCount': '1450',
+    'bestRating': '5',
+    'worstRating': '1'
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={RESTAURANT_INFO.name} />
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(restaurantSchema)} />
+
+    <!-- Astro View Transitions -->
+    <ClientRouter />
+
+    <!-- Inline Head Theme Resolver to prevent theme flash (FOUC) -->
+    <script is:inline>
+      (function() {
+        document.documentElement.classList.add('js');
+        var themes = ['light', 'dark', 'ember', 'saffron'];
+        try {
+          var stored = localStorage.getItem('verdant-theme');
+          if (stored && themes.indexOf(stored) !== -1) {
+            document.documentElement.setAttribute('data-theme', stored);
+            if (stored === 'dark' || stored === 'ember') {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          } else {
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var t = prefersDark ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+            if (prefersDark) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col selection:bg-[#C9A15A] selection:text-[#0F2A1D]">
+    <slot />
+
+    <!-- Animation & Lifecycle Trigger Script -->
+    <script>
+      function initPageEnhancements() {
+        document.documentElement.classList.add('js-loaded');
+
+        // Scroll Reveal with IntersectionObserver
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        );
+
+        document.querySelectorAll('.reveal, .reveal-fade').forEach((el, index) => {
+          const htmlEl = el as HTMLElement;
+          if (!htmlEl.style.transitionDelay) {
+            htmlEl.style.transitionDelay = `${(index % 4) * 90}ms`;
+          }
+          revealObserver.observe(el);
+        });
+      }
+
+      window.addEventListener('DOMContentLoaded', initPageEnhancements);
+      document.addEventListener('astro:page-load', initPageEnhancements);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,441 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Navbar from '../components/Navbar.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import { MENU_CATEGORIES, FULL_MENU } from '../data/restaurant';
+import { IMAGES } from '../data/images';
+
+const featuredDishes = FULL_MENU.filter((d) => d.highlight || d.chefPick).slice(0, 4);
+
+const dietaryFilters = [
+  { id: 'all', label: 'All Dishes' },
+  { id: 'GF', label: 'Gluten-Free (GF)' },
+  { id: 'VG', label: 'Vegetarian (VG)' },
+  { id: 'V', label: 'Vegan (V)' },
+  { id: 'spicy', label: 'Spicy Fire' },
+  { id: 'CHEF', label: "Chef's Signature" }
+] as const;
+---
+
+<BaseLayout
+  title="Seasonal Botanical & Hearth Menu — Verdant Hearth"
+  desc="Explore our 6 seasonal dining categories: live-fire hearth mains, fresh starters, spring specials, weekend brunch, botanical desserts, and craft cellar."
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content">
+    <!-- Page Hero -->
+    <PageHero
+      badge="Seasonal Menu"
+      title="Wild Botanical Harvest & Wood-Fired Hearth"
+      description="Six dedicated categories celebrating regenerative Pacific Northwest farms, stone-milled heritage grains, and low-intervention biodynamic fermentations."
+      bgImage={IMAGES.bannerMenu.url}
+    />
+
+    <!-- Featured Dishes Highlight Strip -->
+    <section class="py-12 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-color)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-[var(--accent-gold)] font-bold block mb-1">
+              Culinary Highlights
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)]">
+              Chef's Seasonal Showcase
+            </h2>
+          </div>
+          <span class="text-xs text-[var(--text-muted)] font-medium hidden sm:inline">
+            Click any dish to view ingredients, pairings & sourcing
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredDishes.map((dish) => (
+            <a
+              href={`/menu/${dish.slug}`}
+              class="card-clean overflow-hidden group flex flex-col justify-between hover:shadow-xl transition-all duration-300"
+            >
+              <div>
+                <div class="relative aspect-[4/3] overflow-hidden bg-[var(--bg-muted)]">
+                  <img
+                    src={dish.image}
+                    alt={dish.name}
+                    width={500}
+                    height={375}
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                    class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                  <span class="absolute bottom-2.5 right-3 font-extrabold text-xl text-white drop-shadow-md">
+                    ${dish.price}
+                  </span>
+                  {dish.chefPick && (
+                    <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#C9A15A] text-[#0F2A1D] shadow-md">
+                      Chef's Pick
+                    </span>
+                  )}
+                </div>
+
+                <div class="p-4">
+                  <div class="flex flex-wrap gap-1 mb-2">
+                    {dish.dietary.map((tag) => (
+                      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[var(--brand-mid)]/10 text-[var(--accent-gold)]">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 class="font-bold text-base text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors mb-1 line-clamp-1">
+                    {dish.name}
+                  </h3>
+                  <p class="text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
+                    {dish.shortDescription}
+                  </p>
+                </div>
+              </div>
+
+              <div class="px-4 pb-4 pt-1 flex items-center justify-between text-xs font-semibold text-[var(--accent-gold)]">
+                <span>View Full Dish</span>
+                <span>→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Category Bar + Search & Filter Controls -->
+    <div id="sticky-filter-bar" class="sticky top-0 z-30 bg-[var(--bg-primary)]/95 backdrop-blur-md border-b border-[var(--border-color)] py-4 shadow-sm transition-all duration-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <!-- Category Quick Scroll Chips (horizontal scroll on mobile) -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none" role="tablist">
+            {MENU_CATEGORIES.map((cat, idx) => (
+              <a
+                href={`#cat-${cat.id}`}
+                data-category-chip={cat.id}
+                class={`category-chip shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                  idx === 0
+                    ? 'bg-[#0F2A1D] text-[#F6F1E7] border border-[#0F2A1D] dark:bg-[#C9A15A] dark:text-[#0F2A1D]'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] hover:text-[var(--text-main)]'
+                }`}
+              >
+                {cat.name.split(' ')[0]}
+              </a>
+            ))}
+          </div>
+
+          <!-- Live Search Box + Filter Toggles -->
+          <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="relative flex-1 md:w-64">
+              <input
+                id="menu-search-input"
+                type="search"
+                placeholder="Search dishes, ingredients..."
+                class="w-full pl-9 pr-4 py-2 rounded-full text-xs bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)] focus:outline-none focus:border-[var(--accent-gold)]"
+              />
+              <svg class="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dietary Chips Row -->
+        <div class="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-[var(--border-color)]/50">
+          <span class="text-[11px] text-[var(--text-muted)] font-semibold uppercase tracking-wider mr-1 hidden sm:inline">Dietary:</span>
+          {dietaryFilters.map((df, idx) => (
+            <button
+              type="button"
+              data-dietary-filter={df.id}
+              class={`dietary-filter-btn px-3 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer ${
+                idx === 0
+                  ? 'bg-[var(--accent-gold)] text-[#0F2A1D]'
+                  : 'bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] hover:text-[var(--text-main)]'
+              }`}
+            >
+              {df.label}
+            </button>
+          ))}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Main Menu Catalog Sections -->
+    <section class="py-16 bg-[var(--bg-primary)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {MENU_CATEGORIES.map((cat) => {
+          const categoryDishes = FULL_MENU.filter((item) => item.category === cat.id);
+          return (
+            <div
+              id={`cat-${cat.id}`}
+              class="category-anchor-section scroll-mt-28 mb-20 last:mb-0"
+              data-category-id={cat.id}
+            >
+              <!-- Category Editorial Banner -->
+              <div class="relative rounded-3xl overflow-hidden mb-10 shadow-lg aspect-[21/9] sm:aspect-[24/7] max-h-64 w-full border border-[var(--border-color)]">
+                <img
+                  src={cat.bannerImage}
+                  alt={cat.name}
+                  width={1200}
+                  height={350}
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                  class="w-full h-full object-cover"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                  <div>
+                    <span class="text-xs uppercase tracking-widest text-[#C9A15A] font-bold block mb-1">
+                      {cat.servingHours}
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-[#F6F1E7]">
+                      {cat.name}
+                    </h2>
+                    <p class="text-xs sm:text-sm text-[#A9C4A0] mt-1 max-w-xl font-medium">
+                      {cat.tagline}
+                    </p>
+                  </div>
+                  <span class="text-xs text-[#F6F1E7]/70 font-semibold px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm self-start sm:self-auto">
+                    {categoryDishes.length} Courses
+                  </span>
+                </div>
+              </div>
+
+              <!-- Dishes Grid (6 dishes) -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                {categoryDishes.map((dish) => (
+                  <article
+                    class="dish-card card-clean flex flex-col overflow-hidden group focus-within:ring-2 focus-within:ring-[var(--accent-gold)] transition-all duration-300"
+                    data-dish-name={dish.name.toLowerCase()}
+                    data-dish-desc={dish.shortDescription.toLowerCase()}
+                    data-dish-ingredients={dish.ingredients.join(' ').toLowerCase()}
+                    data-dietary={dish.dietary.join(',')}
+                  >
+                    <!-- Dish Thumbnail & Link -->
+                    <a href={`/menu/${dish.slug}`} class="block relative aspect-[16/10] overflow-hidden bg-[var(--bg-muted)]">
+                      <img
+                        src={dish.image}
+                        alt={dish.name}
+                        width={600}
+                        height={380}
+                        loading="lazy"
+                        onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                        class="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
+                      />
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+
+                      <!-- Price Tag -->
+                      <span class="absolute bottom-3 right-4 text-xl font-extrabold text-white drop-shadow-md">
+                        ${dish.price}
+                      </span>
+
+                      {dish.chefPick && (
+                        <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#C9A15A] text-[#0F2A1D] shadow-md">
+                          Chef's Pick
+                        </span>
+                      )}
+                      {dish.seasonal && !dish.chefPick && (
+                        <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2A6647] text-[#E4ECE2] shadow-md">
+                          Spring Harvest
+                        </span>
+                      )}
+                    </a>
+
+                    <!-- Dish Information Body -->
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                      <div>
+                        <!-- Dietary Tags -->
+                        <div class="flex flex-wrap gap-1.5 mb-2.5">
+                          {dish.dietary.map((tag) => (
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] border border-[var(--brand-mid)]/20">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+
+                        <h3 class="text-lg sm:text-xl font-bold text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors mb-2">
+                          <a href={`/menu/${dish.slug}`}>
+                            {dish.name}
+                          </a>
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed mb-4">
+                          {dish.shortDescription}
+                        </p>
+                      </div>
+
+                      <div>
+                        {dish.pairing && (
+                          <div class="pt-3 border-t border-[var(--border-color)]/70 text-[11px] text-[var(--text-muted)] flex items-center gap-1.5 mb-3">
+                            <span class="text-[var(--accent-gold)]">🍷</span>
+                            <span><strong>Pairing:</strong> {dish.pairing}</span>
+                          </div>
+                        )}
+
+                        <a
+                          href={`/menu/${dish.slug}`}
+                          class="inline-flex items-center gap-1 text-xs font-bold text-[var(--accent-gold)] hover:underline pt-2"
+                        >
+                          <span>View Ingredients & Story</span>
+                          <span>→</span>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+            </div>
+          );
+        })}
+
+        <!-- Empty State Filter Feedback -->
+        <div id="dish-empty-alert" class="hidden text-center py-20 text-[var(--text-muted)]">
+          <div class="w-16 h-16 rounded-full bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center mx-auto mb-4 text-2xl text-[var(--accent-gold)]">
+            🔍
+          </div>
+          <p class="text-lg font-bold text-[var(--text-main)] mb-1">No dishes match your active filter.</p>
+          <p class="text-xs text-[var(--text-muted)] max-w-md mx-auto mb-4">
+            Try adjusting your search keywords or reset dietary preferences to view our full hearth selection.
+          </p>
+          <button
+            id="dish-reset-filter"
+            type="button"
+            class="btn-gold text-xs uppercase tracking-wider font-semibold py-2.5 px-6"
+          >
+            Reset All Filters
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Clear Bottom CTA -->
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  function setupMenuFilters() {
+    const searchInput = document.getElementById('menu-search-input') as HTMLInputElement | null;
+    const dietaryBtns = document.querySelectorAll<HTMLButtonElement>('.dietary-filter-btn');
+    const dishCards = document.querySelectorAll<HTMLElement>('.dish-card');
+    const emptyAlert = document.getElementById('dish-empty-alert');
+    const resetBtn = document.getElementById('dish-reset-filter');
+    const categorySections = document.querySelectorAll<HTMLElement>('.category-anchor-section');
+    const categoryChips = document.querySelectorAll<HTMLAnchorElement>('.category-chip');
+
+    let activeDietary = 'all';
+    let searchQuery = '';
+
+    function applyFilters() {
+      let visibleCount = 0;
+
+      dishCards.forEach((card) => {
+        const name = card.getAttribute('data-dish-name') || '';
+        const desc = card.getAttribute('data-dish-desc') || '';
+        const ing = card.getAttribute('data-dish-ingredients') || '';
+        const dietary = (card.getAttribute('data-dietary') || '').split(',');
+
+        const matchesSearch = !searchQuery || name.includes(searchQuery) || desc.includes(searchQuery) || ing.includes(searchQuery);
+        const matchesDietary = activeDietary === 'all' || dietary.includes(activeDietary);
+
+        if (matchesSearch && matchesDietary) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Hide category sections that have 0 visible dishes
+      categorySections.forEach((section) => {
+        const visibleInCategory = section.querySelectorAll<HTMLElement>('.dish-card:not([style*="display: none"])').length;
+        if (visibleInCategory === 0 && (searchQuery || activeDietary !== 'all')) {
+          section.style.display = 'none';
+        } else {
+          section.style.display = 'block';
+        }
+      });
+
+      if (emptyAlert) {
+        emptyAlert.classList.toggle('hidden', visibleCount > 0);
+      }
+    }
+
+    searchInput?.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+      applyFilters();
+    });
+
+    dietaryBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        activeDietary = btn.getAttribute('data-dietary-filter') || 'all';
+
+        dietaryBtns.forEach((b) => {
+          b.classList.remove('bg-[var(--accent-gold)]', 'text-[#0F2A1D]');
+          b.classList.add('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]', 'border', 'border-[var(--border-color)]');
+        });
+
+        btn.classList.add('bg-[var(--accent-gold)]', 'text-[#0F2A1D]');
+        btn.classList.remove('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]', 'border');
+
+        applyFilters();
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      searchQuery = '';
+      activeDietary = 'all';
+
+      dietaryBtns.forEach((b, idx) => {
+        if (idx === 0) {
+          b.classList.add('bg-[var(--accent-gold)]', 'text-[#0F2A1D]');
+          b.classList.remove('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]', 'border');
+        } else {
+          b.classList.remove('bg-[var(--accent-gold)]', 'text-[#0F2A1D]');
+          b.classList.add('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]', 'border');
+        }
+      });
+
+      applyFilters();
+    });
+
+    // Scroll spy to highlight active category chip
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('data-category-id');
+            categoryChips.forEach((chip) => {
+              if (chip.getAttribute('data-category-chip') === id) {
+                chip.classList.add('bg-[#0F2A1D]', 'text-[#F6F1E7]', 'border-[#0F2A1D]', 'dark:bg-[#C9A15A]', 'dark:text-[#0F2A1D]');
+                chip.classList.remove('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
+              } else {
+                chip.classList.remove('bg-[#0F2A1D]', 'text-[#F6F1E7]', 'border-[#0F2A1D]', 'dark:bg-[#C9A15A]', 'dark:text-[#0F2A1D]');
+                chip.classList.add('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
+              }
+            });
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -70% 0px' }
+    );
+
+    categorySections.forEach((section) => observer.observe(section));
+  }
+
+  setupMenuFilters();
+  document.addEventListener('astro:page-load', setupMenuFilters);
+</script>

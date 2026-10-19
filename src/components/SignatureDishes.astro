@@ -1,0 +1,119 @@
+---
+import { SIGNATURE_DISHES } from '../data/restaurant';
+---
+
+<section
+  id="signatures"
+  class="py-20 lg:py-28 bg-[#0F2A1D] text-[#F6F1E7] border-b border-[#1E4631] relative overflow-hidden"
+  aria-labelledby="signatures-heading"
+>
+  <!-- Background Glow Accents -->
+  <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[40rem] h-[20rem] bg-[#C9A15A]/10 blur-[100px]" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Section Header -->
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <span class="reveal text-xs uppercase tracking-widest font-semibold text-[#C9A15A] block mb-2">
+        Culinary Masterpieces
+      </span>
+      <h2
+        id="signatures-heading"
+        class="reveal text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4"
+      >
+        Chef's Hearth Signatures
+      </h2>
+      <p class="reveal text-sm sm:text-base text-[#A9C4A0] leading-relaxed">
+        Iconic preparations kissed by live embers and finished with botanicals harvested each morning. Every plate reflects our reverence for wild Pacific Northwest ingredients.
+      </p>
+    </div>
+
+    <!-- 3 Signature Dish Cards Grid (Linking to /menu/[slug]) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {SIGNATURE_DISHES.map((dish, idx) => (
+        <a
+          href={`/menu/${dish.slug}`}
+          class="reveal card-dark flex flex-col overflow-hidden group focus-visible:ring-2 focus-visible:ring-[#C9A15A] hover:border-[#C9A15A] transition-all duration-300"
+          style={`transition-delay: ${idx * 120}ms;`}
+        >
+          <!-- Dish Photo Container with Zoom -->
+          <div class="relative aspect-[4/3] overflow-hidden bg-[#0A1B12]">
+            <img
+              src={dish.image}
+              alt={dish.name}
+              width={800}
+              height={600}
+              loading="lazy"
+              onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+              class="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0F2A1D] via-transparent to-black/30 pointer-events-none"></div>
+
+            <!-- Badge Tag -->
+            <span class="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-[#0F2A1D]/80 backdrop-blur-md text-[#C9A15A] border border-[#C9A15A]/40 shadow-md">
+              Chef's Signature
+            </span>
+
+            <!-- Price Tag -->
+            <span class="absolute bottom-3 right-4 text-xl sm:text-2xl font-extrabold text-white drop-shadow-md">
+              ${dish.price}
+            </span>
+          </div>
+
+          <!-- Card Content Body -->
+          <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+            <div>
+              <!-- Dietary Badges -->
+              <div class="flex items-center gap-1.5 mb-2.5">
+                {dish.dietary.map((tag) => (
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-[#1F4D36] text-[#A9C4A0] border border-[#2B5940]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <!-- Dish Title -->
+              <h3 class="text-xl sm:text-2xl font-bold text-white group-hover:text-[#C9A15A] transition-colors mb-3">
+                {dish.name}
+              </h3>
+
+              <!-- Description -->
+              <p class="text-xs sm:text-sm text-[#A9C4A0] leading-relaxed mb-4">
+                {dish.shortDescription}
+              </p>
+            </div>
+
+            <!-- Sommelier Pairing Note -->
+            <div>
+              {dish.pairing && (
+                <div class="pt-4 border-t border-[#1E4631] text-[11px] sm:text-xs text-[#D5E2D1] flex items-center gap-2 mb-3">
+                  <span class="text-[#C9A15A]">🍷</span>
+                  <span class="truncate">
+                    <strong class="text-white">Pairing:</strong> {dish.pairing}
+                  </span>
+                </div>
+              )}
+
+              <div class="text-xs font-bold text-[#C9A15A] flex items-center gap-1 group-hover:translate-x-1.5 transition-transform">
+                <span>View Recipe Story & Sourcing</span>
+                <span>→</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Bottom Action -->
+    <div class="text-center mt-12">
+      <a
+        href="/menu"
+        class="inline-flex items-center gap-2 text-sm uppercase tracking-wider font-semibold text-[#C9A15A] hover:text-[#E2C285] transition-colors underline underline-offset-8"
+      >
+        <span>Explore All 36 Seasonal Courses on Our Menu Page</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

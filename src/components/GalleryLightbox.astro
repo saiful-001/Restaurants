@@ -1,0 +1,250 @@
+---
+import { IMAGES } from '../data/images';
+
+const spans = [
+  'col-span-1 md:col-span-2 aspect-[16/10]',
+  'col-span-1 aspect-[4/5]',
+  'col-span-1 aspect-square',
+  'col-span-1 aspect-square',
+  'col-span-1 aspect-[4/5]',
+  'col-span-1 aspect-square',
+  'col-span-1 aspect-square',
+  'col-span-1 md:col-span-2 aspect-[16/10]'
+];
+const galleryItems = IMAGES.gallery.slice(0, 8).map((item, i) => ({ ...item, span: spans[i] }));
+
+---
+
+<section
+  id="gallery"
+  class="py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)] relative"
+  aria-labelledby="gallery-heading"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Header -->
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] block mb-2">
+        Moments at the Hearth
+      </span>
+      <h2
+        id="gallery-heading"
+        class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-main)] mb-4"
+      >
+        A Visual Taste of Verdant
+      </h2>
+      <p class="reveal text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+        Click any photo to explore our dining rooms, hearth-fired creations, and botanical patio in high resolution.
+      </p>
+    </div>
+
+    <!-- Asymmetric Gallery Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      {galleryItems.map((item, idx) => (
+        <button
+          type="button"
+          class={`gallery-trigger group reveal relative overflow-hidden rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-[#C9A15A] ${item.span}`}
+          data-index={idx}
+          data-url={item.url}
+          data-alt={item.alt}
+          data-caption={item.alt}
+          data-photographer={item.photographer}
+          style={`transition-delay: ${(idx % 4) * 80}ms;`}
+          aria-label={`View photo: ${item.alt}`}
+        >
+          <img
+            src={item.url}
+            alt={item.alt}
+            width={item.width}
+            height={item.height}
+            loading="lazy"
+            class="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
+          />
+          <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-[#C9A15A] mb-1">
+              {item.category}
+            </span>
+            <p class="text-xs font-medium line-clamp-2 text-[#F6F1E7]">
+              {item.alt}
+            </p>
+            <div class="mt-2 flex items-center gap-1 text-[11px] text-[#A9C4A0]">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              </svg>
+              <span>View Fullscreen</span>
+            </div>
+          </div>
+        </button>
+      ))}
+    </div>
+
+    <!-- View Full Gallery Button -->
+    <div class="text-center mt-10">
+      <a
+        href="/gallery"
+        class="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] transition-colors underline underline-offset-8"
+      >
+        <span>View Full 24-Photo Masonry Archive & Category Filter</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+
+    <!-- Photographer Credits Note -->
+    <p class="text-center text-xs text-[var(--text-muted)] mt-6">
+      Photography curated via Unsplash CDN. Credits: Jay Wennington, Lily Banse, Anna Pelzer, Alexander Kovacs, Mae Mu.
+    </p>
+
+  </div>
+
+  <!-- Accessible Lightbox Modal Dialog -->
+  <dialog
+    id="gallery-lightbox"
+    class="backdrop:bg-black/85 backdrop:backdrop-blur-md bg-transparent p-4 sm:p-8 max-w-5xl w-full m-auto open:flex flex-col items-center justify-center outline-none"
+    aria-label="Image Lightbox Preview"
+  >
+    <div class="relative w-full max-w-4xl bg-[#0F2A1D] border border-[#1E4631] rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+      <!-- Lightbox Header / Controls -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-[#1E4631] text-[#F6F1E7] bg-[#0A1B12]/80">
+        <div class="text-xs text-[#A9C4A0] flex items-center gap-2">
+          <span id="lb-counter" class="font-mono">1 / 8</span>
+          <span class="text-[#C9A15A]">✦</span>
+          <span>Verdant Hearth Archive</span>
+        </div>
+        <button
+          id="lb-close"
+          type="button"
+          class="p-1 rounded-lg text-[#A9C4A0] hover:text-white hover:bg-[#1F4D36] transition-colors focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+          aria-label="Close image lightbox"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Main Image Display Container -->
+      <div class="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black flex items-center justify-center overflow-hidden">
+        <img
+          id="lb-img"
+          src=""
+          alt=""
+          class="max-h-full max-w-full object-contain transition-opacity duration-300"
+        />
+
+        <!-- Prev / Next Arrow Buttons -->
+        <button
+          id="lb-prev"
+          type="button"
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#0F2A1D]/80 border border-[#C9A15A]/40 text-white hover:bg-[#C9A15A] hover:text-[#0F2A1D] flex items-center justify-center transition-all shadow-lg focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+          aria-label="Previous photo"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <button
+          id="lb-next"
+          type="button"
+          class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#0F2A1D]/80 border border-[#C9A15A]/40 text-white hover:bg-[#C9A15A] hover:text-[#0F2A1D] flex items-center justify-center transition-all shadow-lg focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+          aria-label="Next photo"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Caption & Photo Credit Bar -->
+      <div class="p-4 sm:p-5 bg-[#0A1B12] border-t border-[#1E4631] text-[#F6F1E7] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+        <p id="lb-caption" class="text-sm font-medium text-white max-w-xl">
+          Photo caption
+        </p>
+        <span id="lb-photographer" class="text-[#A9C4A0]">
+          Photo by Photographer
+        </span>
+      </div>
+    </div>
+  </dialog>
+</section>
+
+<script>
+  // Accessible Lightbox Controller
+  const triggers = document.querySelectorAll<HTMLButtonElement>('.gallery-trigger');
+  const dialog = document.getElementById('gallery-lightbox') as HTMLDialogElement | null;
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
+  const lbCaption = document.getElementById('lb-caption');
+  const lbPhotographer = document.getElementById('lb-photographer');
+  const lbCounter = document.getElementById('lb-counter');
+  const closeBtn = document.getElementById('lb-close');
+  const prevBtn = document.getElementById('lb-prev');
+  const nextBtn = document.getElementById('lb-next');
+
+  let currentIndex = 0;
+  const items = Array.from(triggers).map((el) => ({
+    url: el.getAttribute('data-url') || '',
+    alt: el.getAttribute('data-alt') || '',
+    caption: el.getAttribute('data-caption') || '',
+    photographer: el.getAttribute('data-photographer') || 'Unsplash'
+  }));
+
+  function updateLightbox(index: number) {
+    if (index < 0) index = items.length - 1;
+    if (index >= items.length) index = 0;
+    currentIndex = index;
+
+    const item = items[currentIndex];
+    if (lbImg) {
+      lbImg.style.opacity = '0';
+      setTimeout(() => {
+        lbImg.src = item.url;
+        lbImg.alt = item.alt;
+        lbImg.style.opacity = '1';
+      }, 150);
+    }
+    if (lbCaption) lbCaption.textContent = item.caption;
+    if (lbPhotographer) lbPhotographer.textContent = `Photo by ${item.photographer} on Unsplash`;
+    if (lbCounter) lbCounter.textContent = `${currentIndex + 1} / ${items.length}`;
+  }
+
+  triggers.forEach((trigger, idx) => {
+    trigger.addEventListener('click', () => {
+      updateLightbox(idx);
+      if (dialog && typeof dialog.showModal === 'function') {
+        dialog.showModal();
+        dialog.classList.remove('hidden');
+      }
+    });
+  });
+
+  closeBtn?.addEventListener('click', () => {
+    dialog?.close();
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    updateLightbox(currentIndex - 1);
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    updateLightbox(currentIndex + 1);
+  });
+
+  // Keyboard navigation
+  dialog?.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      updateLightbox(currentIndex - 1);
+    } else if (e.key === 'ArrowRight') {
+      updateLightbox(currentIndex + 1);
+    }
+  });
+
+  // Close when clicking dialog backdrop
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+    }
+  });
+</script>
+

@@ -1,0 +1,364 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnnouncementBar from '../../components/AnnouncementBar.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { FULL_MENU, MENU_CATEGORIES, type MenuItem } from '../../data/restaurant';
+
+export async function getStaticPaths() {
+  return FULL_MENU.map((dish, index) => {
+    const prevDish = index > 0 ? FULL_MENU[index - 1] : FULL_MENU[FULL_MENU.length - 1];
+    const nextDish = index < FULL_MENU.length - 1 ? FULL_MENU[index + 1] : FULL_MENU[0];
+    const relatedDishes = FULL_MENU
+      .filter((d) => d.category === dish.category && d.slug !== dish.slug)
+      .slice(0, 3);
+
+    return {
+      params: { slug: dish.slug },
+      props: { dish, prevDish, nextDish, relatedDishes }
+    };
+  });
+}
+
+interface Props {
+  dish: MenuItem;
+  prevDish: MenuItem;
+  nextDish: MenuItem;
+  relatedDishes: MenuItem[];
+}
+
+const { dish, prevDish, nextDish, relatedDishes } = Astro.props;
+const categoryMeta = MENU_CATEGORIES.find((c) => c.id === dish.category);
+---
+
+<BaseLayout
+  title={`${dish.name} — Verdant Hearth Dining`}
+  desc={`${dish.shortDescription} Prepared over live wood embers at Verdant Hearth, Portland.`}
+  ogImage={dish.image}
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content" class="pt-8 pb-20 bg-[var(--bg-primary)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex items-center gap-2 text-xs sm:text-sm text-[var(--text-muted)] mb-8" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--accent-gold)] transition-colors">Home</a>
+        <span class="opacity-40">/</span>
+        <a href="/menu" class="hover:text-[var(--accent-gold)] transition-colors">Menu</a>
+        <span class="opacity-40">/</span>
+        <a href={`/menu#${dish.category}`} class="hover:text-[var(--accent-gold)] transition-colors capitalize">
+          {categoryMeta ? categoryMeta.name : dish.category}
+        </a>
+        <span class="opacity-40">/</span>
+        <span class="text-[var(--text-main)] font-semibold truncate max-w-[200px] sm:max-w-none">{dish.name}</span>
+      </nav>
+
+      <!-- Main Dish Detail Layout: Left Gallery / Right Story -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-16">
+        
+        <!-- Left: Image Gallery (6 cols) -->
+        <div class="lg:col-span-6 flex flex-col gap-4">
+          <!-- Main Large Image -->
+          <div class="relative rounded-3xl overflow-hidden aspect-[4/3] bg-[var(--bg-muted)] border border-[var(--border-color)] shadow-xl">
+            <img
+              id="main-dish-image"
+              src={dish.image}
+              alt={dish.name}
+              width={1000}
+              height={750}
+              fetchpriority="high"
+              onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+              class="w-full h-full object-cover transition-opacity duration-300"
+            />
+            {dish.chefPick && (
+              <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-[#C9A15A] text-[#0F2A1D] shadow-md">
+                Chef's Signature
+              </span>
+            )}
+            {dish.seasonal && (
+              <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-[#2A6647] text-[#E4ECE2] shadow-md">
+                Spring Harvest
+              </span>
+            )}
+          </div>
+
+          <!-- Small Thumbnail Gallery -->
+          {dish.gallery && dish.gallery.length > 1 && (
+            <div class="flex items-center gap-3 overflow-x-auto pb-1">
+              {dish.gallery.map((thumbUrl, idx) => (
+                <button
+                  type="button"
+                  data-gallery-src={thumbUrl}
+                  class={`dish-thumb-btn w-20 h-16 sm:w-24 sm:h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                    idx === 0 ? 'border-[var(--accent-gold)] scale-102' : 'border-[var(--border-color)] opacity-70 hover:opacity-100'
+                  }`}
+                  aria-label={`View photo ${idx + 1}`}
+                >
+                  <img
+                    src={thumbUrl}
+                    alt={`${dish.name} photo ${idx + 1}`}
+                    width={100}
+                    height={80}
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                    class="w-full h-full object-cover pointer-events-none"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- Right: Dish Information & Details (6 cols) -->
+        <div class="lg:col-span-6 flex flex-col items-start space-y-6">
+          
+          <!-- Category & Tag Bar -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] border border-[var(--brand-mid)]/20">
+              {categoryMeta?.name || dish.category}
+            </span>
+            {dish.dietary.map((tag) => (
+              <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-color)]">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <!-- Dish Title & Price Header -->
+          <div class="flex items-start justify-between gap-4 w-full">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--text-main)] tracking-tight leading-tight">
+              {dish.name}
+            </h1>
+            <span class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-gold)] shrink-0 pt-1">
+              ${dish.price}
+            </span>
+          </div>
+
+          <!-- Short Narrative Summary -->
+          <p class="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed font-medium">
+            {dish.shortDescription}
+          </p>
+
+          <!-- Long Editorial Narrative -->
+          <div class="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] w-full space-y-2">
+            <h2 class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)]">
+              Culinary Story & Sourcing
+            </h2>
+            <p class="text-sm text-[var(--text-main)] leading-relaxed">
+              {dish.longDescription}
+            </p>
+          </div>
+
+          <!-- Culinary Specifications Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            <div class="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1">
+              <span class="block text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+                Hearth Method
+              </span>
+              <span class="text-sm font-semibold text-[var(--text-main)] block">
+                {dish.cookingMethod}
+              </span>
+            </div>
+
+            <div class="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1">
+              <span class="block text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+                Sommelier Pairing
+              </span>
+              <span class="text-sm font-semibold text-[var(--accent-gold)] block">
+                {dish.pairing}
+              </span>
+            </div>
+
+            <div class="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1">
+              <span class="block text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+                Nutrition Profile
+              </span>
+              <span class="text-sm text-[var(--text-main)] block">
+                {dish.nutritionNote}
+              </span>
+            </div>
+
+            <div class="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1">
+              <span class="block text-xs text-[var(--text-muted)] font-semibold uppercase tracking-wider">
+                Allergen Notice
+              </span>
+              <span class="text-sm text-[var(--text-main)] block">
+                {dish.allergens.length > 0 ? dish.allergens.join(', ') : 'No common allergens declared'}
+              </span>
+            </div>
+          </div>
+
+          <!-- Key Ingredients Chips -->
+          <div class="w-full space-y-3">
+            <h3 class="text-xs uppercase tracking-wider font-bold text-[var(--text-muted)]">
+              Botanical & Farm Ingredients
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {dish.ingredients.map((ing) => (
+                <span class="px-3 py-1.5 rounded-full text-xs font-medium bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)]">
+                  🌱 {ing}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Reserve CTA Action Button -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full pt-4 border-t border-[var(--border-color)]">
+            <a
+              href="/reservation"
+              class="btn-gold text-sm uppercase tracking-wider font-semibold py-4 px-8 text-center flex-1"
+            >
+              <span>Reserve Table For This Dish</span>
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a
+              href="/menu"
+              class="btn-outline-gold text-sm uppercase tracking-wider font-semibold py-4 px-6 text-center"
+            >
+              Back to Full Menu
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Previous / Next Dish Navigation Strip -->
+      <div class="flex items-center justify-between border-t border-b border-[var(--border-color)] py-6 mb-16">
+        <a
+          href={`/menu/${prevDish.slug}`}
+          class="group flex items-center gap-3 text-left max-w-[45%]"
+        >
+          <div class="w-10 h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center text-[var(--text-muted)] group-hover:border-[var(--accent-gold)] group-hover:text-[var(--accent-gold)] transition-colors shrink-0">
+            ←
+          </div>
+          <div>
+            <span class="text-[11px] uppercase tracking-wider text-[var(--text-muted)] block">Previous Dish</span>
+            <span class="text-sm font-bold text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors line-clamp-1">
+              {prevDish.name}
+            </span>
+          </div>
+        </a>
+
+        <a
+          href={`/menu/${nextDish.slug}`}
+          class="group flex items-center justify-end gap-3 text-right max-w-[45%]"
+        >
+          <div>
+            <span class="text-[11px] uppercase tracking-wider text-[var(--text-muted)] block">Next Dish</span>
+            <span class="text-sm font-bold text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors line-clamp-1">
+              {nextDish.name}
+            </span>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center text-[var(--text-muted)] group-hover:border-[var(--accent-gold)] group-hover:text-[var(--accent-gold)] transition-colors shrink-0">
+            →
+          </div>
+        </a>
+      </div>
+
+      <!-- "You May Also Like" Related Dishes Row -->
+      {relatedDishes.length > 0 && (
+        <section aria-labelledby="related-dishes-heading" class="mb-12">
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-[var(--accent-gold)] font-bold block mb-1">
+                Curated Recommendations
+              </span>
+              <h2 id="related-dishes-heading" class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)]">
+                You May Also Like
+              </h2>
+            </div>
+            <a href="/menu" class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)] hover:underline hidden sm:inline">
+              View All Dishes →
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {relatedDishes.map((item) => (
+              <a
+                href={`/menu/${item.slug}`}
+                class="card-clean overflow-hidden group flex flex-col justify-between"
+              >
+                <div>
+                  <div class="relative aspect-[16/10] overflow-hidden bg-[var(--bg-muted)]">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      width={500}
+                      height={320}
+                      loading="lazy"
+                      onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span class="absolute bottom-3 right-3 font-bold text-lg text-white drop-shadow-md">
+                      ${item.price}
+                    </span>
+                  </div>
+                  <div class="p-5">
+                    <div class="flex items-center gap-1.5 mb-2">
+                      {item.dietary.slice(0, 2).map((t) => (
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[var(--brand-mid)]/10 text-[var(--accent-gold)]">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 class="font-bold text-base text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors mb-1 line-clamp-1">
+                      {item.name}
+                    </h3>
+                    <p class="text-xs text-[var(--text-muted)] line-clamp-2">
+                      {item.shortDescription}
+                    </p>
+                  </div>
+                </div>
+                <div class="px-5 pb-5 pt-0">
+                  <span class="text-xs font-semibold text-[var(--accent-gold)] flex items-center gap-1">
+                    <span>View Dish Details</span>
+                    <span>→</span>
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  function setupGallery() {
+    const mainImg = document.getElementById('main-dish-image') as HTMLImageElement | null;
+    const thumbBtns = document.querySelectorAll<HTMLButtonElement>('.dish-thumb-btn');
+
+    thumbBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const src = btn.getAttribute('data-gallery-src');
+        if (src && mainImg) {
+          mainImg.style.opacity = '0.4';
+          setTimeout(() => {
+            mainImg.src = src;
+            mainImg.style.opacity = '1';
+          }, 150);
+
+          thumbBtns.forEach((b) => {
+            b.classList.remove('border-[var(--accent-gold)]', 'scale-102');
+            b.classList.add('border-[var(--border-color)]', 'opacity-70');
+          });
+          btn.classList.add('border-[var(--accent-gold)]', 'scale-102');
+          btn.classList.remove('border-[var(--border-color)]', 'opacity-70');
+        }
+      });
+    });
+  }
+
+  setupGallery();
+  document.addEventListener('astro:page-load', setupGallery);
+</script>
+

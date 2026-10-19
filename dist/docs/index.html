@@ -1,0 +1,433 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Template Documentation &amp; Developer Guide — Verdant Hearth</title><meta name="description" content="Complete, beginner-friendly manual for configuring content, self-hosting fonts, and integrating Laravel or Next.js backends."><link rel="canonical" href="https://verdanthearth.example.com/docs/"><!-- Open Graph / Social Sharing --><meta property="og:type" content="restaurant"><meta property="og:title" content="Template Documentation &#38; Developer Guide — Verdant Hearth"><meta property="og:description" content="Complete, beginner-friendly manual for configuring content, self-hosting fonts, and integrating Laravel or Next.js backends."><meta property="og:url" content="https://verdanthearth.example.com/docs/"><meta property="og:image" content="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&#38;fit=crop&#38;w=1200&#38;q=80"><meta property="og:site_name" content="Verdant Hearth"><!-- Twitter Meta --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Template Documentation &#38; Developer Guide — Verdant Hearth"><meta name="twitter:description" content="Complete, beginner-friendly manual for configuring content, self-hosting fonts, and integrating Laravel or Next.js backends."><meta name="twitter:image" content="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&#38;fit=crop&#38;w=1200&#38;q=80"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- JSON-LD Schema --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"Verdant Hearth","description":"An award-winning dining sanctuary devoted to live-fire hearth cooking, organic botanical agriculture, and natural biodynamic wines in Portland, Oregon.","image":"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80","telephone":"+1 (503) 847-2910","email":"concierge@verdanthearth.com","address":{"@type":"PostalAddress","streetAddress":"428 Botanical Way, Hearth Quarter","addressLocality":"Portland","addressRegion":"OR","postalCode":"97201","addressCountry":"US"},"servesCuisine":["Botanical","Wood-Fired","Pacific Northwest","Farm-to-Table","Modern American"],"priceRange":"$$$","hasMenu":"https://verdanthearth.example.com/menu","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday"],"opens":"17:00","closes":"22:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Thursday","Friday"],"opens":"17:00","closes":"23:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:30","closes":"23:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"11:00","closes":"21:00"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"1450","bestRating":"5","worstRating":"1"}}</script><!-- Astro View Transitions --><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><!-- Inline Head Theme Resolver to prevent theme flash (FOUC) --><script>
+      (function() {
+        document.documentElement.classList.add('js');
+        try {
+          var stored = localStorage.getItem('verdant-theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script><link rel="stylesheet" href="/_astro/Footer.CGyZUKdW.css"></head> <body class="min-h-screen flex flex-col selection:bg-[#C9A15A] selection:text-[#0F2A1D]">  <aside id="announcement-bar" class="relative z-50 bg-[#0A1B12] text-[#F6F1E7] border-b border-[#1E4631] text-xs sm:text-sm py-2.5 px-4 transition-all duration-300 ease-out" aria-label="Announcement"> <div class="max-w-7xl mx-auto flex items-center justify-between gap-4"> <div class="flex items-center gap-2.5 mx-auto text-center flex-wrap justify-center"> <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-[#C9A15A]/20 text-[#C9A15A] border border-[#C9A15A]/30"> Spring Botanical Harvest </span> <span class="text-[#D5E2D1] hidden sm:inline"> Wild morels, wood-fired hearth lamb, and flowering elderflower pairings are now being served. </span> <span class="text-[#D5E2D1] sm:hidden">
+Spring botanical pairings are now live.
+</span> <a href="/reservation" class="inline-flex items-center gap-1 font-semibold text-[#C9A15A] hover:text-[#E2C285] underline underline-offset-4 transition-colors ml-1"> <span>Reserve Table</span> <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a> </div> <!-- Dismiss Button --> <button id="dismiss-announcement" type="button" class="text-[#A9C4A0] hover:text-white p-1 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-[#C9A15A]" aria-label="Dismiss announcement"> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path> </svg> </button> </div> </aside> <script type="module">const e=document.getElementById("announcement-bar"),s=document.getElementById("dismiss-announcement");try{sessionStorage.getItem("verdant-announcement-dismissed")==="true"&&e&&(e.style.display="none")}catch{}s?.addEventListener("click",()=>{if(e){e.style.maxHeight=`${e.offsetHeight}px`,e.style.overflow="hidden",requestAnimationFrame(()=>{e.style.transition="max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease",e.style.maxHeight="0px",e.style.opacity="0",e.style.paddingTop="0px",e.style.paddingBottom="0px",setTimeout(()=>{e.style.display="none"},300)});try{sessionStorage.setItem("verdant-announcement-dismissed","true")}catch{}}});</script> <header id="main-navbar" class="sticky top-0 z-40 w-full transition-all duration-300 backdrop-blur-md bg-[var(--bg-primary)]/90 border-b border-[var(--border-color)]"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4"> <!-- Brand Logo --> <a href="/" class="group flex items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-[#C9A15A] rounded-lg" aria-label="Verdant Hearth Home"> <div class="w-10 h-10 rounded-xl bg-[#0F2A1D] border border-[#C9A15A]/40 flex items-center justify-center text-[#C9A15A] group-hover:border-[#C9A15A] transition-colors shadow-sm"> <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"> <path d="M12 2C8 6 6 10 6 14C6 17.31 8.69 20 12 20C15.31 20 18 17.31 18 14C18 9 14 5 12 2Z" fill="#1F4D36" stroke="#C9A15A" stroke-width="1.5"></path> <path d="M12 18C10.5 18 9.5 16.8 9.5 15C9.5 13 11 11.5 12 10C13 11.5 14.5 13 14.5 15C14.5 16.8 13.5 18 12 18Z" fill="#C9A15A"></path> </svg> </div> <div> <span class="block font-serif text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)] leading-none"> Verdant Hearth </span> <span class="block text-[10px] uppercase tracking-[0.2em] font-medium text-[var(--accent-gold)] mt-0.5">
+Botanical & Hearth
+</span> </div> </a> <!-- Desktop Navigation Links (Real Multi-Page Routes) --> <nav class="hidden lg:flex items-center gap-6 xl:gap-7 text-sm font-medium" aria-label="Main Navigation"> <a href="/" class="relative py-1 transition-colors group text-[var(--text-muted)] hover:text-[var(--text-main)]"> Home <span class="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 w-0 group-hover:w-full"></span> </a><a href="/menu" class="relative py-1 transition-colors group text-[var(--text-muted)] hover:text-[var(--text-main)]"> Menu <span class="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 w-0 group-hover:w-full"></span> </a><a href="/about" class="relative py-1 transition-colors group text-[var(--text-muted)] hover:text-[var(--text-main)]"> About <span class="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 w-0 group-hover:w-full"></span> </a><a href="/gallery" class="relative py-1 transition-colors group text-[var(--text-muted)] hover:text-[var(--text-main)]"> Gallery <span class="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 w-0 group-hover:w-full"></span> </a><a href="/reservation" class="relative py-1 transition-colors group text-[var(--text-muted)] hover:text-[var(--text-main)]"> Reservation <span class="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 w-0 group-hover:w-full"></span> </a><a href="/contact" class="relative py-1 transition-colors group text-[var(--text-muted)] hover:text-[var(--text-main)]"> Contact <span class="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 w-0 group-hover:w-full"></span> </a><a href="/docs" class="relative py-1 transition-colors group text-[var(--text-main)] font-semibold"> Docs <span class="absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 w-full"></span> </a> </nav> <!-- Right Controls: Theme Toggle & Reserve CTA --> <div class="flex items-center gap-3"> <!-- Theme Toggle Button --> <button id="theme-toggle-btn" type="button" class="w-10 h-10 rounded-full flex items-center justify-center border border-[var(--border-color)] bg-[var(--bg-surface)] text-[var(--text-main)] hover:border-[var(--accent-gold)] transition-all duration-200 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-[#C9A15A]" aria-label="Toggle theme between light and dark"> <!-- Sun Icon (shown in dark mode) --> <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <circle cx="12" cy="12" r="5" stroke-width="2"></circle> <path stroke-linecap="round" stroke-width="2" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path> </svg> <!-- Moon Icon (shown in light mode) --> <svg id="theme-icon-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path> </svg> </button> <!-- Desktop Reserve CTA --> <a href="/reservation" class="hidden sm:inline-flex btn-gold text-xs sm:text-sm py-2 px-5 tracking-wide uppercase font-semibold"> <span>Reserve Table</span> <svg class="w-4 h-4 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path> </svg> </a> <!-- Mobile Hamburger Toggle --> <button id="mobile-menu-toggle" type="button" class="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center border border-[var(--border-color)] bg-[var(--bg-surface)] text-[var(--text-main)] hover:border-[var(--accent-gold)] transition-colors focus-visible:outline-2 focus-visible:outline-[#C9A15A]" aria-label="Toggle navigation drawer" aria-expanded="false" aria-controls="mobile-drawer"> <svg id="hamburger-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path> </svg> <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path> </svg> </button> </div> </div> <!-- Mobile Drawer Menu --> <div id="mobile-drawer" class="lg:hidden hidden border-b border-[var(--border-color)] bg-[var(--bg-surface)]/95 backdrop-blur-lg px-6 pt-4 pb-8 transition-all duration-300"> <nav class="flex flex-col gap-3" aria-label="Mobile Navigation"> <a href="/" class="mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between text-[var(--text-main)] hover:text-[var(--accent-gold)]"> <span>Home</span> <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a><a href="/menu" class="mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between text-[var(--text-main)] hover:text-[var(--accent-gold)]"> <span>Menu</span> <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a><a href="/about" class="mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between text-[var(--text-main)] hover:text-[var(--accent-gold)]"> <span>About</span> <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a><a href="/gallery" class="mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between text-[var(--text-main)] hover:text-[var(--accent-gold)]"> <span>Gallery</span> <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a><a href="/reservation" class="mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between text-[var(--text-main)] hover:text-[var(--accent-gold)]"> <span>Reservation</span> <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a><a href="/contact" class="mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between text-[var(--text-main)] hover:text-[var(--accent-gold)]"> <span>Contact</span> <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a><a href="/docs" class="mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between text-[var(--accent-gold)] font-bold"> <span>Docs</span> <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> </svg> </a> <div class="pt-4 flex flex-col gap-3"> <a href="/reservation" class="mobile-nav-link btn-gold w-full text-center py-3 text-sm tracking-wide uppercase font-semibold">
+Book Your Table
+</a> <div class="text-center text-xs text-[var(--text-muted)]"> +1 (503) 847-2910 · Portland </div> </div> </nav> </div> </header> <script type="module">const r=document.getElementById("theme-toggle-btn"),s=document.getElementById("theme-icon-sun"),c=document.getElementById("theme-icon-moon");function a(){document.documentElement.getAttribute("data-theme")==="dark"?(s?.classList.remove("hidden"),c?.classList.add("hidden")):(s?.classList.add("hidden"),c?.classList.remove("hidden"))}a();r?.addEventListener("click",()=>{const t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t),t==="dark"?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark");try{localStorage.setItem("verdant-theme",t)}catch{}a()});const l=document.getElementById("mobile-menu-toggle"),o=document.getElementById("mobile-drawer"),m=document.getElementById("hamburger-icon"),i=document.getElementById("close-icon"),u=document.querySelectorAll(".mobile-nav-link");let n=!1;function d(e){n=e,l?.setAttribute("aria-expanded",String(e)),e?(o?.classList.remove("hidden"),m?.classList.add("hidden"),i?.classList.remove("hidden")):(o?.classList.add("hidden"),m?.classList.remove("hidden"),i?.classList.add("hidden"))}l?.addEventListener("click",()=>{d(!n)});u.forEach(e=>{e.addEventListener("click",()=>{d(!1)})});document.addEventListener("keydown",e=>{e.key==="Escape"&&n&&d(!1)});</script> <main id="main-content"> <section class="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden bg-[#0A1B12] text-[#F6F1E7] border-b border-[#1E4631]"> <!-- Background Image with Dark Green Gradient Overlay --> <div class="absolute inset-0 z-0"> <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&#38;fit=crop&#38;w=1600&#38;q=80" alt="Master Manual &#38; Integration Guide" class="w-full h-full object-cover opacity-25 filter blur-[1px]" loading="eager" fetchpriority="high"> <div class="absolute inset-0 bg-gradient-to-t from-[#0A1B12] via-[#0A1B12]/80 to-[#0A1B12]/90"></div> </div> <!-- Decorative Hearth Glow --> <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[20rem] bg-[#C9A15A]/10 rounded-full blur-[120px] z-0" aria-hidden="true"></div> <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <!-- Breadcrumb Label --> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F4D36]/40 border border-[#C9A15A]/30 text-[#C9A15A] text-xs font-semibold tracking-wider uppercase mb-5"> <a href="/" class="hover:text-white transition-colors">Home</a> <span class="text-[#A9C4A0]/60">/</span> <span>Technical Documentation</span> </div> <!-- Title with Per-Word Reveal Animation --> <h1 class="reveal font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight"> Master Manual &amp; Integration Guide </h1> <!-- Description --> <p class="reveal text-base sm:text-lg text-[#A9C4A0] leading-relaxed max-w-2xl mx-auto"> A sales-quality, beginner-friendly reference for running, customizing, and connecting Verdant Hearth to Laravel or Next.js REST backends. </p> </div> </section> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24"> <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start"> <!-- Sticky Table of Contents (3 cols) --> <aside class="lg:col-span-3 lg:sticky lg:top-24 bg-[var(--bg-surface)] p-6 rounded-2xl border border-[var(--border-color)] shadow-sm"> <span class="text-xs uppercase tracking-widest font-bold text-[var(--accent-gold)] block mb-4">
+Documentation Index
+</span> <nav aria-label="Table of contents"> <ul class="space-y-2 text-xs"> <li> <a href="#overview" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 1. What This Website Is </a> </li><li> <a href="#quick-start" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 2. How to Run It (Local &amp; Git) </a> </li><li> <a href="#content-mapping" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 3. Content &amp; Image Customization </a> </li><li> <a href="#api-architecture" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 4. API Architecture &amp; Mapping </a> </li><li> <a href="#laravel-guide" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 5. Laravel Backend Integration </a> </li><li> <a href="#nextjs-guide" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 6. Next.js App Router Backend </a> </li><li> <a href="#theming-design" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 7. Theming, Font &amp; Animations </a> </li><li> <a href="#troubleshooting" class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"> 8. Troubleshooting &amp; FAQ </a> </li> </ul> </nav> </aside> <!-- Main Documentation Body (9 cols) --> <div class="lg:col-span-9 space-y-20 docs-prose"> <!-- Section 1: Overview (Sales-Quality Explanation) --> <section id="overview" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 1
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+1. What This Website Is & Who It Is For
+</h2> <div class="space-y-4 text-sm text-[var(--text-muted)] leading-relaxed"> <p> <strong>Verdant Hearth</strong> is a production-grade, multi-page restaurant and hospitality website template built on <strong>Astro 6, TypeScript (strict mode), and Tailwind CSS 4</strong>. It was designed from the ground up to solve the most painful challenges faced by independent fine-dining restaurants, farm-to-table bistros, wood-fired hearth eateries, artisanal bakeries, botanical cocktail bars, and the agencies or freelancers building sites for them.
+</p> <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6"> <div class="p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)]"> <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Why Restaurants Choose It</h3> <ul class="space-y-1.5 text-xs"> <li>✦ <strong>Blazing Fast:</strong> Static HTML output with zero client JavaScript runtime by default.</li> <li>✦ <strong>High Conversion:</strong> Sticky category filtering and instant frictionless online reservations.</li> <li>✦ <strong>Flawless Mobile:</strong> Engineered for iPhone & Android ergonomics with thumb-friendly controls.</li> <li>✦ <strong>Full SEO & Schema:</strong> Structured Schema.org Restaurant JSON-LD, OpenGraph, and auto sitemap.</li> <li>✦ <strong>Zero Font Requests:</strong> Self-hosted OFL typography—no external Google Fonts network calls.</li> </ul> </div> <div class="p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)]"> <h3 class="text-base font-bold text-[var(--text-main)] mb-2">How It Benefits the Business</h3> <ul class="space-y-1.5 text-xs"> <li>✦ <strong>More Direct Bookings:</strong> Reduces reliance on third-party portals charging per-cover fees.</li> <li>✦ <strong>Effortless Menu Updates:</strong> Change dishes in one typed file or connect any headless CMS.</li> <li>✦ <strong>Virtually Free Hosting:</strong> Deploys effortlessly to free-tier edge CDNs (Vercel, Netlify, Cloudflare).</li> <li>✦ <strong>100% Commercial Safety:</strong> Verified copyright-free photography and custom SVG staff avatars.</li> </ul> </div> </div> </div> </section> <!-- Section 2: How to Run It --> <section id="quick-start" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 2
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+2. How to Run It (Local PC & Git Deployment)
+</h2> <p class="text-sm text-[var(--text-muted)] mb-4">
+Two straightforward paths exist to install and run the template: locally on your development workstation or directly deployed from a GitHub repository to edge platforms.
+</p> <h3 class="text-lg font-bold text-[var(--text-main)] mb-3">Path A: Local PC (macOS, Windows, Linux)</h3> <pre><code># 1. Requirements: Node.js 18.17+ or 20+ (Check with: node -v)
+# 2. Extract or open directory
+cd nexora
+
+# 3. Install dependencies
+npm install
+
+# 4. Start local development server
+npm run dev
+# The website will launch at http://localhost:4321
+
+# 5. Type-check &amp; build production static assets
+npm run build
+
+# 6. Preview the production build locally
+npm run preview</code></pre> <h3 class="text-lg font-bold text-[var(--text-main)] mt-8 mb-3">Path B: Git & Edge Hosting (Vercel / Netlify)</h3> <pre><code># 1. Clone repository from GitHub
+git clone https://github.com/your-username/verdant-hearth-restaurant.git
+cd verdant-hearth-restaurant
+
+# 2. Install and verify build
+npm install
+npm run build
+
+# 3. One-Click Deploy to Vercel or Netlify
+# Push repository to GitHub, link repository in Vercel or Netlify dashboard.
+# Build command: npm run build
+# Output directory: dist
+# Environment variable: PUBLIC_API_BASE_URL (Optional, leave blank for demo mode)</code></pre> </section> <!-- Section 3: Content & Image Customization --> <section id="content-mapping" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 3
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+3. Content & Image Customization
+</h2> <p class="text-sm text-[var(--text-muted)] mb-4">
+All website content is cleanly separated from layout components. Use this quick reference to find the exact file you need:
+</p> <div class="overflow-x-auto rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] mb-6"> <table class="w-full text-xs text-left"> <thead class="bg-[var(--bg-surface-elevated)] border-b border-[var(--border-color)] text-[var(--text-main)] font-bold"> <tr> <th class="p-3.5">I want to change...</th> <th class="p-3.5">Open file</th> <th class="p-3.5">Exported Constant / Key</th> </tr> </thead> <tbody class="divide-y divide-[var(--border-color)] text-[var(--text-muted)]"> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Restaurant Name, Phone, Email, Hours, Rating</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">RESTAURANT_INFO</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Hero Rotating Looping Words</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">HERO_ROTATING_WORDS</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Menu Categories & Banner Images</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">MENU_CATEGORIES</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Full 36 Dishes, Slugs, Prices, Pairings</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">FULL_MENU</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Spring Harvest Section (Farms, Ingredients)</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">SEASONAL_HARVEST</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Why Dine Pillars & Detail Page Stories</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">WHY_DINE_REASONS</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Artisans of Flame & Earth Profiles</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">ARTISANS</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Critic & Guest Reviews</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">REVIEWS</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">FAQ Questions & Answers</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td> <td class="p-3 font-mono">FAQS</td> </tr> <tr> <td class="p-3 font-medium text-[var(--text-main)]">Photographic URLs & Image Credits</td> <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/images.ts</td> <td class="p-3 font-mono">IMAGES, CREDITS.md</td> </tr> </tbody> </table> </div> <pre><code>File: src/data/restaurant.ts
+- Restaurant Info: RESTAURANT_INFO (name, address, phone, email, hours, rating)
+- Hero Looping Words: HERO_ROTATING_WORDS ([&#39;Savor&#39;, &#39;Gather&#39;, &#39;Celebrate&#39;, ...])
+- Full Menu Dishes: FULL_MENU (36 dishes with slug, prices, tags, ingredients, pairings)
+- Menu Categories: MENU_CATEGORIES (Starters, Mains, Seasonal, Desserts, Drinks, Brunch)
+- Seasonal Harvest: SEASONAL_HARVEST (season dates, farms narrative, ingredient strip)
+- Why Dine Stories: WHY_DINE_REASONS (4 pillars with full stories, metrics, galleries)
+- Artisans Profiles: ARTISANS (6 artisan profiles with SVG avatars, crafts, quotes)
+- Guest Reviews: REVIEWS (6 critic and guest reviews)
+- FAQ Accordion: FAQS (12 questions &amp; answers covering reservations and dining)
+
+File: src/data/images.ts
+- Central photographic registry (all verified Unsplash asset URLs)
+
+File: CREDITS.md
+- Full license, photographer credits, and OFL typography declarations</code></pre> </section> <!-- Section 4: API Connection Architecture & Mapping Table --> <section id="api-architecture" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 4
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+4. API Architecture & Section Mapping Table
+</h2> <p class="text-sm text-[var(--text-muted)] mb-4">
+Verdant Hearth uses a transparent two-tier data architecture:
+</p> <ul class="space-y-2 text-xs text-[var(--text-muted)] mb-6"> <li>1. <strong>Without API (Demo Mode):</strong> If <code>PUBLIC_API_BASE_URL</code> is omitted, all queries and form submissions fall back gracefully to local typed mock data in <code>src/data/restaurant.ts</code>.</li> <li>2. <strong>With API Connected:</strong> Once <code>PUBLIC_API_BASE_URL</code> is defined, <code>src/lib/data.ts</code> and <code>src/lib/api.ts</code> route requests to your live REST backend.</li> <li>3. <strong>Static Build vs. Live Submissions:</strong> Content like menu dishes, artisan profiles, and stories are rendered at static build time. When menu data changes in your backend database, trigger a webhook rebuild on your host (e.g., Vercel Deploy Hook). Interactive forms (Reservations, Contact, Newsletter) submit live <code>POST</code> requests via client fetch directly to your API.</li> </ul> <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Connecting Your Live Backend via Environment Variable</h3> <pre><code># In .env (create by copying .env.example)
+PUBLIC_API_BASE_URL=https://api.yourrestaurant.com/api/v1</code></pre> <h3 class="text-lg font-bold text-[var(--text-main)] mt-6 mb-3">Complete Mapping Table: Website Section → API Endpoint</h3> <pre><code>Website Section        | API Endpoint          | Astro Service Function  | Static Fallback File
+-----------------------|-----------------------|-------------------------|--------------------------
+Hero Content           | GET  /hero            | getHeroData()           | RESTAURANT_INFO
+Menu Categories        | GET  /menu-categories | getMenuCategories()     | MENU_CATEGORIES
+Dishes (List &amp; Filter) | GET  /menu?category=  | getMenu(category)       | FULL_MENU
+Dish Detail Page       | GET  /menu/{slug}     | getMenuItemBySlug(slug) | FULL_MENU.find(...)
+Seasonal Harvest       | GET  /seasonal-harvest| getSeasonalHarvest()    | SEASONAL_HARVEST
+Why Dine Reasons       | GET  /why-dine        | getWhyDineReasons()     | WHY_DINE_REASONS
+Why Dine Detail Page   | GET  /why-dine/{slug} | getWhyDineBySlug(slug)  | WHY_DINE_REASONS.find(...)
+Artisans Profiles      | GET  /artisans        | getArtisans()           | ARTISANS
+Artisan Detail Page    | GET  /artisans/{slug} | getArtisanBySlug(slug)  | ARTISANS.find(...)
+Guest Reviews          | GET  /reviews         | getReviews()            | REVIEWS
+Table Reservation Form | POST /reservations    | createReservation(data) | Simulated Booking Preview
+Contact Message Form   | POST /contact         | sendContactMessage(data)| Simulated Message Preview
+Newsletter Signup Form | POST /newsletter      | joinNewsletter(data)    | Simulated Signup Preview</code></pre> </section> <!-- Section 5: Laravel REST Backend Guide --> <section id="laravel-guide" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 5
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+5. Laravel 11/12 REST Backend Integration Guide
+</h2> <p class="text-sm text-[var(--text-muted)] mb-4 leading-relaxed">
+Below is the complete, tested Laravel pipeline covering database migrations, Eloquent models, form request validation, API Resources, and route registration for all restaurant endpoints.
+</p> <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Step 1: Database Migration (All Tables)</h3> <pre><code>// database/migrations/2025_01_01_000000_create_restaurant_tables.php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        // 1. Dishes table
+        Schema::create(&#39;dishes&#39;, function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;string(&#39;slug&#39;)-&gt;unique();
+            $table-&gt;string(&#39;name&#39;);
+            $table-&gt;enum(&#39;category&#39;, [&#39;starters&#39;, &#39;mains&#39;, &#39;seasonal&#39;, &#39;desserts&#39;, &#39;drinks&#39;, &#39;brunch&#39;]);
+            $table-&gt;decimal(&#39;price&#39;, 8, 2);
+            $table-&gt;text(&#39;short_description&#39;);
+            $table-&gt;longText(&#39;long_description&#39;);
+            $table-&gt;json(&#39;dietary&#39;); // [&#39;GF&#39;, &#39;VG&#39;, &#39;CHEF&#39;]
+            $table-&gt;json(&#39;ingredients&#39;);
+            $table-&gt;json(&#39;allergens&#39;);
+            $table-&gt;string(&#39;cooking_method&#39;);
+            $table-&gt;string(&#39;pairing&#39;)-&gt;nullable();
+            $table-&gt;string(&#39;nutrition_note&#39;)-&gt;nullable();
+            $table-&gt;string(&#39;image&#39;);
+            $table-&gt;json(&#39;gallery&#39;)-&gt;nullable();
+            $table-&gt;boolean(&#39;highlight&#39;)-&gt;default(false);
+            $table-&gt;boolean(&#39;seasonal&#39;)-&gt;default(false);
+            $table-&gt;boolean(&#39;chef_pick&#39;)-&gt;default(false);
+            $table-&gt;timestamps();
+        });
+
+        // 2. Reservations table
+        Schema::create(&#39;reservations&#39;, function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;string(&#39;confirmation_code&#39;)-&gt;unique();
+            $table-&gt;string(&#39;name&#39;);
+            $table-&gt;string(&#39;email&#39;);
+            $table-&gt;string(&#39;phone&#39;);
+            $table-&gt;date(&#39;date&#39;);
+            $table-&gt;string(&#39;time&#39;);
+            $table-&gt;integer(&#39;guests&#39;);
+            $table-&gt;enum(&#39;seating&#39;, [&#39;main&#39;, &#39;counter&#39;, &#39;patio&#39;, &#39;private&#39;]);
+            $table-&gt;text(&#39;notes&#39;)-&gt;nullable();
+            $table-&gt;enum(&#39;status&#39;, [&#39;confirmed&#39;, &#39;pending&#39;, &#39;cancelled&#39;])-&gt;default(&#39;confirmed&#39;);
+            $table-&gt;timestamps();
+        });
+
+        // 3. Contact Messages table
+        Schema::create(&#39;contact_messages&#39;, function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;string(&#39;name&#39;);
+            $table-&gt;string(&#39;email&#39;);
+            $table-&gt;string(&#39;phone&#39;)-&gt;nullable();
+            $table-&gt;string(&#39;subject&#39;);
+            $table-&gt;text(&#39;message&#39;);
+            $table-&gt;timestamps();
+        });
+
+        // 4. Newsletter Subscribers table
+        Schema::create(&#39;newsletter_subscribers&#39;, function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;string(&#39;email&#39;)-&gt;unique();
+            $table-&gt;json(&#39;preferences&#39;)-&gt;nullable();
+            $table-&gt;timestamps();
+        });
+    }
+
+    public function down(): void {
+        Schema::dropIfExists(&#39;newsletter_subscribers&#39;);
+        Schema::dropIfExists(&#39;contact_messages&#39;);
+        Schema::dropIfExists(&#39;reservations&#39;);
+        Schema::dropIfExists(&#39;dishes&#39;);
+    }
+};</code></pre> <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 2: Table Reservation Store Controller</h3> <pre><code>// app/Http/Controllers/Api/V1/ReservationController.php
+namespace App\Http\Controllers\Api\V1;
+
+use App\Http\Controllers\Controller;
+use App\Models\Reservation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+class ReservationController extends Controller {
+    public function store(Request $request) {
+        $validated = $request-&gt;validate([
+            &#39;name&#39; =&gt; &#39;required|string|max:100&#39;,
+            &#39;email&#39; =&gt; &#39;required|email|max:150&#39;,
+            &#39;phone&#39; =&gt; &#39;required|string|max:30&#39;,
+            &#39;date&#39; =&gt; &#39;required|date|after_or_equal:today&#39;,
+            &#39;time&#39; =&gt; &#39;required|string&#39;,
+            &#39;guests&#39; =&gt; &#39;required|integer|min:1|max:20&#39;,
+            &#39;seating&#39; =&gt; &#39;required|in:main,counter,patio,private&#39;,
+            &#39;notes&#39; =&gt; &#39;nullable|string|max:500&#39;
+        ]);
+
+        $code = &#39;VH-&#39; . strtoupper(Str::random(6));
+
+        $reservation = Reservation::create([
+            ...$validated,
+            &#39;confirmation_code&#39; =&gt; $code,
+            &#39;status&#39; =&gt; &#39;confirmed&#39;
+        ]);
+
+        return response()-&gt;json([
+            &#39;success&#39; =&gt; true,
+            &#39;confirmationCode&#39; =&gt; $code,
+            &#39;message&#39; =&gt; &#39;Table reservation confirmed successfully.&#39;,
+            &#39;reservation&#39; =&gt; $reservation
+        ], 201);
+    }
+}</code></pre> <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 3: Dish API Resource (Formats JSON to Match Astro TypeScript Types)</h3> <pre><code>// app/Http/Resources/DishResource.php
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class DishResource extends JsonResource {
+    public function toArray(Request $request): array {
+        return [
+            &#39;id&#39; =&gt; (string) $this-&gt;id,
+            &#39;slug&#39; =&gt; $this-&gt;slug,
+            &#39;name&#39; =&gt; $this-&gt;name,
+            &#39;category&#39; =&gt; $this-&gt;category,
+            &#39;price&#39; =&gt; (float) $this-&gt;price,
+            &#39;shortDescription&#39; =&gt; $this-&gt;short_description,
+            &#39;longDescription&#39; =&gt; $this-&gt;long_description,
+            &#39;dietary&#39; =&gt; $this-&gt;dietary,
+            &#39;ingredients&#39; =&gt; $this-&gt;ingredients,
+            &#39;allergens&#39; =&gt; $this-&gt;allergens,
+            &#39;cookingMethod&#39; =&gt; $this-&gt;cooking_method,
+            &#39;pairing&#39; =&gt; $this-&gt;pairing,
+            &#39;nutritionNote&#39; =&gt; $this-&gt;nutrition_note,
+            &#39;image&#39; =&gt; $this-&gt;image,
+            &#39;gallery&#39; =&gt; $this-&gt;gallery ?? [],
+            &#39;highlight&#39; =&gt; (bool) $this-&gt;highlight,
+            &#39;seasonal&#39; =&gt; (bool) $this-&gt;seasonal,
+            &#39;chefPick&#39; =&gt; (bool) $this-&gt;chef_pick
+        ];
+    }
+}</code></pre> <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 4: Dish Query Controller (List & Detail by Slug)</h3> <pre><code>// app/Http/Controllers/Api/V1/DishController.php
+namespace App\Http\Controllers\Api\V1;
+
+use App\Http\Controllers\Controller;
+use App\Models\Dish;
+use App\Http\Resources\DishResource;
+use Illuminate\Http\Request;
+
+class DishController extends Controller {
+    public function index(Request $request) {
+        $query = Dish::query();
+        if ($request-&gt;has(&#39;category&#39;)) {
+            $query-&gt;where(&#39;category&#39;, $request-&gt;query(&#39;category&#39;));
+        }
+        return DishResource::collection($query-&gt;get());
+    }
+
+    public function show(string $slug) {
+        $dish = Dish::where(&#39;slug&#39;, $slug)-&gt;firstOrFail();
+        return new DishResource($dish);
+    }
+}</code></pre> <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 5: API Routes Registration (routes/api.php)</h3> <pre><code>// routes/api.php
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\DishController;
+use App\Http\Controllers\Api\V1\ReservationController;
+use App\Http\Controllers\Api\V1\ContactController;
+use App\Http\Controllers\Api\V1\NewsletterController;
+
+Route::prefix(&#39;v1&#39;)-&gt;group(function () {
+    Route::get(&#39;/menu&#39;, [DishController::class, &#39;index&#39;]);
+    Route::get(&#39;/menu/{slug}&#39;, [DishController::class, &#39;show&#39;]);
+    Route::post(&#39;/reservations&#39;, [ReservationController::class, &#39;store&#39;]);
+    Route::post(&#39;/contact&#39;, [ContactController::class, &#39;store&#39;]);
+    Route::post(&#39;/newsletter&#39;, [NewsletterController::class, &#39;store&#39;]);
+});</code></pre> <div class="p-4 rounded-xl bg-[var(--bg-surface)] border-l-4 border-emerald-500 my-6 text-xs text-[var(--text-muted)] space-y-1"> <strong class="text-[var(--text-main)] block">CORS Configuration:</strong> <p>In your Laravel <code>config/cors.php</code>, ensure <code>'paths' => ['api/*', 'sanctum/csrf-cookie']</code> and <code>'allowed_origins' => ['http://localhost:4321', 'https://yourdomain.com']</code> are configured to allow browser preflight requests.</p> </div> </section> <!-- Section 6: Next.js App Router Backend Guide --> <section id="nextjs-guide" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 6
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+6. Next.js (App Router) & Prisma Backend Guide
+</h2> <p class="text-sm text-[var(--text-muted)] mb-4">
+If your backend is built on Next.js with the App Router, use Prisma ORM and Route Handlers (<code>app/api/v1/.../route.ts</code>):
+</p> <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Step 1: Prisma Schema</h3> <pre><code>// prisma/schema.prisma
+datasource db {
+  provider = &quot;postgresql&quot;
+  url      = env(&quot;DATABASE_URL&quot;)
+}
+
+generator client {
+  provider = &quot;prisma-client-js&quot;
+}
+
+model Dish {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  name             String
+  category         String   // starters, mains, seasonal, desserts, drinks, brunch
+  price            Float
+  shortDescription String
+  longDescription  String
+  dietary          String[]
+  ingredients      String[]
+  allergens        String[]
+  cookingMethod    String
+  pairing          String?
+  nutritionNote    String?
+  image            String
+  gallery          String[]
+  highlight        Boolean  @default(false)
+  seasonal         Boolean  @default(false)
+  chefPick         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+}
+
+model Reservation {
+  id               String   @id @default(cuid())
+  confirmationCode String   @unique
+  name             String
+  email            String
+  phone            String
+  date             DateTime
+  time             String
+  guests           Int
+  seating          String
+  notes            String?
+  status           String   @default(&quot;confirmed&quot;)
+  createdAt        DateTime @default(now())
+}</code></pre> <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 2: Reservation Route Handler (app/api/v1/reservations/route.ts)</h3> <pre><code>// app/api/v1/reservations/route.ts
+import { NextResponse } from &#39;next/server&#39;;
+import { prisma } from &#39;@/lib/prisma&#39;;
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { name, email, phone, date, time, guests, seating, notes } = body;
+
+    if (!name || !email || !phone || !date || !time || !guests || !seating) {
+      return NextResponse.json(
+        { message: &#39;Validation failed&#39;, errors: { form: [&#39;All required fields must be supplied.&#39;] } },
+        { status: 422 }
+      );
+    }
+
+    const confirmationCode = &#39;VH-&#39; + Math.floor(100000 + Math.random() * 900000);
+
+    const reservation = await prisma.reservation.create({
+      data: {
+        confirmationCode,
+        name,
+        email,
+        phone,
+        date: new Date(date),
+        time,
+        guests: parseInt(guests, 10),
+        seating,
+        notes: notes || null
+      }
+    });
+
+    return NextResponse.json({
+      success: true,
+      confirmationCode,
+      message: &#39;Reservation created successfully.&#39;,
+      reservation
+    }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: &#39;Internal server error&#39; }, { status: 500 });
+  }
+}</code></pre> </section> <!-- Section 7: Theming, Single Font & Animations --> <section id="theming-design" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 7
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+7. Theming, Single Font & Motion Architecture
+</h2> <div class="space-y-4 text-sm text-[var(--text-muted)] leading-relaxed"> <h3 class="text-base font-bold text-[var(--text-main)]">Self-Hosted Single Font</h3> <p>
+In strict conformance with template marketplace standards, Verdant Hearth uses <strong>one single font family</strong> (<em>Plus Jakarta Sans</em>) across headings, body, buttons, navigation, and documentation. Typography hierarchy is achieved through weight (from 400 to 800) and letter-spacing, eliminating dual-font visual clutter.
+</p> <pre><code>/* In src/styles/global.css - Single Font System Across Entire Website */
+@import &quot;@fontsource-variable/plus-jakarta-sans&quot;;
+@import &quot;tailwindcss&quot;;
+
+@theme {
+  /* One single font family for headings, body, buttons, and navigation */
+  --font-sans: &#39;Plus Jakarta Sans Variable&#39;, system-ui, -apple-system, sans-serif;
+  --font-serif: &#39;Plus Jakarta Sans Variable&#39;, system-ui, -apple-system, sans-serif;
+}</code></pre> <h3 class="text-base font-bold text-[var(--text-main)] mt-6">Reduced Motion & Accessibility</h3> <p>
+All CSS transitions and JavaScript intervals respect the user's operating system preferences. Under <code>prefers-reduced-motion: reduce</code>, rotation loops and parallax floating are cleanly disabled, ensuring all content remains instantly visible and accessible.
+</p> </div> </section> <!-- Section 8: Troubleshooting & FAQ --> <section id="troubleshooting" class="scroll-mt-28"> <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+Section 8
+</div> <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+8. Troubleshooting & Frequently Asked Questions
+</h2> <div class="space-y-4"> <div class="card-clean p-6"> <h3 class="font-bold text-sm text-[var(--text-main)] mb-2">
+Q: Why do forms work even when no API is configured?
+</h3> <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+This is by design. In static demo mode (when <code>PUBLIC_API_BASE_URL</code> is empty), all forms gracefully simulate successful submissions and generate confirmation codes so commercial buyers can test the complete user experience out of the box.
+</p> </div> <div class="card-clean p-6"> <h3 class="font-bold text-sm text-[var(--text-main)] mb-2">
+Q: I get a CORS error when submitting reservations from localhost.
+</h3> <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+Ensure your backend includes <code>http://localhost:4321</code> in its allowed CORS origins (e.g., in Laravel's <code>config/cors.php</code> or Next.js CORS headers).
+</p> </div> <div class="card-clean p-6"> <h3 class="font-bold text-sm text-[var(--text-main)] mb-2">
+Q: How do I change the website accent colors?
+</h3> <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+Open <code>src/styles/global.css</code> and update the CSS variables <code>--accent-gold</code>, <code>--brand-forest</code>, and <code>--accent-sage</code>. Both light and dark theme palettes will adapt automatically.
+</p> </div> </div> </section> </div> </div> </div> <section id="final-cta" class="py-24 lg:py-32 bg-gradient-to-b from-[#0F2A1D] via-[#0A1B12] to-[#07130D] text-[#F6F1E7] relative overflow-hidden border-b border-[#1E4631]" aria-labelledby="cta-heading"> <!-- Hearth Fire Background Radial Glow --> <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[46rem] h-[30rem] bg-[#C9A15A]/15 rounded-full blur-[140px]" aria-hidden="true"></div> <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center"> <!-- Seal Icon --> <div class="reveal w-16 h-16 rounded-full bg-[#1F4D36]/40 border border-[#C9A15A]/50 flex items-center justify-center text-[#C9A15A] mx-auto mb-6 shadow-lg"> <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor"> <path d="M12 2C8 6 6 10 6 14C6 17.31 8.69 20 12 20C15.31 20 18 17.31 18 14C18 9 14 5 12 2Z" fill="#1F4D36" stroke="#C9A15A" stroke-width="1.5"></path> <path d="M12 18C10.5 18 9.5 16.8 9.5 15C9.5 13 11 11.5 12 10C13 11.5 14.5 13 14.5 15C14.5 16.8 13.5 18 12 18Z" fill="#C9A15A"></path> </svg> </div> <span class="reveal text-xs uppercase tracking-widest font-semibold text-[#C9A15A] block mb-3">
+Experience Live-Fire Culinary Art
+</span> <h2 id="cta-heading" class="reveal font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight mb-6">
+Your Table at the Hearth Awaits
+</h2> <p class="reveal text-base sm:text-lg text-[#A9C4A0] max-w-2xl mx-auto leading-relaxed mb-10">
+Whether an intimate celebration, a curious palate seeking natural wines, or a spontaneous evening by our live wood embers—we welcome you to gather with us.
+</p> <!-- CTAs --> <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4"> <a href="/reservation" class="btn-gold text-xs sm:text-sm uppercase tracking-wider font-semibold py-4 px-9 shadow-xl w-full sm:w-auto text-center"> <span>Reserve Your Table Online</span> <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path> </svg> </a> <a href="tel:+1 (503) 847-2910" class="btn-outline-gold text-xs sm:text-sm uppercase tracking-wider font-semibold py-4 px-9 w-full sm:w-auto text-center"> <span>Direct Telephone: +1 (503) 847-2910</span> </a> </div> <!-- Opening Notice --> <p class="reveal text-xs text-[#A9C4A0]/60 mt-10">
+Dinner service Tuesday – Sunday · Walk-in bar seating available nightly without reservation
+</p> </div> </section> </main> <footer class="bg-[#07130D] text-[#F6F1E7] border-t border-[#1E4631] pt-16 pb-12 text-sm relative"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-[#1E4631]/80"> <!-- Brand & Mission Column --> <div class="lg:col-span-5 flex flex-col justify-between"> <div> <div class="flex items-center gap-3 mb-4"> <div class="w-10 h-10 rounded-xl bg-[#0F2A1D] border border-[#C9A15A]/40 flex items-center justify-center text-[#C9A15A]"> <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"> <path d="M12 2C8 6 6 10 6 14C6 17.31 8.69 20 12 20C15.31 20 18 17.31 18 14C18 9 14 5 12 2Z" fill="#1F4D36" stroke="#C9A15A" stroke-width="1.5"></path> <path d="M12 18C10.5 18 9.5 16.8 9.5 15C9.5 13 11 11.5 12 10C13 11.5 14.5 13 14.5 15C14.5 16.8 13.5 18 12 18Z" fill="#C9A15A"></path> </svg> </div> <div> <span class="block font-serif text-2xl font-bold tracking-tight text-white leading-none"> Verdant Hearth </span> <span class="block text-[10px] uppercase tracking-[0.2em] font-medium text-[#C9A15A] mt-0.5">
+Wood-Fired & Botanical
+</span> </div> </div> <p class="text-xs sm:text-sm text-[#A9C4A0] leading-relaxed max-w-sm mb-6">
+An award-winning sanctuary devoted to live-fire cooking, biodynamic botanicals, and low-intervention natural wines.
+</p> <!-- Address & Contact --> <div class="text-xs text-[#D5E2D1] space-y-1"> <p>428 Botanical Way, Hearth Quarter, Portland, OR 97201</p> <p>Hotline: <a href="tel:+1 (503) 847-2910" class="text-[#C9A15A] hover:underline">+1 (503) 847-2910</a></p> <p>Concierge: <a href="mailto:concierge@verdanthearth.com" class="text-[#C9A15A] hover:underline">concierge@verdanthearth.com</a></p> </div> </div> </div> <!-- Quick Links Sitemap --> <div class="lg:col-span-3"> <h3 class="font-serif text-base font-bold text-white mb-4 uppercase tracking-wider text-xs">
+Explore Sanctuary
+</h3> <ul class="space-y-2.5 text-xs text-[#A9C4A0]"> <li> <a href="/" class="hover:text-[#C9A15A] transition-colors flex items-center gap-1.5"> <span class="text-[#C9A15A]/60">›</span> <span>Home</span> </a> </li><li> <a href="/menu" class="hover:text-[#C9A15A] transition-colors flex items-center gap-1.5"> <span class="text-[#C9A15A]/60">›</span> <span>Menu</span> </a> </li><li> <a href="/about" class="hover:text-[#C9A15A] transition-colors flex items-center gap-1.5"> <span class="text-[#C9A15A]/60">›</span> <span>About</span> </a> </li><li> <a href="/gallery" class="hover:text-[#C9A15A] transition-colors flex items-center gap-1.5"> <span class="text-[#C9A15A]/60">›</span> <span>Gallery</span> </a> </li><li> <a href="/reservation" class="hover:text-[#C9A15A] transition-colors flex items-center gap-1.5"> <span class="text-[#C9A15A]/60">›</span> <span>Reservation</span> </a> </li><li> <a href="/contact" class="hover:text-[#C9A15A] transition-colors flex items-center gap-1.5"> <span class="text-[#C9A15A]/60">›</span> <span>Contact</span> </a> </li><li> <a href="/docs" class="hover:text-[#C9A15A] transition-colors flex items-center gap-1.5"> <span class="text-[#C9A15A]/60">›</span> <span>Docs</span> </a> </li> <li> <a href="/reservation" class="text-[#C9A15A] font-semibold hover:underline flex items-center gap-1.5"> <span>›</span> <span>Online Reservations</span> </a> </li> </ul> </div> <!-- Hours Summary & Social --> <div class="lg:col-span-4"> <h3 class="font-serif text-base font-bold text-white mb-4 uppercase tracking-wider text-xs">
+Service Hours
+</h3> <div class="space-y-2 text-xs text-[#A9C4A0] mb-6"> <p><strong class="text-white">Mon – Wed:</strong> 5:00 PM – 10:00 PM</p> <p><strong class="text-white">Thu – Fri:</strong> 5:00 PM – 11:30 PM (Late Bar)</p> <p><strong class="text-white">Saturday:</strong> 10:30 AM – 11:30 PM</p> <p><strong class="text-white">Sunday:</strong> 11:00 AM – 9:00 PM</p> </div> <h4 class="text-xs uppercase tracking-wider font-bold text-white mb-2">
+Connect
+</h4> <div class="flex items-center gap-3 text-xs text-[#C9A15A]"> <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+Instagram
+</a> <span class="text-[#1E4631]">·</span> <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+Facebook
+</a> <span class="text-[#1E4631]">·</span> <a href="https://opentable.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+OpenTable
+</a> </div> </div> </div> <!-- Bottom Bar: Dynamic Year, Disclaimer, Back to Top --> <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A9C4A0]"> <div class="text-center sm:text-left"> <p>© 2026 Verdant Hearth. All rights reserved.</p> <p class="text-[11px] opacity-60 mt-1">
+Sample content for demonstration.
+</p> </div> <!-- Back to Top Button --> <button id="back-to-top-btn" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#1E4631] bg-[#0F2A1D] text-[#C9A15A] hover:bg-[#1F4D36] hover:text-white transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[#C9A15A]" aria-label="Scroll to top of page"> <span>Back to Top</span> <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path> </svg> </button> </div> </div> </footer> <script type="module">const o=document.getElementById("back-to-top-btn");o?.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})});</script>  <!-- Animation & Lifecycle Trigger Script --> <script type="module">function s(){document.documentElement.classList.add("js-loaded");const n=new IntersectionObserver(t=>{t.forEach(e=>{e.isIntersecting&&(e.target.classList.add("in"),n.unobserve(e.target))})},{threshold:.12,rootMargin:"0px 0px -40px 0px"});document.querySelectorAll(".reveal, .reveal-fade").forEach((t,e)=>{const a=t;a.style.transitionDelay||(a.style.transitionDelay=`${e%4*90}ms`),n.observe(t)})}window.addEventListener("DOMContentLoaded",s);document.addEventListener("astro:page-load",s);</script> </body> </html>

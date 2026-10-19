@@ -1,0 +1,702 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Navbar from '../components/Navbar.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import { IMAGES } from '../data/images';
+
+const docNav = [
+  { id: 'overview', title: '1. What This Website Is' },
+  { id: 'quick-start', title: '2. How to Run It (Local & Git)' },
+  { id: 'content-mapping', title: '3. Content & Image Customization' },
+  { id: 'api-architecture', title: '4. API Architecture & Mapping' },
+  { id: 'laravel-guide', title: '5. Laravel Backend Integration' },
+  { id: 'nextjs-guide', title: '6. Next.js App Router Backend' },
+  { id: 'theming-design', title: '7. Theming, Font & Animations' },
+  { id: 'troubleshooting', title: '8. Troubleshooting & FAQ' }
+] as const;
+
+// Code Snippets in frontmatter strings to prevent Astro JSX brace parsing issues
+const localRunSnippet = `# 1. Requirements: Node.js 18.17+ or 20+ (Check with: node -v)
+# 2. Extract or open directory
+cd nexora
+
+# 3. Install dependencies
+npm install
+
+# 4. Start local development server
+npm run dev
+# The website will launch at http://localhost:4321
+
+# 5. Type-check & build production static assets
+npm run build
+
+# 6. Preview the production build locally
+npm run preview`;
+
+const gitDeploySnippet = `# 1. Clone repository from GitHub
+git clone https://github.com/your-username/verdant-hearth-restaurant.git
+cd verdant-hearth-restaurant
+
+# 2. Install and verify build
+npm install
+npm run build
+
+# 3. One-Click Deploy to Vercel or Netlify
+# Push repository to GitHub, link repository in Vercel or Netlify dashboard.
+# Build command: npm run build
+# Output directory: dist
+# Environment variable: PUBLIC_API_BASE_URL (Optional, leave blank for demo mode)`;
+
+const contentTableSnippet = `File: src/data/restaurant.ts
+- Restaurant Info: RESTAURANT_INFO (name, address, phone, email, hours, rating)
+- Hero Looping Words: HERO_ROTATING_WORDS (['Savor', 'Gather', 'Celebrate', ...])
+- Full Menu Dishes: FULL_MENU (36 dishes with slug, prices, tags, ingredients, pairings)
+- Menu Categories: MENU_CATEGORIES (Starters, Mains, Seasonal, Desserts, Drinks, Brunch)
+- Seasonal Harvest: SEASONAL_HARVEST (season dates, farms narrative, ingredient strip)
+- Why Dine Stories: WHY_DINE_REASONS (4 pillars with full stories, metrics, galleries)
+- Artisans Profiles: ARTISANS (6 artisan profiles with SVG avatars, crafts, quotes)
+- Guest Reviews: REVIEWS (6 critic and guest reviews)
+- FAQ Accordion: FAQS (12 questions & answers covering reservations and dining)
+
+File: src/data/images.ts
+- Central photographic registry (all verified Unsplash asset URLs)
+
+File: CREDITS.md
+- Full license, photographer credits, and OFL typography declarations`;
+
+const fontSetupSnippet = `/* In src/styles/global.css - Single Font System Across Entire Website */
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "tailwindcss";
+
+@theme {
+  /* One single font family for headings, body, buttons, and navigation */
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Plus Jakarta Sans Variable', system-ui, -apple-system, sans-serif;
+}`;
+
+const apiEnvSnippet = `# In .env (create by copying .env.example)
+PUBLIC_API_BASE_URL=https://api.yourrestaurant.com/api/v1`;
+
+const mappingTableSnippet = `Website Section        | API Endpoint          | Astro Service Function  | Static Fallback File
+-----------------------|-----------------------|-------------------------|--------------------------
+Hero Content           | GET  /hero            | getHeroData()           | RESTAURANT_INFO
+Menu Categories        | GET  /menu-categories | getMenuCategories()     | MENU_CATEGORIES
+Dishes (List & Filter) | GET  /menu?category=  | getMenu(category)       | FULL_MENU
+Dish Detail Page       | GET  /menu/{slug}     | getMenuItemBySlug(slug) | FULL_MENU.find(...)
+Seasonal Harvest       | GET  /seasonal-harvest| getSeasonalHarvest()    | SEASONAL_HARVEST
+Why Dine Reasons       | GET  /why-dine        | getWhyDineReasons()     | WHY_DINE_REASONS
+Why Dine Detail Page   | GET  /why-dine/{slug} | getWhyDineBySlug(slug)  | WHY_DINE_REASONS.find(...)
+Artisans Profiles      | GET  /artisans        | getArtisans()           | ARTISANS
+Artisan Detail Page    | GET  /artisans/{slug} | getArtisanBySlug(slug)  | ARTISANS.find(...)
+Guest Reviews          | GET  /reviews         | getReviews()            | REVIEWS
+Table Reservation Form | POST /reservations    | createReservation(data) | Simulated Booking Preview
+Contact Message Form   | POST /contact         | sendContactMessage(data)| Simulated Message Preview
+Newsletter Signup Form | POST /newsletter      | joinNewsletter(data)    | Simulated Signup Preview`;
+
+const laravelMigrationSnippet = `// database/migrations/2025_01_01_000000_create_restaurant_tables.php
+use Illuminate\\Database\\Migrations\\Migration;
+use Illuminate\\Database\\Schema\\Blueprint;
+use Illuminate\\Support\\Facades\\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        // 1. Dishes table
+        Schema::create('dishes', function (Blueprint $table) {
+            $table->id();
+            $table->string('slug')->unique();
+            $table->string('name');
+            $table->enum('category', ['starters', 'mains', 'seasonal', 'desserts', 'drinks', 'brunch']);
+            $table->decimal('price', 8, 2);
+            $table->text('short_description');
+            $table->longText('long_description');
+            $table->json('dietary'); // ['GF', 'VG', 'CHEF']
+            $table->json('ingredients');
+            $table->json('allergens');
+            $table->string('cooking_method');
+            $table->string('pairing')->nullable();
+            $table->string('nutrition_note')->nullable();
+            $table->string('image');
+            $table->json('gallery')->nullable();
+            $table->boolean('highlight')->default(false);
+            $table->boolean('seasonal')->default(false);
+            $table->boolean('chef_pick')->default(false);
+            $table->timestamps();
+        });
+
+        // 2. Reservations table
+        Schema::create('reservations', function (Blueprint $table) {
+            $table->id();
+            $table->string('confirmation_code')->unique();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->date('date');
+            $table->string('time');
+            $table->integer('guests');
+            $table->enum('seating', ['main', 'counter', 'patio', 'private']);
+            $table->text('notes')->nullable();
+            $table->enum('status', ['confirmed', 'pending', 'cancelled'])->default('confirmed');
+            $table->timestamps();
+        });
+
+        // 3. Contact Messages table
+        Schema::create('contact_messages', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('subject');
+            $table->text('message');
+            $table->timestamps();
+        });
+
+        // 4. Newsletter Subscribers table
+        Schema::create('newsletter_subscribers', function (Blueprint $table) {
+            $table->id();
+            $table->string('email')->unique();
+            $table->json('preferences')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void {
+        Schema::dropIfExists('newsletter_subscribers');
+        Schema::dropIfExists('contact_messages');
+        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('dishes');
+    }
+};`;
+
+const laravelControllerSnippet = `// app/Http/Controllers/Api/V1/ReservationController.php
+namespace App\\Http\\Controllers\\Api\\V1;
+
+use App\\Http\\Controllers\\Controller;
+use App\\Models\\Reservation;
+use Illuminate\\Http\\Request;
+use Illuminate\\Support\\Str;
+
+class ReservationController extends Controller {
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:150',
+            'phone' => 'required|string|max:30',
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|string',
+            'guests' => 'required|integer|min:1|max:20',
+            'seating' => 'required|in:main,counter,patio,private',
+            'notes' => 'nullable|string|max:500'
+        ]);
+
+        $code = 'VH-' . strtoupper(Str::random(6));
+
+        $reservation = Reservation::create([
+            ...$validated,
+            'confirmation_code' => $code,
+            'status' => 'confirmed'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'confirmationCode' => $code,
+            'message' => 'Table reservation confirmed successfully.',
+            'reservation' => $reservation
+        ], 201);
+    }
+}`;
+
+const laravelDishControllerSnippet = `// app/Http/Controllers/Api/V1/DishController.php
+namespace App\\Http\\Controllers\\Api\\V1;
+
+use App\\Http\\Controllers\\Controller;
+use App\\Models\\Dish;
+use App\\Http\\Resources\\DishResource;
+use Illuminate\\Http\\Request;
+
+class DishController extends Controller {
+    public function index(Request $request) {
+        $query = Dish::query();
+        if ($request->has('category')) {
+            $query->where('category', $request->query('category'));
+        }
+        return DishResource::collection($query->get());
+    }
+
+    public function show(string $slug) {
+        $dish = Dish::where('slug', $slug)->firstOrFail();
+        return new DishResource($dish);
+    }
+}`;
+
+const laravelResourceSnippet = `// app/Http/Resources/DishResource.php
+namespace App\\Http\\Resources;
+
+use Illuminate\\Http\\Request;
+use Illuminate\\Http\\Resources\\Json\\JsonResource;
+
+class DishResource extends JsonResource {
+    public function toArray(Request $request): array {
+        return [
+            'id' => (string) $this->id,
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'category' => $this->category,
+            'price' => (float) $this->price,
+            'shortDescription' => $this->short_description,
+            'longDescription' => $this->long_description,
+            'dietary' => $this->dietary,
+            'ingredients' => $this->ingredients,
+            'allergens' => $this->allergens,
+            'cookingMethod' => $this->cooking_method,
+            'pairing' => $this->pairing,
+            'nutritionNote' => $this->nutrition_note,
+            'image' => $this->image,
+            'gallery' => $this->gallery ?? [],
+            'highlight' => (bool) $this->highlight,
+            'seasonal' => (bool) $this->seasonal,
+            'chefPick' => (bool) $this->chef_pick
+        ];
+    }
+}`;
+
+const laravelRoutesSnippet = `// routes/api.php
+use Illuminate\\Support\\Facades\\Route;
+use App\\Http\\Controllers\\Api\\V1\\DishController;
+use App\\Http\\Controllers\\Api\\V1\\ReservationController;
+use App\\Http\\Controllers\\Api\\V1\\ContactController;
+use App\\Http\\Controllers\\Api\\V1\\NewsletterController;
+
+Route::prefix('v1')->group(function () {
+    Route::get('/menu', [DishController::class, 'index']);
+    Route::get('/menu/{slug}', [DishController::class, 'show']);
+    Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::post('/contact', [ContactController::class, 'store']);
+    Route::post('/newsletter', [NewsletterController::class, 'store']);
+});`;
+
+const nextjsPrismaSnippet = `// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Dish {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  name             String
+  category         String   // starters, mains, seasonal, desserts, drinks, brunch
+  price            Float
+  shortDescription String
+  longDescription  String
+  dietary          String[]
+  ingredients      String[]
+  allergens        String[]
+  cookingMethod    String
+  pairing          String?
+  nutritionNote    String?
+  image            String
+  gallery          String[]
+  highlight        Boolean  @default(false)
+  seasonal         Boolean  @default(false)
+  chefPick         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+}
+
+model Reservation {
+  id               String   @id @default(cuid())
+  confirmationCode String   @unique
+  name             String
+  email            String
+  phone            String
+  date             DateTime
+  time             String
+  guests           Int
+  seating          String
+  notes            String?
+  status           String   @default("confirmed")
+  createdAt        DateTime @default(now())
+}`;
+
+const nextjsRouteSnippet = `// app/api/v1/reservations/route.ts
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { name, email, phone, date, time, guests, seating, notes } = body;
+
+    if (!name || !email || !phone || !date || !time || !guests || !seating) {
+      return NextResponse.json(
+        { message: 'Validation failed', errors: { form: ['All required fields must be supplied.'] } },
+        { status: 422 }
+      );
+    }
+
+    const confirmationCode = 'VH-' + Math.floor(100000 + Math.random() * 900000);
+
+    const reservation = await prisma.reservation.create({
+      data: {
+        confirmationCode,
+        name,
+        email,
+        phone,
+        date: new Date(date),
+        time,
+        guests: parseInt(guests, 10),
+        seating,
+        notes: notes || null
+      }
+    });
+
+    return NextResponse.json({
+      success: true,
+      confirmationCode,
+      message: 'Reservation created successfully.',
+      reservation
+    }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+  }
+}`;
+---
+
+<BaseLayout
+  title="Template Documentation & Developer Guide — Verdant Hearth"
+  desc="Complete, beginner-friendly manual for configuring content, self-hosting fonts, and integrating Laravel or Next.js backends."
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content">
+    <PageHero
+      badge="Technical Documentation"
+      title="Master Manual & Integration Guide"
+      description="A sales-quality, beginner-friendly reference for running, customizing, and connecting Verdant Hearth to Laravel or Next.js REST backends."
+      bgImage={IMAGES.bannerMenu.url}
+    />
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Sticky Table of Contents (3 cols) -->
+        <aside class="lg:col-span-3 lg:sticky lg:top-24 bg-[var(--bg-surface)] p-6 rounded-2xl border border-[var(--border-color)] shadow-sm">
+          <span class="text-xs uppercase tracking-widest font-bold text-[var(--accent-gold)] block mb-4">
+            Documentation Index
+          </span>
+          <nav aria-label="Table of contents">
+            <ul class="space-y-2 text-xs">
+              {docNav.map((sec) => (
+                <li>
+                  <a
+                    href={`#${sec.id}`}
+                    class="block py-1.5 px-3 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-elevated)] transition-colors font-medium"
+                  >
+                    {sec.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main Documentation Body (9 cols) -->
+        <div class="lg:col-span-9 space-y-20 docs-prose">
+          
+          <!-- Section 1: Overview (Sales-Quality Explanation) -->
+          <section id="overview" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 1
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              1. What This Website Is & Who It Is For
+            </h2>
+
+            <div class="space-y-4 text-sm text-[var(--text-muted)] leading-relaxed">
+              <p>
+                <strong>Verdant Hearth</strong> is a production-grade, multi-page restaurant and hospitality website template built on <strong>Astro 6, TypeScript (strict mode), and Tailwind CSS 4</strong>. It was designed from the ground up to solve the most painful challenges faced by independent fine-dining restaurants, farm-to-table bistros, wood-fired hearth eateries, artisanal bakeries, botanical cocktail bars, and the agencies or freelancers building sites for them.
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                <div class="p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)]">
+                  <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Why Restaurants Choose It</h3>
+                  <ul class="space-y-1.5 text-xs">
+                    <li>✦ <strong>Blazing Fast:</strong> Static HTML output with zero client JavaScript runtime by default.</li>
+                    <li>✦ <strong>High Conversion:</strong> Sticky category filtering and instant frictionless online reservations.</li>
+                    <li>✦ <strong>Flawless Mobile:</strong> Engineered for iPhone & Android ergonomics with thumb-friendly controls.</li>
+                    <li>✦ <strong>Full SEO & Schema:</strong> Structured Schema.org Restaurant JSON-LD, OpenGraph, and auto sitemap.</li>
+                    <li>✦ <strong>Zero Font Requests:</strong> Self-hosted OFL typography—no external Google Fonts network calls.</li>
+                  </ul>
+                </div>
+
+                <div class="p-5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)]">
+                  <h3 class="text-base font-bold text-[var(--text-main)] mb-2">How It Benefits the Business</h3>
+                  <ul class="space-y-1.5 text-xs">
+                    <li>✦ <strong>More Direct Bookings:</strong> Reduces reliance on third-party portals charging per-cover fees.</li>
+                    <li>✦ <strong>Effortless Menu Updates:</strong> Change dishes in one typed file or connect any headless CMS.</li>
+                    <li>✦ <strong>Virtually Free Hosting:</strong> Deploys effortlessly to free-tier edge CDNs (Vercel, Netlify, Cloudflare).</li>
+                    <li>✦ <strong>100% Commercial Safety:</strong> Verified copyright-free photography and custom SVG staff avatars.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 2: How to Run It -->
+          <section id="quick-start" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 2
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              2. How to Run It (Local PC & Git Deployment)
+            </h2>
+
+            <p class="text-sm text-[var(--text-muted)] mb-4">
+              Two straightforward paths exist to install and run the template: locally on your development workstation or directly deployed from a GitHub repository to edge platforms.
+            </p>
+
+            <h3 class="text-lg font-bold text-[var(--text-main)] mb-3">Path A: Local PC (macOS, Windows, Linux)</h3>
+            <pre><code>{localRunSnippet}</code></pre>
+
+            <h3 class="text-lg font-bold text-[var(--text-main)] mt-8 mb-3">Path B: Git & Edge Hosting (Vercel / Netlify)</h3>
+            <pre><code>{gitDeploySnippet}</code></pre>
+          </section>
+
+          <!-- Section 3: Content & Image Customization -->
+          <section id="content-mapping" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 3
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              3. Content & Image Customization
+            </h2>
+
+            <p class="text-sm text-[var(--text-muted)] mb-4">
+              All website content is cleanly separated from layout components. Use this quick reference to find the exact file you need:
+            </p>
+
+            <div class="overflow-x-auto rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] mb-6">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-[var(--bg-surface-elevated)] border-b border-[var(--border-color)] text-[var(--text-main)] font-bold">
+                  <tr>
+                    <th class="p-3.5">I want to change...</th>
+                    <th class="p-3.5">Open file</th>
+                    <th class="p-3.5">Exported Constant / Key</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[var(--border-color)] text-[var(--text-muted)]">
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Restaurant Name, Phone, Email, Hours, Rating</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">RESTAURANT_INFO</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Hero Rotating Looping Words</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">HERO_ROTATING_WORDS</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Menu Categories & Banner Images</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">MENU_CATEGORIES</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Full 36 Dishes, Slugs, Prices, Pairings</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">FULL_MENU</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Spring Harvest Section (Farms, Ingredients)</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">SEASONAL_HARVEST</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Why Dine Pillars & Detail Page Stories</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">WHY_DINE_REASONS</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Artisans of Flame & Earth Profiles</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">ARTISANS</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Critic & Guest Reviews</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">REVIEWS</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">FAQ Questions & Answers</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/restaurant.ts</td>
+                    <td class="p-3 font-mono">FAQS</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-medium text-[var(--text-main)]">Photographic URLs & Image Credits</td>
+                    <td class="p-3 font-mono text-[var(--accent-gold)]">src/data/images.ts</td>
+                    <td class="p-3 font-mono">IMAGES, CREDITS.md</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <pre><code>{contentTableSnippet}</code></pre>
+          </section>
+
+          <!-- Section 4: API Connection Architecture & Mapping Table -->
+          <section id="api-architecture" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 4
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              4. API Architecture & Section Mapping Table
+            </h2>
+
+            <p class="text-sm text-[var(--text-muted)] mb-4">
+              Verdant Hearth uses a transparent two-tier data architecture:
+            </p>
+            <ul class="space-y-2 text-xs text-[var(--text-muted)] mb-6">
+              <li>1. <strong>Without API (Demo Mode):</strong> If <code>PUBLIC_API_BASE_URL</code> is omitted, all queries and form submissions fall back gracefully to local typed mock data in <code>src/data/restaurant.ts</code>.</li>
+              <li>2. <strong>With API Connected:</strong> Once <code>PUBLIC_API_BASE_URL</code> is defined, <code>src/lib/data.ts</code> and <code>src/lib/api.ts</code> route requests to your live REST backend.</li>
+              <li>3. <strong>Static Build vs. Live Submissions:</strong> Content like menu dishes, artisan profiles, and stories are rendered at static build time. When menu data changes in your backend database, trigger a webhook rebuild on your host (e.g., Vercel Deploy Hook). Interactive forms (Reservations, Contact, Newsletter) submit live <code>POST</code> requests via client fetch directly to your API.</li>
+            </ul>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Connecting Your Live Backend via Environment Variable</h3>
+            <pre><code>{apiEnvSnippet}</code></pre>
+
+            <h3 class="text-lg font-bold text-[var(--text-main)] mt-6 mb-3">Complete Mapping Table: Website Section → API Endpoint</h3>
+            <pre><code>{mappingTableSnippet}</code></pre>
+          </section>
+
+          <!-- Section 5: Laravel REST Backend Guide -->
+          <section id="laravel-guide" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 5
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              5. Laravel 11/12 REST Backend Integration Guide
+            </h2>
+
+            <p class="text-sm text-[var(--text-muted)] mb-4 leading-relaxed">
+              Below is the complete, tested Laravel pipeline covering database migrations, Eloquent models, form request validation, API Resources, and route registration for all restaurant endpoints.
+            </p>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Step 1: Database Migration (All Tables)</h3>
+            <pre><code>{laravelMigrationSnippet}</code></pre>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 2: Table Reservation Store Controller</h3>
+            <pre><code>{laravelControllerSnippet}</code></pre>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 3: Dish API Resource (Formats JSON to Match Astro TypeScript Types)</h3>
+            <pre><code>{laravelResourceSnippet}</code></pre>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 4: Dish Query Controller (List & Detail by Slug)</h3>
+            <pre><code>{laravelDishControllerSnippet}</code></pre>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 5: API Routes Registration (routes/api.php)</h3>
+            <pre><code>{laravelRoutesSnippet}</code></pre>
+
+            <div class="p-4 rounded-xl bg-[var(--bg-surface)] border-l-4 border-emerald-500 my-6 text-xs text-[var(--text-muted)] space-y-1">
+              <strong class="text-[var(--text-main)] block">CORS Configuration:</strong>
+              <p>In your Laravel <code>config/cors.php</code>, ensure <code>'paths' => ['api/*', 'sanctum/csrf-cookie']</code> and <code>'allowed_origins' => ['http://localhost:4321', 'https://yourdomain.com']</code> are configured to allow browser preflight requests.</p>
+            </div>
+          </section>
+
+          <!-- Section 6: Next.js App Router Backend Guide -->
+          <section id="nextjs-guide" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 6
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              6. Next.js (App Router) & Prisma Backend Guide
+            </h2>
+
+            <p class="text-sm text-[var(--text-muted)] mb-4">
+              If your backend is built on Next.js with the App Router, use Prisma ORM and Route Handlers (<code>app/api/v1/.../route.ts</code>):
+            </p>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mb-2">Step 1: Prisma Schema</h3>
+            <pre><code>{nextjsPrismaSnippet}</code></pre>
+
+            <h3 class="text-base font-bold text-[var(--text-main)] mt-8 mb-2">Step 2: Reservation Route Handler (app/api/v1/reservations/route.ts)</h3>
+            <pre><code>{nextjsRouteSnippet}</code></pre>
+          </section>
+
+          <!-- Section 7: Theming, Single Font & Animations -->
+          <section id="theming-design" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 7
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              7. Theming, Single Font & Motion Architecture
+            </h2>
+
+            <div class="space-y-4 text-sm text-[var(--text-muted)] leading-relaxed">
+              <h3 class="text-base font-bold text-[var(--text-main)]">Self-Hosted Single Font</h3>
+              <p>
+                In strict conformance with template marketplace standards, Verdant Hearth uses <strong>one single font family</strong> (<em>Plus Jakarta Sans</em>) across headings, body, buttons, navigation, and documentation. Typography hierarchy is achieved through weight (from 400 to 800) and letter-spacing, eliminating dual-font visual clutter.
+              </p>
+              <pre><code>{fontSetupSnippet}</code></pre>
+
+              <h3 class="text-base font-bold text-[var(--text-main)] mt-6">Reduced Motion & Accessibility</h3>
+              <p>
+                All CSS transitions and JavaScript intervals respect the user's operating system preferences. Under <code>prefers-reduced-motion: reduce</code>, rotation loops and parallax floating are cleanly disabled, ensuring all content remains instantly visible and accessible.
+              </p>
+            </div>
+          </section>
+
+          <!-- Section 8: Troubleshooting & FAQ -->
+          <section id="troubleshooting" class="scroll-mt-28">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-3">
+              Section 8
+            </div>
+            <h2 class="text-3xl font-extrabold text-[var(--text-main)] mb-6">
+              8. Troubleshooting & Frequently Asked Questions
+            </h2>
+
+            <div class="space-y-4">
+              <div class="card-clean p-6">
+                <h3 class="font-bold text-sm text-[var(--text-main)] mb-2">
+                  Q: Why do forms work even when no API is configured?
+                </h3>
+                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                  This is by design. In static demo mode (when <code>PUBLIC_API_BASE_URL</code> is empty), all forms gracefully simulate successful submissions and generate confirmation codes so commercial buyers can test the complete user experience out of the box.
+                </p>
+              </div>
+
+              <div class="card-clean p-6">
+                <h3 class="font-bold text-sm text-[var(--text-main)] mb-2">
+                  Q: I get a CORS error when submitting reservations from localhost.
+                </h3>
+                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                  Ensure your backend includes <code>http://localhost:4321</code> in its allowed CORS origins (e.g., in Laravel's <code>config/cors.php</code> or Next.js CORS headers).
+                </p>
+              </div>
+
+              <div class="card-clean p-6">
+                <h3 class="font-bold text-sm text-[var(--text-main)] mb-2">
+                  Q: How do I change the website accent colors?
+                </h3>
+                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                  Open <code>src/styles/global.css</code> and update the CSS variables <code>--accent-gold</code>, <code>--brand-forest</code>, and <code>--accent-sage</code>. Both light and dark theme palettes will adapt automatically.
+                </p>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+    </div>
+
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</BaseLayout>

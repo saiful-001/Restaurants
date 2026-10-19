@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Navbar from '../components/Navbar.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import { IMAGES } from '../data/images';
+
+const filterCategories = [
+  { id: 'all', label: 'All Photos (24)' },
+  { id: 'food', label: 'Hearth Dishes' },
+  { id: 'drinks', label: 'Botanical Cocktails & Wine' },
+  { id: 'interior', label: 'Dining Rooms & Patio' },
+  { id: 'team', label: 'Culinary Team' }
+] as const;
+---
+
+<BaseLayout
+  title="Visual Archive & Lightbox Gallery — Verdant Hearth"
+  desc="Explore our 24-photo interactive visual gallery featuring our wood-fired creations, botanical mixology, dining architecture, and kitchen artisans."
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content">
+    <!-- Page Hero -->
+    <PageHero
+      badge="Gallery"
+      title="Moments of Flame, Soil & Fellowship"
+      description="An intimate visual exploration of our dining rooms, wood-fired hearth, wild ingredients, and the people behind each plate."
+      bgImage={IMAGES.bannerGallery.url}
+    />
+
+    <!-- Gallery Section with Filter & Masonry Grid -->
+    <section class="py-16 lg:py-24 bg-[var(--bg-primary)]" aria-labelledby="gallery-archive-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Category Filter Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
+          {filterCategories.map((cat, idx) => (
+            <button
+              type="button"
+              data-filter-btn={cat.id}
+              class={`gallery-filter-pill px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer ${
+                idx === 0
+                  ? 'bg-[#0F2A1D] text-[#F6F1E7] border border-[#0F2A1D] shadow-sm dark:bg-[#C9A15A] dark:text-[#0F2A1D]'
+                  : 'bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] hover:text-[var(--text-main)]'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        <!-- 24-Photo Masonry Grid -->
+        <div id="gallery-masonry" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          {IMAGES.gallery.map((item, idx) => (
+            <button
+              type="button"
+              class="gallery-item-card group reveal relative overflow-hidden rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] cursor-pointer text-left aspect-[4/3] focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+              data-index={idx}
+              data-category={item.category}
+              data-url={item.url}
+              data-alt={item.alt}
+              data-caption={item.caption}
+              data-photographer={item.photographer}
+              style={`transition-delay: ${(idx % 4) * 60}ms;`}
+              aria-label={`Open photo: ${item.caption}`}
+            >
+              <img
+                src={item.url}
+                alt={item.alt}
+                width={item.width}
+                height={item.height}
+                loading="lazy"
+                class="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
+              />
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 text-white">
+                <span class="text-[10px] uppercase tracking-wider font-semibold text-[#C9A15A] mb-1">
+                  {item.category}
+                </span>
+                <p class="text-xs font-semibold line-clamp-2 text-[#F6F1E7]">
+                  {item.caption}
+                </p>
+                <div class="mt-2 flex items-center gap-1.5 text-[11px] text-[#A9C4A0]">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                  <span>Click to Expand</span>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <p class="text-center text-xs text-[var(--text-muted)] mt-12">
+          *All 24 photos verified via Unsplash CDN. Credits listed in our documentation and photographer registry.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- Accessible Lightbox Modal Dialog -->
+    <dialog
+      id="gallery-page-lightbox"
+      class="backdrop:bg-black/85 backdrop:backdrop-blur-md bg-transparent p-4 sm:p-8 max-w-5xl w-full m-auto open:flex flex-col items-center justify-center outline-none"
+      aria-label="High Resolution Photo Lightbox"
+    >
+      <div class="relative w-full max-w-4xl bg-[#0F2A1D] border border-[#1E4631] rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-[#1E4631] text-[#F6F1E7] bg-[#0A1B12]/80">
+          <div class="text-xs text-[#A9C4A0] flex items-center gap-2">
+            <span id="glb-counter" class="font-mono">1 / 24</span>
+            <span class="text-[#C9A15A]">✦</span>
+            <span>Verdant Hearth Photography</span>
+          </div>
+          <button
+            id="glb-close"
+            type="button"
+            class="p-1 rounded-lg text-[#A9C4A0] hover:text-white hover:bg-[#1F4D36] transition-colors focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+            aria-label="Close lightbox modal"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Image Display -->
+        <div class="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black flex items-center justify-center overflow-hidden">
+          <img
+            id="glb-img"
+            src=""
+            alt=""
+            class="max-h-full max-w-full object-contain transition-opacity duration-300"
+          />
+
+          <!-- Controls -->
+          <button
+            id="glb-prev"
+            type="button"
+            class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#0F2A1D]/80 border border-[#C9A15A]/40 text-white hover:bg-[#C9A15A] hover:text-[#0F2A1D] flex items-center justify-center transition-all shadow-lg focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+            aria-label="Previous photo"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <button
+            id="glb-next"
+            type="button"
+            class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#0F2A1D]/80 border border-[#C9A15A]/40 text-white hover:bg-[#C9A15A] hover:text-[#0F2A1D] flex items-center justify-center transition-all shadow-lg focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+            aria-label="Next photo"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="p-4 sm:p-5 bg-[#0A1B12] border-t border-[#1E4631] text-[#F6F1E7] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+          <p id="glb-caption" class="text-sm font-medium text-white max-w-xl">
+            Caption
+          </p>
+          <span id="glb-photographer" class="text-[#A9C4A0]">
+            Photo by Photographer
+          </span>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Bottom CTA -->
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Filter controller
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.gallery-filter-pill');
+  const items = document.querySelectorAll<HTMLElement>('.gallery-item-card');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetCategory = btn.getAttribute('data-filter-btn') || 'all';
+
+      filterBtns.forEach((b) => {
+        b.className = 'gallery-filter-pill px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] hover:text-[var(--text-main)]';
+      });
+
+      btn.className = 'gallery-filter-pill px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer bg-[#0F2A1D] text-[#F6F1E7] border border-[#0F2A1D] shadow-sm dark:bg-[#C9A15A] dark:text-[#0F2A1D]';
+
+      items.forEach((item) => {
+        const itemCat = item.getAttribute('data-category');
+        if (targetCategory === 'all' || itemCat === targetCategory) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Lightbox controller
+  const dialog = document.getElementById('gallery-page-lightbox') as HTMLDialogElement | null;
+  const lbImg = document.getElementById('glb-img') as HTMLImageElement | null;
+  const lbCaption = document.getElementById('glb-caption');
+  const lbPhotographer = document.getElementById('glb-photographer');
+  const lbCounter = document.getElementById('glb-counter');
+  const closeBtn = document.getElementById('glb-close');
+  const prevBtn = document.getElementById('glb-prev');
+  const nextBtn = document.getElementById('glb-next');
+
+  let currentIdx = 0;
+  const cardList = Array.from(items);
+
+  function openLightbox(index: number) {
+    if (index < 0) index = cardList.length - 1;
+    if (index >= cardList.length) index = 0;
+    currentIdx = index;
+
+    const el = cardList[currentIdx];
+    const url = el.getAttribute('data-url') || '';
+    const caption = el.getAttribute('data-caption') || '';
+    const photographer = el.getAttribute('data-photographer') || 'Unsplash';
+
+    if (lbImg) {
+      lbImg.style.opacity = '0';
+      setTimeout(() => {
+        lbImg.src = url;
+        lbImg.alt = caption;
+        lbImg.style.opacity = '1';
+      }, 120);
+    }
+
+    if (lbCaption) lbCaption.textContent = caption;
+    if (lbPhotographer) lbPhotographer.textContent = `Photo by ${photographer} on Unsplash`;
+    if (lbCounter) lbCounter.textContent = `${currentIdx + 1} / ${cardList.length}`;
+  }
+
+  items.forEach((card, idx) => {
+    card.addEventListener('click', () => {
+      openLightbox(idx);
+      if (dialog && typeof dialog.showModal === 'function') {
+        dialog.showModal();
+      }
+    });
+  });
+
+  closeBtn?.addEventListener('click', () => dialog?.close());
+  prevBtn?.addEventListener('click', () => openLightbox(currentIdx - 1));
+  nextBtn?.addEventListener('click', () => openLightbox(currentIdx + 1));
+
+  dialog?.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') openLightbox(currentIdx - 1);
+    if (e.key === 'ArrowRight') openLightbox(currentIdx + 1);
+  });
+
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+</script>
+

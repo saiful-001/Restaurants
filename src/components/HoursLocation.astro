@@ -1,0 +1,212 @@
+---
+import { RESTAURANT_INFO } from '../data/restaurant';
+
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+---
+
+<section
+  id="hours"
+  class="py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)] relative"
+  aria-labelledby="hours-heading"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] block mb-2">
+        Visit Verdant Hearth
+      </span>
+      <h2 id="hours-heading" class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-main)] mb-4">
+        Hours & Location
+      </h2>
+      <p class="reveal text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+        Located in Portland's historic Hearth Quarter. Valet parking and conservatory garden access available.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-6xl mx-auto">
+      <!-- Left Column: Hours + Address -->
+      <div class="lg:col-span-7 space-y-8">
+        <!-- Hours Card -->
+        <div class="reveal card-clean p-6 sm:p-8">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-[var(--border-color)]">
+            <h3 class="font-serif text-xl sm:text-2xl font-bold text-[var(--text-main)]">
+              Service Hours
+            </h3>
+            <div id="live-status" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span id="live-status-text">Checking...</span>
+            </div>
+          </div>
+
+          <table class="w-full text-sm" aria-label="Weekly opening hours">
+            <tbody>
+              {RESTAURANT_INFO.hours.map((schedule) => (
+                <tr class="hours-row border-b border-dashed border-[var(--border-color)]/50 last:border-0" data-days={schedule.days}>
+                  <td class="py-3 pr-4">
+                    <span class="font-semibold text-[var(--text-main)] block">{schedule.days}</span>
+                    <span class="text-xs text-[var(--accent-gold)]">{schedule.service}</span>
+                  </td>
+                  <td class="py-3 text-right font-mono text-xs sm:text-sm font-medium text-[var(--text-muted)]">
+                    {schedule.hours}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <p class="mt-4 pt-3 border-t border-[var(--border-color)] text-xs text-[var(--text-muted)]">
+            <strong class="text-[var(--text-main)]">Kitchen Note:</strong> Last food orders 45 min before close. Bar open through late night.
+          </p>
+        </div>
+
+        <!-- Address + Contact Card -->
+        <div class="reveal card-clean p-6 sm:p-8">
+          <h3 class="font-serif text-xl sm:text-2xl font-bold text-[var(--text-main)] mb-6 pb-4 border-b border-[var(--border-color)]">
+            Find Us
+          </h3>
+
+          <div class="space-y-5 text-sm mb-8">
+            <div class="flex items-start gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-[var(--brand-mid)]/10 text-[var(--accent-gold)] flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              </div>
+              <div>
+                <span class="text-xs uppercase tracking-wider font-semibold text-[var(--text-muted)] block">Address</span>
+                <p class="font-bold text-[var(--text-main)] text-base mt-0.5">{RESTAURANT_INFO.address.street}</p>
+                <p class="text-xs text-[var(--text-muted)]">{RESTAURANT_INFO.address.city}, {RESTAURANT_INFO.address.state} {RESTAURANT_INFO.address.zip}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <a href={`tel:${RESTAURANT_INFO.phone}`} class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-sm font-semibold text-[var(--text-main)] hover:border-[var(--accent-gold)] hover:text-[var(--accent-gold)] transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+              Call
+            </a>
+            <a href={`mailto:${RESTAURANT_INFO.email}`} class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-sm font-semibold text-[var(--text-main)] hover:border-[var(--accent-gold)] hover:text-[var(--accent-gold)] transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              Email
+            </a>
+            <a href={RESTAURANT_INFO.address.mapLink} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-sm font-semibold text-[var(--text-main)] hover:border-[var(--accent-gold)] hover:text-[var(--accent-gold)] transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+              Directions
+            </a>
+          </div>
+
+          <!-- Parking Info -->
+          <div class="mt-6 p-4 rounded-xl bg-[var(--bg-muted)] border border-[var(--border-color)] text-xs text-[var(--text-muted)]">
+            <strong class="text-[var(--text-main)] block mb-1">🅿️ Parking Information</strong>
+            <p>Complimentary valet parking Wed–Sun starting 4:30 PM at main entrance. Covered parking at Hearth Quarter Garage (2 doors down) with 2 hours validated. Street parking available on Botanical Way.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Styled Map Visual -->
+      <div class="lg:col-span-5">
+        <div class="reveal card-clean overflow-hidden sticky top-24">
+          <!-- SVG Map Visual -->
+          <div class="aspect-[4/5] relative bg-gradient-to-br from-[var(--bg-dark)] to-[var(--brand-mid)]" aria-label="Illustrated map showing restaurant location">
+            <svg viewBox="0 0 400 500" class="w-full h-full" aria-hidden="true">
+              <!-- Grid pattern -->
+              <defs>
+                <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.1" />
+                </pattern>
+              </defs>
+              <rect width="400" height="500" fill="url(#map-grid)" />
+
+              <!-- Streets -->
+              <line x1="0" y1="250" x2="400" y2="250" stroke="var(--accent-gold)" stroke-width="3" opacity="0.3" />
+              <line x1="200" y1="0" x2="200" y2="500" stroke="var(--accent-gold)" stroke-width="2" opacity="0.2" />
+              <line x1="0" y1="180" x2="400" y2="180" stroke="var(--accent-gold)" stroke-width="1" opacity="0.15" />
+              <line x1="0" y1="320" x2="400" y2="320" stroke="var(--accent-gold)" stroke-width="1" opacity="0.15" />
+              <line x1="120" y1="0" x2="120" y2="500" stroke="var(--accent-gold)" stroke-width="1" opacity="0.12" />
+              <line x1="280" y1="0" x2="280" y2="500" stroke="var(--accent-gold)" stroke-width="1" opacity="0.12" />
+
+              <!-- Street labels -->
+              <text x="310" y="244" fill="var(--accent-gold)" font-size="9" opacity="0.5" font-weight="600">BOTANICAL WAY</text>
+              <text x="205" y="170" fill="var(--accent-gold)" font-size="8" opacity="0.4" transform="rotate(90, 205, 170)">HEARTH LANE</text>
+
+              <!-- Buildings (blocks) -->
+              <rect x="30" y="190" width="70" height="50" rx="6" fill="var(--accent-gold)" opacity="0.08" />
+              <rect x="230" y="260" width="60" height="45" rx="6" fill="var(--accent-gold)" opacity="0.08" />
+              <rect x="300" y="130" width="55" height="40" rx="6" fill="var(--accent-gold)" opacity="0.06" />
+              <rect x="50" y="330" width="65" height="40" rx="6" fill="var(--accent-gold)" opacity="0.06" />
+
+              <!-- Restaurant location pin -->
+              <circle cx="200" cy="250" r="32" fill="var(--accent-gold)" opacity="0.15" />
+              <circle cx="200" cy="250" r="20" fill="var(--accent-gold)" opacity="0.25" />
+              <circle cx="200" cy="250" r="8" fill="var(--accent-gold)" />
+
+              <!-- Pin label -->
+              <rect x="145" y="280" width="110" height="28" rx="14" fill="var(--bg-dark)" stroke="var(--accent-gold)" stroke-width="1" opacity="0.9" />
+              <text x="200" y="298" text-anchor="middle" fill="var(--accent-gold)" font-size="10" font-weight="700">VERDANT HEARTH</text>
+
+              <!-- Compass -->
+              <circle cx="360" cy="40" r="18" fill="var(--bg-dark)" opacity="0.6" stroke="var(--accent-gold)" stroke-width="0.5" />
+              <text x="360" y="36" text-anchor="middle" fill="var(--accent-gold)" font-size="8" font-weight="700">N</text>
+              <line x1="360" y1="42" x2="360" y2="52" stroke="var(--accent-gold)" stroke-width="1.5" opacity="0.6" />
+            </svg>
+
+            <!-- Overlay card on map -->
+            <div class="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-[var(--bg-dark)]/90 backdrop-blur-sm border border-[var(--accent-gold)]/30 text-center">
+              <p class="text-sm font-bold text-[var(--text-on-dark)]">{RESTAURANT_INFO.address.street}</p>
+              <p class="text-xs text-[var(--text-on-dark-muted)] mt-0.5">{RESTAURANT_INFO.address.city}, {RESTAURANT_INFO.address.state} {RESTAURANT_INFO.address.zip}</p>
+              <a
+                href={RESTAURANT_INFO.address.mapLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-full bg-[var(--accent-gold)] text-[var(--bg-dark)] text-xs font-bold hover:opacity-90 transition-opacity"
+              >
+                Open in Google Maps
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initHoursLocation() {
+    // Highlight today's row
+    const now = new Date();
+    const dayIndex = now.getDay();
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const todayName = dayNames[dayIndex];
+
+    document.querySelectorAll<HTMLTableRowElement>('.hours-row').forEach((row) => {
+      const days = row.getAttribute('data-days') || '';
+      if (days.includes(todayName) || (todayName === 'Monday' && days.includes('Monday')) || (todayName === 'Tuesday' && days.includes('Tuesday')) || (todayName === 'Wednesday' && days.includes('Wednesday'))) {
+        row.classList.add('bg-[var(--accent-gold)]/5');
+        const firstTd = row.querySelector('td span:first-child');
+        if (firstTd) firstTd.classList.add('text-[var(--accent-gold)]');
+      }
+    });
+
+    // Live status
+    const hours = now.getHours() + now.getMinutes() / 60;
+    const day = now.getDay();
+    let isOpen = false;
+    let label = 'Closed Now';
+
+    if (day >= 1 && day <= 3 && hours >= 17 && hours < 22) { isOpen = true; label = 'Open · Dinner'; }
+    else if ((day === 4 || day === 5) && hours >= 17 && hours < 23.5) { isOpen = true; label = 'Open · Dinner & Bar'; }
+    else if (day === 6 && hours >= 10 && hours < 23.5) { isOpen = true; label = 'Open · Brunch & Dinner'; }
+    else if (day === 0 && hours >= 10.5 && hours < 21) { isOpen = true; label = 'Open · Sunday Feast'; }
+
+    const pill = document.getElementById('live-status');
+    const text = document.getElementById('live-status-text');
+    if (pill && text) {
+      text.textContent = label;
+      if (!isOpen) {
+        pill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300';
+      }
+    }
+  }
+
+  initHoursLocation();
+  document.addEventListener('astro:page-load', initHoursLocation);
+</script>

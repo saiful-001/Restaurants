@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="12" fill="#0F2A1D"/>
+  <!-- Botanical Vine & Leaf -->
+  <path d="M14 34C14 24 22 16 34 14C34 26 26 34 14 34Z" fill="#1F4D36" stroke="#A9C4A0" stroke-width="2"/>
+  <!-- Hearth Flame Core -->
+  <path d="M26 32C24 28 25 25 28 21C30 25 32 27 32 30C32 33.3137 29.3137 36 26 36C22.6863 36 20 33.3137 20 30C20 27 22 24 24 22C24 26 25 29 26 32Z" fill="#C9A15A"/>
+  <!-- Gilded Accent Star -->
+  <circle cx="34" cy="14" r="2.5" fill="#C9A15A"/>
+</svg>

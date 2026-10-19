@@ -1,0 +1,90 @@
+---
+import { FAQS } from '../data/restaurant';
+---
+
+<section
+  id="faq"
+  class="py-20 lg:py-28 bg-[var(--bg-dark)] text-[var(--text-on-dark)] border-b border-[var(--border-dark)] relative"
+  aria-labelledby="faq-heading"
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] block mb-2">
+        Common Inquiries
+      </span>
+      <h2
+        id="faq-heading"
+        class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4"
+      >
+        Frequently Asked Questions
+      </h2>
+      <p class="reveal text-sm sm:text-base text-[var(--text-on-dark-muted)] leading-relaxed">
+        Everything you need to know about dining policies, private events, dietary accommodations, and reservations.
+      </p>
+    </div>
+
+    <div class="space-y-3">
+      {FAQS.map((faq, idx) => (
+        <details
+          class="faq-details reveal group rounded-2xl border border-[var(--border-dark)] bg-[var(--bg-dark-surface)] overflow-hidden"
+          style={`transition-delay: ${(idx % 4) * 60}ms;`}
+        >
+          <summary
+            class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-[var(--accent-gold)] list-none [&::-webkit-details-marker]:hidden"
+          >
+            <span class="font-serif text-base sm:text-lg font-bold text-white pr-2">
+              {faq.question}
+            </span>
+            <span class="faq-chevron w-8 h-8 rounded-full bg-[var(--brand-mid)] text-[var(--accent-gold)] flex items-center justify-center shrink-0 transition-transform duration-300">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </summary>
+          <div class="faq-body px-6 pb-6 pt-1 text-xs sm:text-sm text-[var(--text-on-dark-muted)] leading-relaxed border-t border-[var(--border-dark)]">
+            <p class="pt-4">{faq.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <div class="text-center mt-12 text-xs text-[var(--text-on-dark-muted)]">
+      Have an inquiry not answered above? Email our hospitality concierge at{' '}
+      <a href="mailto:concierge@verdanthearth.com" class="text-[var(--accent-gold)] underline font-medium hover:text-white transition-colors">
+        concierge@verdanthearth.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-details summary {
+    list-style: none;
+  }
+  .faq-details summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-details[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+  .faq-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease, padding 0.35s ease;
+    overflow: hidden;
+  }
+  .faq-details[open] .faq-body {
+    grid-template-rows: 1fr;
+  }
+  .faq-body > p {
+    overflow: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-body {
+      transition: none;
+    }
+    .faq-chevron {
+      transition: none;
+    }
+  }
+</style>

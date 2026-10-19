@@ -1,0 +1,164 @@
+---
+import { IMAGES } from '../data/images';
+import { RESTAURANT_INFO } from '../data/restaurant';
+---
+
+<section
+  id="story"
+  class="relative py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)] overflow-hidden"
+  aria-labelledby="story-heading"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      
+      <!-- Left: Overlapping Story Photography -->
+      <div class="lg:col-span-6 relative order-2 lg:order-1">
+        <div class="relative w-full max-w-lg mx-auto">
+          <!-- Main Portrait Dining Room Image -->
+          <div class="reveal relative rounded-3xl overflow-hidden shadow-2xl border-4 border-[var(--bg-surface)] aspect-[4/5] w-[82%]">
+            <img
+              src={IMAGES.aboutDining.url}
+              alt={IMAGES.aboutDining.alt}
+              width={IMAGES.aboutDining.width}
+              height={IMAGES.aboutDining.height}
+              loading="lazy"
+              class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+            <div class="absolute bottom-6 left-6 text-white">
+              <span class="text-xs uppercase tracking-widest text-[#C9A15A] font-semibold block mb-1">Atmosphere</span>
+              <span class="font-serif text-lg font-bold">The Main Dining Room</span>
+            </div>
+          </div>
+
+          <!-- Overlapping Chef Hearth Fire Image (Offset bottom-right) -->
+          <div class="reveal absolute -bottom-8 right-0 w-[55%] aspect-square rounded-2xl overflow-hidden shadow-2xl border-4 border-[var(--bg-surface)] z-20" style="transition-delay: 200ms;">
+            <img
+              src={IMAGES.aboutChefCooking.url}
+              alt={IMAGES.aboutChefCooking.alt}
+              width={IMAGES.aboutChefCooking.width}
+              height={IMAGES.aboutChefCooking.height}
+              loading="lazy"
+              class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+            <div class="absolute bottom-3 left-3 text-white text-xs">
+              <span class="font-serif font-semibold block text-[#F6F1E7]">Wood Embers</span>
+              <span class="text-[#A9C4A0] text-[10px]">Over 700°F live hearth</span>
+            </div>
+          </div>
+
+          <!-- Decorative Floating Seal -->
+          <div class="hidden sm:flex absolute -top-5 right-10 w-20 h-20 rounded-full bg-[#0F2A1D] border-2 border-[#C9A15A] text-[#C9A15A] items-center justify-center p-2 text-center text-[10px] font-bold uppercase tracking-wider shadow-xl z-30">
+            Est. 2012 Oregon
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Narrative & Animated Metric Counters -->
+      <div class="lg:col-span-6 flex flex-col items-start order-1 lg:order-2">
+        <div class="reveal flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] mb-3">
+          <span>Our Origins & Purpose</span>
+        </div>
+
+        <h2
+          id="story-heading"
+          class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-main)] leading-tight mb-6"
+        >
+          Cooking with the Ancient Energy of Fire & Soil
+        </h2>
+
+        <div class="reveal space-y-4 text-base sm:text-lg text-[var(--text-muted)] leading-relaxed mb-8">
+          <p>
+            Verdant Hearth began in 2012 with a radical commitment: banish electrical heat and fossil gas from our kitchen entirely, surrendering every pan and skewer to sustainably harvested Oregon alder, white oak, and fruitwood.
+          </p>
+          <p>
+            Surrounding our live hearth is an edible botanical greenhouse where we harvest mountain thyme, flowering nasturtiums, and lemon verbena minutes before they grace your table. We celebrate 42 small-family regenerative farms who revive heirloom seeds, building a culinary landscape as vibrant and enduring as our forests.
+          </p>
+        </div>
+
+        <!-- Animated Statistics Counters Grid -->
+        <div class="reveal w-full grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-[var(--border-color)]">
+          {RESTAURANT_INFO.stats.map((stat) => (
+            <div class="stat-counter-box p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)]">
+              <div class="font-serif font-bold text-2xl sm:text-3xl text-[var(--accent-gold)] flex items-baseline">
+                <span
+                  class="counter-value"
+                  data-target={stat.value.replace(/[^0-9]/g, '')}
+                  data-raw={stat.value}
+                >
+                  0
+                </span>
+                <span>{stat.suffix}</span>
+              </div>
+              <div class="text-[11px] sm:text-xs text-[var(--text-muted)] mt-1 font-medium leading-tight">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="reveal pt-6">
+          <a
+            href="/about"
+            class="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[var(--accent-gold)] hover:text-[var(--accent-gold-hover)] transition-colors underline underline-offset-8"
+          >
+            <span>Read Our Full 14-Year Story, Timeline & Farm Partners</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+        </div>
+        <span class="text-[10px] text-[var(--text-muted)] opacity-60 mt-2 block">
+          *All operational statistics are sample demo metrics for template showcase purposes.
+        </span>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  // IntersectionObserver for Animated Metric Counters (runs once)
+  const counterBoxes = document.querySelectorAll('.counter-value');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const el = entry.target as HTMLElement;
+        const targetNumber = parseInt(el.getAttribute('data-target') || '0', 10);
+        const rawString = el.getAttribute('data-raw') || '';
+        
+        let startTime: number | null = null;
+        const duration = 1600; // ms
+
+        function step(timestamp: number) {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          // Ease-out cubic
+          const easedProgress = 1 - Math.pow(1 - progress, 3);
+          const currentVal = Math.floor(easedProgress * targetNumber);
+
+          if (rawString.includes('K')) {
+            el.textContent = `${currentVal}K`;
+          } else if (rawString.includes('%')) {
+            el.textContent = `${currentVal}%`;
+          } else {
+            el.textContent = currentVal.toString();
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            el.textContent = rawString;
+          }
+        }
+
+        requestAnimationFrame(step);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counterBoxes.forEach((box) => counterObserver.observe(box));
+</script>
+

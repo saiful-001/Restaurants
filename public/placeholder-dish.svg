@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2A1D" />
+      <stop offset="100%" stop-color="#1F4D36" />
+    </linearGradient>
+    <radialGradient id="ember" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C9A15A" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#C9A15A" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)" />
+  <circle cx="400" cy="300" r="240" fill="url(#ember)" />
+  <g transform="translate(400, 260)" text-anchor="middle">
+    <!-- Hearth Flame Emblem -->
+    <path d="M0 -50 C-20 -20, -35 10, -35 35 C-35 60, -15 75, 0 75 C15 75, 35 60, 35 35 C35 10, 20 -20, 0 -50 Z" fill="none" stroke="#C9A15A" stroke-width="3" />
+    <path d="M0 -20 C-10 -2, -18 15, -18 28 C-18 42, -8 52, 0 52 C8 52, 18 42, 18 28 C18 15, 10 -2, 0 -20 Z" fill="#C9A15A" opacity="0.6" />
+    <text y="110" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="20" font-weight="600" fill="#F6F1E7" letter-spacing="3">VERDANT HEARTH</text>
+    <text y="135" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="13" font-weight="400" fill="#A9C4A0" letter-spacing="1.5">Artisanal Hearth Gastronomy</text>
+  </g>
+</svg>
+

@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Navbar from '../components/Navbar.astro';
+import PageHero from '../components/PageHero.astro';
+import ReservationSection from '../components/ReservationSection.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import { RESERVATION_STEPS, RESTAURANT_INFO } from '../data/restaurant';
+import { IMAGES } from '../data/images';
+---
+
+<BaseLayout
+  title="Table Reservations & Private Dining — Verdant Hearth"
+  desc="Book your table at Verdant Hearth. Enjoy live-fire hearth dinners, Chef's Counter tasting journeys, and private conservatory celebrations."
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content">
+    <!-- Page Hero -->
+    <PageHero
+      badge="Reservations"
+      title="Reserve Your Gathering by the Hearth"
+      description="Book a dining room table, reserve an intimate seat at the Chef's Counter, or inquire about private celebrations in our glass conservatory."
+      bgImage={IMAGES.bannerReservation.url}
+    />
+
+    <!-- How It Works (3 Steps) -->
+    <section class="py-16 bg-[var(--bg-primary)] border-b border-[var(--border-color)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {RESERVATION_STEPS.map((step) => (
+            <div class="card-clean p-7 flex flex-col justify-between">
+              <div>
+                <span class="font-serif font-bold text-3xl text-[var(--accent-gold)] block mb-3">
+                  {step.step}
+                </span>
+                <h3 class="font-serif text-xl font-bold text-[var(--text-main)] mb-2">
+                  {step.title}
+                </h3>
+                <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Booking Form & Hours -->
+    <ReservationSection />
+
+    <!-- Private Conservatory & Large Events Section -->
+    <section class="py-20 lg:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-color)]" aria-labelledby="private-dining-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Image Composition -->
+          <div class="lg:col-span-6 relative">
+            <div class="reveal rounded-3xl overflow-hidden shadow-2xl border-4 border-[var(--bg-surface)] aspect-[16/11]">
+              <img
+                src={IMAGES.bannerReservation.url}
+                alt="Private dining conservatory table"
+                width={900}
+                height={600}
+                loading="lazy"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="hidden sm:block absolute -bottom-6 -right-6 w-48 h-36 rounded-2xl overflow-hidden shadow-xl border-3 border-[var(--bg-surface)]">
+              <img
+                src={IMAGES.heroAccent2.url}
+                alt="Botanical cocktails in private conservatory"
+                width={400}
+                height={300}
+                loading="lazy"
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
+          <!-- Private Dining Copy -->
+          <div class="lg:col-span-6 flex flex-col items-start">
+            <span class="reveal text-xs uppercase tracking-widest font-semibold text-[var(--accent-gold)] mb-2">
+              Bespoke Gatherings
+            </span>
+            <h2 id="private-dining-heading" class="reveal font-serif text-3xl sm:text-4xl font-bold text-[var(--text-main)] mb-4">
+              The Botanical Conservatory & Buyouts
+            </h2>
+            <p class="reveal text-sm sm:text-base text-[var(--text-muted)] leading-relaxed mb-6">
+              Our glass pavilion enveloped by jasmine vines and olive trees offers complete seclusion for weddings, milestone anniversaries, and executive dinners of up to 45 guests. Full restaurant buyouts accommodate up to 130 seated guests.
+            </p>
+
+            <ul class="reveal space-y-2.5 text-xs sm:text-sm text-[var(--text-muted)] mb-8">
+              <li class="flex items-center gap-2">
+                <span class="text-[var(--accent-gold)] font-bold">✓</span>
+                <span>Dedicated sommelier and custom printed menus</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[var(--accent-gold)] font-bold">✓</span>
+                <span>Live wood-fire carving station inside pavilion</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-[var(--accent-gold)] font-bold">✓</span>
+                <span>Exclusive sommelier cellar pairings available</span>
+              </li>
+            </ul>
+
+            <div class="reveal flex items-center gap-4">
+              <a
+                href={`mailto:${RESTAURANT_INFO.email}?subject=Private%20Dining%20Inquiry`}
+                class="btn-gold text-xs uppercase tracking-wider font-semibold py-3 px-6"
+              >
+                <span>Inquire for Private Events</span>
+              </a>
+              <span class="text-xs text-[var(--text-muted)]">
+                Direct hotline: {RESTAURANT_INFO.phone}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <FAQAccordion />
+
+    <!-- Bottom CTA -->
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</BaseLayout>
+

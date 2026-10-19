@@ -1,0 +1,310 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Navbar from '../components/Navbar.astro';
+import PageHero from '../components/PageHero.astro';
+import HoursLocation from '../components/HoursLocation.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import { RESTAURANT_INFO } from '../data/restaurant';
+import { IMAGES } from '../data/images';
+---
+
+<BaseLayout
+  title="Contact Us & Directions — Verdant Hearth"
+  desc="Get in touch with Verdant Hearth. Inquire about reservations, directions, parking, private buyouts, and press inquiries."
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content">
+    <!-- Page Hero -->
+    <PageHero
+      badge="Contact Us"
+      title="We Welcome Your Inquiries & Letters"
+      description="Whether planning an intimate anniversary, seeking wine cellar guidance, or asking about directions to our hearth—our hospitality team is here for you."
+      bgImage={IMAGES.bannerContact.url}
+    />
+
+    <!-- Contact Cards & Interactive Inquiry Form -->
+    <section class="py-16 lg:py-24 bg-[var(--bg-primary)] border-b border-[var(--border-color)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Contact Information Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div class="card-clean p-6 text-center">
+            <span class="text-3xl block mb-3">📍</span>
+            <h3 class="font-serif font-bold text-lg text-[var(--text-main)] mb-1">Location</h3>
+            <p class="text-xs text-[var(--text-muted)] mb-2">{RESTAURANT_INFO.address.street}</p>
+            <p class="text-xs font-semibold text-[var(--text-main)]">{RESTAURANT_INFO.address.city}, {RESTAURANT_INFO.address.state}</p>
+          </div>
+
+          <div class="card-clean p-6 text-center">
+            <span class="text-3xl block mb-3">📞</span>
+            <h3 class="font-serif font-bold text-lg text-[var(--text-main)] mb-1">Telephone</h3>
+            <p class="text-xs text-[var(--text-muted)] mb-2">Daily 11:00 AM – 10:00 PM</p>
+            <a href={`tel:${RESTAURANT_INFO.phone}`} class="text-xs font-bold text-[var(--accent-gold)] hover:underline block">
+              {RESTAURANT_INFO.phone}
+            </a>
+          </div>
+
+          <div class="card-clean p-6 text-center">
+            <span class="text-3xl block mb-3">✉️</span>
+            <h3 class="font-serif font-bold text-lg text-[var(--text-main)] mb-1">Email Concierge</h3>
+            <p class="text-xs text-[var(--text-muted)] mb-2">Replies within 1 business day</p>
+            <a href={`mailto:${RESTAURANT_INFO.email}`} class="text-xs font-bold text-[var(--accent-gold)] hover:underline block">
+              {RESTAURANT_INFO.email}
+            </a>
+          </div>
+
+          <div class="card-clean p-6 text-center">
+            <span class="text-3xl block mb-3">🌿</span>
+            <h3 class="font-serif font-bold text-lg text-[var(--text-main)] mb-1">Social Feed</h3>
+            <p class="text-xs text-[var(--text-muted)] mb-2">Follow behind the scenes</p>
+            <span class="text-xs font-bold text-[var(--accent-gold)]">{RESTAURANT_INFO.instagram}</span>
+          </div>
+        </div>
+
+        <!-- Contact Form & Valet Info Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          <!-- Left: Contact Form -->
+          <div class="lg:col-span-7">
+            <div class="card-clean p-8 sm:p-10 shadow-lg">
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[var(--text-main)] mb-2">
+                Send a Message to the Concierge
+              </h2>
+              <p class="text-xs sm:text-sm text-[var(--text-muted)] mb-6">
+                Fill in the form below for dining questions, media requests, or custom arrangements.
+              </p>
+
+              <!-- Success & Error Alerts -->
+              <div id="contact-success" class="hidden p-5 rounded-xl bg-emerald-950/80 border border-emerald-600 text-emerald-100 text-xs text-center mb-6">
+                <span class="text-xl block mb-1">✓</span>
+                <strong class="block text-white font-medium text-sm">Thank You for Your Message</strong>
+                <span>Our hospitality team will review your inquiry and reply promptly.</span>
+              </div>
+
+              <div id="contact-error" class="hidden p-4 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs mb-6">
+                <span id="contact-error-msg">Please complete all required fields.</span>
+              </div>
+
+              <form id="contact-form" class="space-y-5" novalidate>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label for="c-name" class="block text-xs font-semibold text-[var(--text-main)] uppercase tracking-wider mb-2">
+                      Your Name <span class="text-[var(--accent-gold)]">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="c-name"
+                      name="name"
+                      required
+                      placeholder="e.g. Clara Thompson"
+                      class="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)] placeholder-[var(--text-muted)] text-sm focus:border-[var(--accent-gold)] focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label for="c-email" class="block text-xs font-semibold text-[var(--text-main)] uppercase tracking-wider mb-2">
+                      Email Address <span class="text-[var(--accent-gold)]">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="c-email"
+                      name="email"
+                      required
+                      placeholder="clara@example.com"
+                      class="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)] placeholder-[var(--text-muted)] text-sm focus:border-[var(--accent-gold)] focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label for="c-phone" class="block text-xs font-semibold text-[var(--text-main)] uppercase tracking-wider mb-2">
+                      Phone Number (Optional)
+                    </label>
+                    <input
+                      type="tel"
+                      id="c-phone"
+                      name="phone"
+                      placeholder="+1 (503) 555-0144"
+                      class="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)] placeholder-[var(--text-muted)] text-sm focus:border-[var(--accent-gold)] focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label for="c-subject" class="block text-xs font-semibold text-[var(--text-main)] uppercase tracking-wider mb-2">
+                      Inquiry Subject <span class="text-[var(--accent-gold)]">*</span>
+                    </label>
+                    <select
+                      id="c-subject"
+                      name="subject"
+                      required
+                      class="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)] text-sm focus:border-[var(--accent-gold)] focus:outline-none transition-colors"
+                    >
+                      <option value="General Dining Inquiry">General Dining Inquiry</option>
+                      <option value="Private Event & Buyouts">Private Event & Conservatory Buyouts</option>
+                      <option value="Dietary & Allergen Accommodations">Dietary & Allergen Accommodations</option>
+                      <option value="Sommelier & Cellar Guidance">Sommelier & Cellar Guidance</option>
+                      <option value="Press & Media Inquiries">Press & Media Inquiries</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="c-message" class="block text-xs font-semibold text-[var(--text-main)] uppercase tracking-wider mb-2">
+                    Your Message <span class="text-[var(--accent-gold)]">*</span>
+                  </label>
+                  <textarea
+                    id="c-message"
+                    name="message"
+                    required
+                    rows="5"
+                    placeholder="Tell us how we can assist you..."
+                    class="w-full px-4 py-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)] placeholder-[var(--text-muted)] text-sm focus:border-[var(--accent-gold)] focus:outline-none transition-colors"
+                  ></textarea>
+                </div>
+
+                <button
+                  id="c-submit"
+                  type="submit"
+                  class="btn-gold w-full py-4 text-xs sm:text-sm uppercase tracking-wider font-semibold cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span id="c-spinner" class="hidden w-4 h-4 border-2 border-[#0F2A1D] border-t-transparent rounded-full animate-spin"></span>
+                  <span id="c-btn-text">Send Message to Concierge</span>
+                </button>
+              </form>
+
+              <p class="text-[11px] text-[var(--text-muted)] text-center mt-4">
+                Our hospitality concierge responds to all inquiries within 24 hours.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Valet, Parking & Transit Information -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="card-clean p-7">
+              <h3 class="font-serif text-xl font-bold text-[var(--text-main)] mb-3">
+                Valet & Parking Services
+              </h3>
+              <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed mb-4">
+                Complimentary valet service is offered directly at our Botanical Way entrance Wednesday through Sunday starting at 4:30 PM.
+              </p>
+              <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                Self-parking is available at the adjacent <em>Hearth Quarter Covered Garage</em> (440 Botanical Way). Please present your parking ticket to our host for 2 hours of complimentary validation.
+              </p>
+            </div>
+
+            <div class="card-clean p-7">
+              <h3 class="font-serif text-xl font-bold text-[var(--text-main)] mb-3">
+                Transit & Neighborhood
+              </h3>
+              <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed mb-3">
+                We are conveniently located two blocks from the Hearth Quarter MAX light rail stop and central Portland streetcar routes.
+              </p>
+              <a
+                href={RESTAURANT_INFO.address.mapLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--accent-gold)] hover:underline"
+              >
+                <span>View on Google Maps</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Hours & Location Live Calculator -->
+    <HoursLocation />
+
+    <!-- FAQ Accordion -->
+    <FAQAccordion />
+
+    <!-- Bottom CTA -->
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  import { sendContactMessage, apiConfigured, ApiError } from '../lib/api';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const nameInput = document.getElementById('c-name') as HTMLInputElement | null;
+  const emailInput = document.getElementById('c-email') as HTMLInputElement | null;
+  const phoneInput = document.getElementById('c-phone') as HTMLInputElement | null;
+  const subjectInput = document.getElementById('c-subject') as HTMLSelectElement | null;
+  const messageInput = document.getElementById('c-message') as HTMLTextAreaElement | null;
+
+  const submitBtn = document.getElementById('c-submit') as HTMLButtonElement | null;
+  const spinner = document.getElementById('c-spinner');
+  const btnText = document.getElementById('c-btn-text');
+  const alertSuccess = document.getElementById('contact-success');
+  const alertError = document.getElementById('contact-error');
+  const errorMsg = document.getElementById('contact-error-msg');
+
+  function setLoading(loading: boolean) {
+    if (submitBtn) submitBtn.disabled = loading;
+    if (loading) {
+      spinner?.classList.remove('hidden');
+      if (btnText) btnText.textContent = 'Sending Message...';
+    } else {
+      spinner?.classList.add('hidden');
+      if (btnText) btnText.textContent = 'Send Message to Concierge';
+    }
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    alertError?.classList.add('hidden');
+
+    const name = nameInput?.value.trim() || '';
+    const email = emailInput?.value.trim() || '';
+    const phone = phoneInput?.value.trim() || '';
+    const subject = subjectInput?.value || 'General Dining Inquiry';
+    const message = messageInput?.value.trim() || '';
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!name || !email || !emailRegex.test(email) || !message) {
+      if (errorMsg) errorMsg.textContent = 'Please fill out all required fields with a valid email.';
+      alertError?.classList.remove('hidden');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (apiConfigured) {
+        await sendContactMessage({ name, email, phone, subject, message });
+        form.classList.add('hidden');
+        alertSuccess?.classList.remove('hidden');
+      } else {
+        // Simulated client demo
+        await new Promise((r) => setTimeout(r, 650));
+        form.classList.add('hidden');
+        alertSuccess?.classList.remove('hidden');
+      }
+    } catch (err: any) {
+      let msg = 'Failed to send message.';
+      if (err instanceof ApiError) {
+        msg = err.getFormattedValidationMessage();
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      if (errorMsg) errorMsg.textContent = msg;
+      alertError?.classList.remove('hidden');
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
+

@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnnouncementBar from '../../components/AnnouncementBar.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { WHY_DINE_REASONS, type WhyDineReason } from '../../data/restaurant';
+
+export async function getStaticPaths() {
+  return WHY_DINE_REASONS.map((reason) => {
+    const relatedReasons = WHY_DINE_REASONS.filter((r) => r.slug !== reason.slug);
+    return {
+      params: { slug: reason.slug },
+      props: { reason, relatedReasons }
+    };
+  });
+}
+
+interface Props {
+  reason: WhyDineReason;
+  relatedReasons: WhyDineReason[];
+}
+
+const { reason, relatedReasons } = Astro.props;
+---
+
+<BaseLayout
+  title={`${reason.title} — Why Dine at Verdant Hearth`}
+  desc={`${reason.shortDescription} Discover the story behind our culinary philosophy at Verdant Hearth.`}
+  ogImage={reason.heroImage}
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content" class="pt-8 pb-20 bg-[var(--bg-primary)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex items-center gap-2 text-xs sm:text-sm text-[var(--text-muted)] mb-8" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--accent-gold)] transition-colors">Home</a>
+        <span class="opacity-40">/</span>
+        <a href="/#experience" class="hover:text-[var(--accent-gold)] transition-colors">Why Dine</a>
+        <span class="opacity-40">/</span>
+        <span class="text-[var(--text-main)] font-semibold truncate">{reason.title}</span>
+      </nav>
+
+      <!-- Editorial Hero Header -->
+      <div class="max-w-4xl mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--brand-mid)]/10 border border-[var(--brand-mid)]/20 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-4">
+          <span>Principle {reason.num}</span>
+          <span>✦</span>
+          <span>Core Hearth Philosophy</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[var(--text-main)] tracking-tight leading-tight mb-4">
+          {reason.title}
+        </h1>
+
+        <p class="text-lg sm:text-xl text-[var(--accent-gold)] font-medium leading-relaxed mb-6">
+          {reason.tagline}
+        </p>
+
+        <p class="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed">
+          {reason.shortDescription}
+        </p>
+      </div>
+
+      <!-- Hero Panoramic Feature Image -->
+      <div class="relative rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[24/9] max-h-[480px] w-full border border-[var(--border-color)] shadow-2xl mb-16 bg-[var(--bg-muted)]">
+        <img
+          src={reason.heroImage}
+          alt={reason.title}
+          width={1400}
+          height={600}
+          fetchpriority="high"
+          onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+        <div class="absolute bottom-6 left-6 sm:left-10 text-white">
+          <span class="text-xs uppercase tracking-widest text-[#C9A15A] font-bold block mb-1">
+            Portland, Oregon Culinary Sanctuary
+          </span>
+          <span class="text-xl sm:text-2xl font-bold text-[#F6F1E7]">
+            Verdant Hearth Live Gastronomy
+          </span>
+        </div>
+      </div>
+
+      <!-- Narrative Story & 3-5 Supporting Facts Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start mb-20">
+        
+        <!-- Left: Full Story Narrative (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)]">
+            The Full Story
+          </h2>
+
+          <p class="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed">
+            {reason.fullStory}
+          </p>
+
+          <p class="text-base text-[var(--text-muted)] leading-relaxed">
+            Every day, our cooks, foragers, and sommeliers operate with this exact commitment. We reject industrialized convenience and mass-produced shortcuts, choosing instead the patience of wood smoke, living wild yeasts, and intimate partnerships with small farmers.
+          </p>
+
+          <!-- Quote Callout Box -->
+          <blockquote class="p-6 rounded-2xl bg-[var(--bg-surface)] border-l-4 border-[var(--accent-gold)] shadow-sm my-4">
+            <p class="text-base sm:text-lg italic text-[var(--text-main)] mb-3 leading-relaxed">
+              "{reason.quote.text}"
+            </p>
+            <footer class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)]">
+              — {reason.quote.author}, <span class="text-[var(--text-muted)] font-normal">{reason.quote.role}</span>
+            </footer>
+          </blockquote>
+        </div>
+
+        <!-- Right: 3-5 Supporting Facts / Highlights (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <h2 class="text-xs uppercase tracking-widest font-bold text-[var(--accent-gold)] mb-2">
+            Key Highlights & Supporting Metrics
+          </h2>
+
+          {reason.highlights.map((fact) => (
+            <div class="card-clean p-6 flex flex-col justify-between">
+              <div>
+                <span class="text-xs uppercase tracking-wider font-bold text-[var(--text-muted)] block mb-1">
+                  {fact.label}
+                </span>
+                <span class="text-3xl font-extrabold text-[var(--accent-gold)] block mb-2">
+                  {fact.value}
+                </span>
+                <p class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  {fact.description}
+                </p>
+              </div>
+            </div>
+          ))}
+
+          <!-- Quick Reserve Card -->
+          <div class="p-6 rounded-2xl bg-[#0F2A1D] text-[#F6F1E7] mt-4 border border-[#1F4D36] shadow-xl">
+            <h3 class="font-bold text-lg text-[#F6F1E7] mb-2">
+              Experience It in Person
+            </h3>
+            <p class="text-xs text-[#A9C4A0] leading-relaxed mb-6">
+              Join us for dinner service or weekend brunch and witness live wood-fired craft firsthand.
+            </p>
+            <a
+              href="/reservation"
+              class="btn-gold text-xs uppercase tracking-wider font-bold py-3.5 px-6 w-full text-center block"
+            >
+              Reserve a Table Now
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Photo Gallery -->
+      {reason.gallery && reason.gallery.length > 0 && (
+        <section aria-labelledby="gallery-heading" class="mb-20">
+          <h2 id="gallery-heading" class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] mb-8">
+            Behind the Craft
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {reason.gallery.map((imgUrl, idx) => (
+              <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-[var(--bg-muted)] border border-[var(--border-color)] group shadow-md">
+                <img
+                  src={imgUrl}
+                  alt={`${reason.title} gallery photo ${idx + 1}`}
+                  width={600}
+                  height={450}
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Related Reasons Strip -->
+      <section aria-labelledby="related-reasons-heading" class="border-t border-[var(--border-color)] pt-14">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-[var(--accent-gold)] font-bold block mb-1">
+              Explore More Philosophies
+            </span>
+            <h2 id="related-reasons-heading" class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)]">
+              Other Pillars of Verdant Hearth
+            </h2>
+          </div>
+          <a href="/#experience" class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)] hover:underline hidden sm:inline">
+            View All Pillars →
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {relatedReasons.slice(0, 3).map((item) => (
+            <a
+              href={`/why/${item.slug}`}
+              class="card-clean p-6 flex flex-col justify-between group hover:border-[var(--accent-gold)] transition-all duration-300"
+            >
+              <div>
+                <span class="text-2xl font-extrabold text-[var(--accent-gold)] block mb-3">
+                  {item.num}
+                </span>
+                <h3 class="font-bold text-lg text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors mb-2">
+                  {item.title}
+                </h3>
+                <p class="text-xs text-[var(--text-muted)] line-clamp-3 leading-relaxed">
+                  {item.shortDescription}
+                </p>
+              </div>
+
+              <div class="pt-4 mt-4 border-t border-[var(--border-color)]/60 text-xs font-bold text-[var(--accent-gold)] flex items-center gap-1">
+                <span>Read Full Story</span>
+                <span>→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+

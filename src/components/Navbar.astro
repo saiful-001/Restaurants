@@ -1,0 +1,233 @@
+---
+import { RESTAURANT_INFO, NAVIGATION_LINKS } from '../data/restaurant';
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+};
+---
+
+<header
+  id="main-navbar"
+  class="sticky top-0 z-40 w-full transition-all duration-300 backdrop-blur-md bg-[var(--bg-primary)]/90 border-b border-[var(--border-color)]"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <!-- Brand Logo -->
+    <a
+      href="/"
+      class="group flex items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-[#C9A15A] rounded-lg"
+      aria-label={`${RESTAURANT_INFO.name} Home`}
+    >
+      <div class="w-10 h-10 rounded-xl bg-[#0F2A1D] border border-[#C9A15A]/40 flex items-center justify-center text-[#C9A15A] group-hover:border-[#C9A15A] transition-colors shadow-sm">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2C8 6 6 10 6 14C6 17.31 8.69 20 12 20C15.31 20 18 17.31 18 14C18 9 14 5 12 2Z" fill="#1F4D36" stroke="#C9A15A" stroke-width="1.5" />
+          <path d="M12 18C10.5 18 9.5 16.8 9.5 15C9.5 13 11 11.5 12 10C13 11.5 14.5 13 14.5 15C14.5 16.8 13.5 18 12 18Z" fill="#C9A15A" />
+        </svg>
+      </div>
+      <div>
+        <span class="block font-serif text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)] leading-none">
+          {RESTAURANT_INFO.name}
+        </span>
+        <span class="block text-[10px] uppercase tracking-[0.2em] font-medium text-[var(--accent-gold)] mt-0.5">
+          Botanical & Hearth
+        </span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation Links (Real Multi-Page Routes) -->
+    <nav class="hidden lg:flex items-center gap-6 xl:gap-7 text-sm font-medium" aria-label="Main Navigation">
+      {NAVIGATION_LINKS.map((link) => {
+        const active = isActive(link.href);
+        return (
+          <a
+            href={link.href}
+            class={`relative py-1 transition-colors group ${
+              active
+                ? 'text-[var(--text-main)] font-semibold'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
+            }`}
+          >
+            {link.label}
+            <span
+              class={`absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 ${
+                active ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}
+            ></span>
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Right Controls: Theme Toggle & Reserve CTA -->
+    <div class="flex items-center gap-3">
+      <!-- Theme Toggle Button (Cycles 4 Themes: Light, Dark, Ember, Saffron & Olive) -->
+      <button
+        id="theme-toggle-btn"
+        type="button"
+        class="h-10 rounded-full flex items-center justify-center gap-1.5 px-3 border border-[var(--border-color)] bg-[var(--bg-surface)] text-[var(--text-main)] hover:border-[var(--accent-gold)] transition-all duration-200 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-[#C9A15A] text-xs font-semibold tracking-wide"
+        aria-label="Cycle theme: Light, Dark, Ember, Saffron & Olive"
+        title="Toggle Theme"
+      >
+        <span id="theme-icon" aria-hidden="true">☀️</span>
+        <span id="theme-label" class="hidden sm:inline">Light</span>
+      </button>
+
+      <!-- Desktop Reserve CTA -->
+      <a
+        href="/reservation"
+        class="hidden sm:inline-flex btn-gold text-xs sm:text-sm py-2 px-5 tracking-wide uppercase font-semibold"
+      >
+        <span>Reserve Table</span>
+        <svg class="w-4 h-4 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        class="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center border border-[var(--border-color)] bg-[var(--bg-surface)] text-[var(--text-main)] hover:border-[var(--accent-gold)] transition-colors focus-visible:outline-2 focus-visible:outline-[#C9A15A]"
+        aria-label="Toggle navigation drawer"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+      >
+        <svg id="hamburger-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div
+    id="mobile-drawer"
+    class="lg:hidden hidden border-b border-[var(--border-color)] bg-[var(--bg-surface)]/95 backdrop-blur-lg px-6 pt-4 pb-8 transition-all duration-300"
+  >
+    <nav class="flex flex-col gap-3" aria-label="Mobile Navigation">
+      {NAVIGATION_LINKS.map((link) => {
+        const active = isActive(link.href);
+        return (
+          <a
+            href={link.href}
+            class={`mobile-nav-link text-base font-medium py-2 border-b border-[var(--border-color)]/60 flex items-center justify-between ${
+              active
+                ? 'text-[var(--accent-gold)] font-bold'
+                : 'text-[var(--text-main)] hover:text-[var(--accent-gold)]'
+            }`}
+          >
+            <span>{link.label}</span>
+            <svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        );
+      })}
+      <div class="pt-4 flex flex-col gap-3">
+        <a
+          href="/reservation"
+          class="mobile-nav-link btn-gold w-full text-center py-3 text-sm tracking-wide uppercase font-semibold"
+        >
+          Book Your Table
+        </a>
+        <div class="text-center text-xs text-[var(--text-muted)]">
+          {RESTAURANT_INFO.phone} · {RESTAURANT_INFO.address.city}
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Theme Toggle Controller — 4 Themes Cycling (Light, Dark, Ember, Saffron & Olive)
+  const THEMES = ['light', 'dark', 'ember', 'saffron'] as const;
+  type ThemeName = typeof THEMES[number];
+
+  const THEME_META: Record<ThemeName, { icon: string; label: string }> = {
+    light:   { icon: '☀️', label: 'Light' },
+    dark:    { icon: '🌙', label: 'Dark' },
+    ember:   { icon: '🔥', label: 'Ember' },
+    saffron: { icon: '🫒', label: 'Saffron & Olive' }
+  };
+
+  const toggleBtn = document.getElementById('theme-toggle-btn');
+  const themeIcon = document.getElementById('theme-icon');
+  const themeLabel = document.getElementById('theme-label');
+
+  function syncThemeUI(theme: ThemeName) {
+    const meta = THEME_META[theme] || THEME_META.light;
+    if (themeIcon) themeIcon.textContent = meta.icon;
+    if (themeLabel) themeLabel.textContent = meta.label;
+  }
+
+  function getActiveTheme(): ThemeName {
+    const current = document.documentElement.getAttribute('data-theme') as ThemeName;
+    return THEMES.includes(current) ? current : 'light';
+  }
+
+  // Initial sync
+  syncThemeUI(getActiveTheme());
+
+  toggleBtn?.addEventListener('click', () => {
+    const current = getActiveTheme();
+    const nextIndex = (THEMES.indexOf(current) + 1) % THEMES.length;
+    const nextTheme = THEMES[nextIndex];
+
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    if (nextTheme === 'dark' || nextTheme === 'ember') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    try {
+      localStorage.setItem('verdant-theme', nextTheme);
+    } catch (e) {}
+
+    syncThemeUI(nextTheme);
+  });
+
+  // Mobile Drawer Controller
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const mobileDrawer = document.getElementById('mobile-drawer');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+  const closeIcon = document.getElementById('close-icon');
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+  let isDrawerOpen = false;
+
+  function setDrawerState(open: boolean) {
+    isDrawerOpen = open;
+    mobileToggle?.setAttribute('aria-expanded', String(open));
+    if (open) {
+      mobileDrawer?.classList.remove('hidden');
+      hamburgerIcon?.classList.add('hidden');
+      closeIcon?.classList.remove('hidden');
+    } else {
+      mobileDrawer?.classList.add('hidden');
+      hamburgerIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+    }
+  }
+
+  mobileToggle?.addEventListener('click', () => {
+    setDrawerState(!isDrawerOpen);
+  });
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      setDrawerState(false);
+    });
+  });
+
+  // Close drawer on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isDrawerOpen) {
+      setDrawerState(false);
+    }
+  });
+</script>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bg-thomas" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2A6647" />
+      <stop offset="100%" stop-color="#0F2A1D" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="100" fill="url(#bg-thomas)" />
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#C9A15A" stroke-width="2" stroke-dasharray="4 2" />
+  <g transform="translate(100, 105)" fill="#F6F1E7" stroke="#17241D" stroke-width="1.5">
+    <!-- Baker Linen Apron -->
+    <path d="M-45 65 C-40 32, -22 22, 0 22 C22 22, 40 32, 45 65 Z" fill="#F6F1E7" />
+    <path d="M-18 24 L-15 65 M18 24 L15 65" stroke="#B88F46" stroke-width="2" />
+    <!-- Wheat Stalk icon -->
+    <path d="M0 32 L0 52 M-4 38 L0 44 L4 38 M-4 44 L0 50 L4 44" stroke="#C9A15A" stroke-width="2" fill="none" />
+    <!-- Head -->
+    <ellipse cx="0" cy="-10" rx="22" ry="26" fill="#F6F1E7" stroke="#0F2A1D" />
+    <!-- Baker Flat Cap & Mustache -->
+    <path d="M-26 -20 C-30 -42, 30 -42, 26 -20 C20 -28, -20 -28, -26 -20 Z" fill="#17241D" />
+    <path d="M-28 -18 L28 -18 L22 -14 L-22 -14 Z" fill="#2A6647" />
+    <path d="M-10 2 Q0 -2 10 2 Q0 6 -10 2 Z" fill="#17241D" />
+  </g>
+</svg>
+

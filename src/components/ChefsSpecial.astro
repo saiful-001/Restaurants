@@ -1,0 +1,110 @@
+---
+import { CHEFS_SPECIAL } from '../data/restaurant';
+---
+
+<section
+  id="chefs-special"
+  class="py-20 bg-[#0A1B12] text-[#F6F1E7] border-b border-[#1E4631] relative overflow-hidden"
+  aria-labelledby="special-heading"
+>
+  <!-- Background Fire Ember Glow -->
+  <div class="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-[32rem] h-[32rem] bg-[#C9A15A]/10 rounded-full blur-[110px]" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="card-dark overflow-hidden border border-[#C9A15A]/30 bg-gradient-to-br from-[#0F2A1D] to-[#0A1B12] shadow-2xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
+        
+        <!-- Left: Image with glowing overlay -->
+        <div class="lg:col-span-5 relative aspect-[4/3] lg:aspect-auto lg:h-full min-h-[320px] overflow-hidden bg-black/40">
+          <img
+            src={CHEFS_SPECIAL.image}
+            alt={CHEFS_SPECIAL.title}
+            width={900}
+            height={700}
+            loading="lazy"
+            onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+            class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-transparent via-transparent to-[#0F2A1D]/80 pointer-events-none"></div>
+
+          <!-- Limited Badge -->
+          <span class="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#C9A15A] text-[#0F2A1D] shadow-lg">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#0F2A1D] animate-ping" aria-hidden="true"></span>
+            Limited: 24 Portions Daily
+          </span>
+        </div>
+
+        <!-- Right: Detail Copy & Reservation Prompt -->
+        <div class="lg:col-span-7 p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              {CHEFS_SPECIAL.tags.map((tag) => (
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-[#1F4D36] text-[#A9C4A0] border border-[#2B5940]">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <h2
+              id="special-heading"
+              class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-2"
+            >
+              {CHEFS_SPECIAL.title}
+            </h2>
+
+            <p class="font-medium text-lg text-[#C9A15A] mb-4">
+              {CHEFS_SPECIAL.subtitle}
+            </p>
+
+            <p class="text-xs sm:text-sm text-[#A9C4A0] leading-relaxed mb-6">
+              {CHEFS_SPECIAL.description}
+            </p>
+
+            <!-- Pairing Banner -->
+            <div class="p-4 rounded-xl bg-[#081710] border border-[#1E4631] text-xs sm:text-sm text-[#D5E2D1] mb-6 flex items-start gap-3">
+              <span class="text-xl">🍷</span>
+              <div>
+                <strong class="text-white block font-medium">Sommelier Selection:</strong>
+                <span>{CHEFS_SPECIAL.pairing}</span>
+              </div>
+            </div>
+
+            <div class="text-[11px] text-[#A9C4A0]/80 mb-6">
+              {CHEFS_SPECIAL.dietaryNote}
+            </div>
+          </div>
+
+          <!-- Bottom Price & CTA -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-[#1E4631]">
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-extrabold text-[#C9A15A]">
+                ${CHEFS_SPECIAL.price}
+              </span>
+              <span class="text-xs text-[#A9C4A0]">/ course tasting</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <a
+                href={`/menu/${CHEFS_SPECIAL.slug}`}
+                class="btn-outline-gold text-xs uppercase tracking-wider font-semibold py-3 px-5 text-center"
+              >
+                View Dish
+              </a>
+              <a
+                href="/reservation"
+                class="btn-gold text-xs uppercase tracking-wider font-semibold py-3 px-6"
+              >
+                <span>Reserve Feature</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

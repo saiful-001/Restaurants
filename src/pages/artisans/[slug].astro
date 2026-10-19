@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnnouncementBar from '../../components/AnnouncementBar.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { ARTISANS, FULL_MENU, type ArtisanProfile, type MenuItem } from '../../data/restaurant';
+
+export async function getStaticPaths() {
+  return ARTISANS.map((artisan, index) => {
+    const prevArtisan = index > 0 ? ARTISANS[index - 1] : ARTISANS[ARTISANS.length - 1];
+    const nextArtisan = index < ARTISANS.length - 1 ? ARTISANS[index + 1] : ARTISANS[0];
+    const linkedDishes = FULL_MENU.filter((d) => artisan.linkedDishSlugs.includes(d.slug));
+
+    return {
+      params: { slug: artisan.slug },
+      props: { artisan, prevArtisan, nextArtisan, linkedDishes }
+    };
+  });
+}
+
+interface Props {
+  artisan: ArtisanProfile;
+  prevArtisan: ArtisanProfile;
+  nextArtisan: ArtisanProfile;
+  linkedDishes: MenuItem[];
+}
+
+const { artisan, prevArtisan, nextArtisan, linkedDishes } = Astro.props;
+---
+
+<BaseLayout
+  title={`${artisan.name} (${artisan.role}) — Artisans of Verdant Hearth`}
+  desc={`${artisan.name}, ${artisan.role} at Verdant Hearth. ${artisan.biography}`}
+  ogImage={artisan.heroImage}
+>
+  <AnnouncementBar />
+  <Navbar />
+
+  <main id="main-content" class="pt-8 pb-20 bg-[var(--bg-primary)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex items-center gap-2 text-xs sm:text-sm text-[var(--text-muted)] mb-8" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--accent-gold)] transition-colors">Home</a>
+        <span class="opacity-40">/</span>
+        <a href="/#team" class="hover:text-[var(--accent-gold)] transition-colors">Artisans</a>
+        <span class="opacity-40">/</span>
+        <span class="text-[var(--text-main)] font-semibold truncate">{artisan.name}</span>
+      </nav>
+
+      <!-- Artisan Header Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16">
+        
+        <!-- Left: Illustrated Avatar & Hero Frame (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col items-center sm:items-start">
+          <div class="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden bg-[var(--bg-surface-elevated)] border-2 border-[var(--border-color)] shadow-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center">
+            <!-- Illustrated Vector Portrait -->
+            <img
+              src={artisan.avatar}
+              alt={`Illustrated portrait of ${artisan.name}`}
+              width={200}
+              height={200}
+              class="w-40 h-40 sm:w-48 sm:h-48 rounded-full mb-6 shadow-lg border-2 border-[var(--accent-gold)]"
+            />
+            
+            <span class="text-xs uppercase tracking-widest font-bold text-[var(--accent-gold)] block mb-1">
+              {artisan.role}
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] mb-2">
+              {artisan.name}
+            </h1>
+            <p class="text-xs sm:text-sm text-[var(--text-muted)] font-medium">
+              {artisan.craft}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Biography & Process (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col items-start">
+          
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--brand-mid)]/10 border border-[var(--brand-mid)]/20 text-[var(--accent-gold)] text-xs font-bold uppercase tracking-wider mb-4">
+            <span>Artisans of Flame & Earth</span>
+            <span>✦</span>
+            <span>Portland, Oregon</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--text-main)] tracking-tight mb-4">
+            A Devotion to Terroir & Handcrafted Gastronomy
+          </h2>
+
+          <p class="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed mb-6">
+            {artisan.biography}
+          </p>
+
+          <!-- Craft & Process Card -->
+          <div class="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] w-full mb-6 shadow-sm">
+            <h3 class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)] mb-2">
+              Daily Process & Philosophy
+            </h3>
+            <p class="text-sm text-[var(--text-main)] leading-relaxed">
+              {artisan.process}
+            </p>
+          </div>
+
+          <!-- Quote Callout -->
+          <blockquote class="p-5 rounded-xl bg-[var(--brand-mid)]/10 border-l-4 border-[var(--accent-gold)] w-full mb-6">
+            <p class="text-base italic text-[var(--text-main)] font-medium">
+              "{artisan.quote}"
+            </p>
+          </blockquote>
+
+          <!-- Accolades Chips -->
+          <div class="w-full">
+            <span class="text-xs uppercase tracking-wider font-bold text-[var(--text-muted)] block mb-2">
+              Accolades & Distinctions:
+            </span>
+            <div class="flex flex-wrap gap-2">
+              {artisan.accolades.map((acc) => (
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-main)]">
+                  ★ {acc}
+                </span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Linked Dishes & Creations Strip -->
+      {linkedDishes.length > 0 && (
+        <section aria-labelledby="artisan-dishes-heading" class="mb-20">
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-[var(--accent-gold)] font-bold block mb-1">
+                From {artisan.name}'s Station
+              </span>
+              <h2 id="artisan-dishes-heading" class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)]">
+                Signature Creations & Pairings
+              </h2>
+            </div>
+            <a href="/menu" class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)] hover:underline hidden sm:inline">
+              View Full Menu →
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {linkedDishes.map((dish) => (
+              <a
+                href={`/menu/${dish.slug}`}
+                class="card-clean overflow-hidden group flex flex-col justify-between hover:border-[var(--accent-gold)] transition-all duration-300"
+              >
+                <div>
+                  <div class="relative aspect-[16/10] overflow-hidden bg-[var(--bg-muted)]">
+                    <img
+                      src={dish.image}
+                      alt={dish.name}
+                      width={500}
+                      height={320}
+                      loading="lazy"
+                      onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span class="absolute bottom-3 right-3 font-extrabold text-lg text-white drop-shadow-md">
+                      ${dish.price}
+                    </span>
+                  </div>
+
+                  <div class="p-5">
+                    <div class="flex items-center gap-1.5 mb-2">
+                      {dish.dietary.slice(0, 2).map((t) => (
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[var(--brand-mid)]/10 text-[var(--accent-gold)]">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 class="font-bold text-base text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors mb-1 line-clamp-1">
+                      {dish.name}
+                    </h3>
+                    <p class="text-xs text-[var(--text-muted)] line-clamp-2">
+                      {dish.shortDescription}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="px-5 pb-5 pt-0">
+                  <span class="text-xs font-semibold text-[var(--accent-gold)] flex items-center gap-1">
+                    <span>View Dish Story & Ingredients</span>
+                    <span>→</span>
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Artisan Gallery -->
+      {artisan.gallery && artisan.gallery.length > 0 && (
+        <section aria-labelledby="artisan-gallery-heading" class="mb-20">
+          <h2 id="artisan-gallery-heading" class="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] mb-8">
+            Behind the Hearth & Soil
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {artisan.gallery.map((imgUrl, idx) => (
+              <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-[var(--bg-muted)] border border-[var(--border-color)] group shadow-md">
+                <img
+                  src={imgUrl}
+                  alt={`${artisan.name} craft photo ${idx + 1}`}
+                  width={600}
+                  height={450}
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='/placeholder-dish.svg';"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Previous / Next Artisan Navigation Strip -->
+      <div class="flex items-center justify-between border-t border-b border-[var(--border-color)] py-6 mb-16">
+        <a
+          href={`/artisans/${prevArtisan.slug}`}
+          class="group flex items-center gap-3 text-left max-w-[45%]"
+        >
+          <div class="w-10 h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center text-[var(--text-muted)] group-hover:border-[var(--accent-gold)] group-hover:text-[var(--accent-gold)] transition-colors shrink-0">
+            ←
+          </div>
+          <div>
+            <span class="text-[11px] uppercase tracking-wider text-[var(--text-muted)] block">Previous Artisan</span>
+            <span class="text-sm font-bold text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors line-clamp-1">
+              {prevArtisan.name}
+            </span>
+          </div>
+        </a>
+
+        <a
+          href={`/artisans/${nextArtisan.slug}`}
+          class="group flex items-center justify-end gap-3 text-right max-w-[45%]"
+        >
+          <div>
+            <span class="text-[11px] uppercase tracking-wider text-[var(--text-muted)] block">Next Artisan</span>
+            <span class="text-sm font-bold text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors line-clamp-1">
+              {nextArtisan.name}
+            </span>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center text-[var(--text-muted)] group-hover:border-[var(--accent-gold)] group-hover:text-[var(--accent-gold)] transition-colors shrink-0">
+            →
+          </div>
+        </a>
+      </div>
+
+      <!-- Bottom Reservation Call to Action -->
+      <div class="p-8 sm:p-12 rounded-3xl bg-[#0F2A1D] text-[#F6F1E7] border border-[#1F4D36] shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div class="max-w-xl">
+          <span class="text-xs uppercase tracking-widest text-[#C9A15A] font-bold block mb-2">
+            Chef's Counter & Dining Room
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-[#F6F1E7] mb-2">
+            Dine With Us at the Hearth
+          </h2>
+          <p class="text-sm text-[#A9C4A0] leading-relaxed">
+            Reserve your seat at our 8-seat Chef's counter to interact directly with our artisans while enjoying our 7-course seasonal tasting menu.
+          </p>
+        </div>
+        <a
+          href="/reservation"
+          class="btn-gold text-xs uppercase tracking-wider font-bold py-4 px-8 shrink-0 text-center"
+        >
+          Reserve a Table
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+

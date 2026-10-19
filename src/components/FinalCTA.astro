@@ -1,0 +1,63 @@
+---
+import { RESTAURANT_INFO } from '../data/restaurant';
+---
+
+<section
+  id="final-cta"
+  class="py-24 lg:py-32 bg-gradient-to-b from-[#0F2A1D] via-[#0A1B12] to-[#07130D] text-[#F6F1E7] relative overflow-hidden border-b border-[#1E4631]"
+  aria-labelledby="cta-heading"
+>
+  <!-- Hearth Fire Background Radial Glow -->
+  <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[46rem] h-[30rem] bg-[#C9A15A]/15 rounded-full blur-[140px]" aria-hidden="true"></div>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <!-- Seal Icon -->
+    <div class="reveal w-16 h-16 rounded-full bg-[#1F4D36]/40 border border-[#C9A15A]/50 flex items-center justify-center text-[#C9A15A] mx-auto mb-6 shadow-lg">
+      <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 2C8 6 6 10 6 14C6 17.31 8.69 20 12 20C15.31 20 18 17.31 18 14C18 9 14 5 12 2Z" fill="#1F4D36" stroke="#C9A15A" stroke-width="1.5" />
+        <path d="M12 18C10.5 18 9.5 16.8 9.5 15C9.5 13 11 11.5 12 10C13 11.5 14.5 13 14.5 15C14.5 16.8 13.5 18 12 18Z" fill="#C9A15A" />
+      </svg>
+    </div>
+
+    <span class="reveal text-xs uppercase tracking-widest font-semibold text-[#C9A15A] block mb-3">
+      Experience Live-Fire Culinary Art
+    </span>
+
+    <h2
+      id="cta-heading"
+      class="reveal font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight mb-6"
+    >
+      Your Table at the Hearth Awaits
+    </h2>
+
+    <p class="reveal text-base sm:text-lg text-[#A9C4A0] max-w-2xl mx-auto leading-relaxed mb-10">
+      Whether an intimate celebration, a curious palate seeking natural wines, or a spontaneous evening by our live wood embers—we welcome you to gather with us.
+    </p>
+
+    <!-- CTAs -->
+    <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="/reservation"
+        class="btn-gold text-xs sm:text-sm uppercase tracking-wider font-semibold py-4 px-9 shadow-xl w-full sm:w-auto text-center"
+      >
+        <span>Reserve Your Table Online</span>
+        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+
+      <a
+        href={`tel:${RESTAURANT_INFO.phone}`}
+        class="btn-outline-gold text-xs sm:text-sm uppercase tracking-wider font-semibold py-4 px-9 w-full sm:w-auto text-center"
+      >
+        <span>Direct Telephone: {RESTAURANT_INFO.phone}</span>
+      </a>
+    </div>
+
+    <!-- Opening Notice -->
+    <p class="reveal text-xs text-[#A9C4A0]/60 mt-10">
+      Dinner service Tuesday – Sunday · Walk-in bar seating available nightly without reservation
+    </p>
+  </div>
+</section>
+

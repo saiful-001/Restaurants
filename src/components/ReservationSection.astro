@@ -1,0 +1,424 @@
+---
+import { RESTAURANT_INFO } from '../data/restaurant';
+---
+
+<section
+  id="reserve"
+  class="py-20 lg:py-28 bg-[#0A1B12] text-[#F6F1E7] border-b border-[#1E4631] relative overflow-hidden"
+  aria-labelledby="reserve-heading"
+>
+  <!-- Background Glow & Hearth Sparks -->
+  <div class="pointer-events-none absolute -bottom-20 -left-20 w-96 h-96 bg-[#C9A15A]/10 rounded-full blur-[100px]" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute top-10 right-10 w-96 h-96 bg-[#1F4D36]/20 rounded-full blur-[120px]" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      
+      <!-- Left Column: Reservation Info & Dining Policies -->
+      <div class="lg:col-span-5 flex flex-col justify-between">
+        <div>
+          <span class="reveal text-xs uppercase tracking-widest font-semibold text-[#C9A15A] block mb-2">
+            Table Booking
+          </span>
+          <h2
+            id="reserve-heading"
+            class="reveal font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6"
+          >
+            Reserve Your Place at the Hearth
+          </h2>
+          <p class="reveal text-sm sm:text-base text-[#A9C4A0] leading-relaxed mb-8">
+            Experience live wood-ember dining and wild botanical pairings. For parties greater than 8, tasting menus, or private conservatory buyouts, please contact our concierge directly.
+          </p>
+
+          <!-- Quick Contact Highlights -->
+          <div class="reveal space-y-4 text-xs sm:text-sm text-[#D5E2D1] mb-8">
+            <div class="flex items-center gap-3 p-3.5 rounded-xl bg-[#0F2A1D] border border-[#1E4631]">
+              <span class="text-[#C9A15A] text-lg">📞</span>
+              <div>
+                <span class="text-white font-medium block">Concierge Telephone</span>
+                <a href={`tel:${RESTAURANT_INFO.phone}`} class="text-[#A9C4A0] hover:text-[#C9A15A] transition-colors">
+                  {RESTAURANT_INFO.phone}
+                </a>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 p-3.5 rounded-xl bg-[#0F2A1D] border border-[#1E4631]">
+              <span class="text-[#C9A15A] text-lg">✉️</span>
+              <div>
+                <span class="text-white font-medium block">Inquiries & Private Events</span>
+                <a href={`mailto:${RESTAURANT_INFO.email}`} class="text-[#A9C4A0] hover:text-[#C9A15A] transition-colors">
+                  {RESTAURANT_INFO.email}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dining Notes -->
+        <div class="reveal p-5 rounded-2xl bg-[#0F2A1D]/70 border border-[#1E4631] text-xs text-[#A9C4A0] space-y-2">
+          <p class="font-semibold text-white">Guest Policy & Notes:</p>
+          <p>• Tables are held for 15 minutes past reservation time.</p>
+          <p>• 24-hour advance notice is requested for cancellations.</p>
+          <p>• A portion of our bar and patio is reserved for walk-ins nightly.</p>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Booking Form -->
+      <div class="lg:col-span-7">
+        <div class="reveal card-dark p-6 sm:p-10 border border-[#C9A15A]/30 shadow-2xl relative">
+          
+          <form id="reservation-form" class="space-y-6" novalidate>
+            <div class="border-b border-[#1E4631] pb-4">
+              <h3 class="font-serif text-2xl font-bold text-white mb-1">Online Reservation Request</h3>
+              <p class="text-xs text-[#A9C4A0]">Fill out your dining details for instant reservation processing.</p>
+            </div>
+
+            <!-- Form Error Notification Area -->
+            <div id="res-alert-error" class="hidden p-4 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs">
+              <span id="res-error-text">Please correct the highlighted fields below.</span>
+            </div>
+
+            <!-- Form Success Notification Area -->
+            <div id="res-alert-success" class="hidden p-6 rounded-2xl bg-emerald-950/80 border border-emerald-600 text-emerald-100 text-center space-y-3">
+              <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto text-xl font-bold">
+                ✓
+              </div>
+              <h4 class="font-serif text-xl font-bold text-white">Reservation Confirmed!</h4>
+              <p id="res-success-message" class="text-xs text-emerald-200 max-w-md mx-auto leading-relaxed">
+                Thank you. We have saved your table by the hearth. A confirmation receipt has been sent to your email.
+              </p>
+              <div class="p-3 bg-[#0A1B12] rounded-xl border border-emerald-700/50 inline-block font-mono text-sm text-[#C9A15A]">
+                Confirmation: <span id="res-confirm-code">VD-8492</span>
+              </div>
+              <div>
+                <button
+                  id="res-book-another"
+                  type="button"
+                  class="mt-2 text-xs uppercase tracking-wider font-semibold text-[#C9A15A] underline cursor-pointer"
+                >
+                  Make Another Reservation
+                </button>
+              </div>
+            </div>
+
+            <!-- Form Fields Grid -->
+            <div id="res-fields-container" class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <!-- Full Name -->
+                <div>
+                  <label for="res-name" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                    Full Name <span class="text-[#C9A15A]">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="res-name"
+                    name="name"
+                    required
+                    placeholder="e.g. Julian Hayes"
+                    class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white placeholder-[#5A6D61] text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                  />
+                  <span id="err-res-name" class="hidden text-[11px] text-red-400 mt-1 block">Full name is required.</span>
+                </div>
+
+                <!-- Email Address -->
+                <div>
+                  <label for="res-email" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                    Email Address <span class="text-[#C9A15A]">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="res-email"
+                    name="email"
+                    required
+                    placeholder="julian@example.com"
+                    class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white placeholder-[#5A6D61] text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                  />
+                  <span id="err-res-email" class="hidden text-[11px] text-red-400 mt-1 block">Valid email is required.</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <!-- Phone -->
+                <div>
+                  <label for="res-phone" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                    Phone Number <span class="text-[#C9A15A]">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="res-phone"
+                    name="phone"
+                    required
+                    placeholder="+1 (503) 555-0199"
+                    class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white placeholder-[#5A6D61] text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                  />
+                  <span id="err-res-phone" class="hidden text-[11px] text-red-400 mt-1 block">Phone number is required.</span>
+                </div>
+
+                <!-- Number of Guests -->
+                <div>
+                  <label for="res-guests" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                    Party Size <span class="text-[#C9A15A]">*</span>
+                  </label>
+                  <select
+                    id="res-guests"
+                    name="guests"
+                    required
+                    class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                  >
+                    <option value="1">1 Guest (Bar or Hearth Counter)</option>
+                    <option value="2" selected>2 Guests (Dining Room Table)</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5 Guests</option>
+                    <option value="6">6 Guests</option>
+                    <option value="7">7 Guests</option>
+                    <option value="8">8 Guests</option>
+                    <option value="9">9+ Guests (Large Party Inquire)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <!-- Date -->
+                <div>
+                  <label for="res-date" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                    Date <span class="text-[#C9A15A]">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    id="res-date"
+                    name="date"
+                    required
+                    class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                  />
+                  <span id="err-res-date" class="hidden text-[11px] text-red-400 mt-1 block">Date is required.</span>
+                </div>
+
+                <!-- Time Slot -->
+                <div>
+                  <label for="res-time" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                    Service Time <span class="text-[#C9A15A]">*</span>
+                  </label>
+                  <select
+                    id="res-time"
+                    name="time"
+                    required
+                    class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                  >
+                    <option value="17:00">5:00 PM (Opening Seating)</option>
+                    <option value="17:30">5:30 PM</option>
+                    <option value="18:00">6:00 PM</option>
+                    <option value="18:30">6:30 PM</option>
+                    <option value="19:00" selected>7:00 PM (Prime Dinner)</option>
+                    <option value="19:30">7:30 PM</option>
+                    <option value="20:00">8:00 PM</option>
+                    <option value="20:30">8:30 PM</option>
+                    <option value="21:00">9:00 PM (Late Seating)</option>
+                  </select>
+                </div>
+
+                <!-- Seating Area Preference -->
+                <div>
+                  <label for="res-seating" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                    Seating Area
+                  </label>
+                  <select
+                    id="res-seating"
+                    name="seating"
+                    class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                  >
+                    <option value="main">Main Dining Room</option>
+                    <option value="counter">Chef's Hearth Counter</option>
+                    <option value="patio">Botanical Terrace</option>
+                    <option value="private">Conservatory</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Notes / Special Requests -->
+              <div>
+                <label for="res-notes" class="block text-xs font-semibold text-[#D5E2D1] uppercase tracking-wider mb-2">
+                  Dietary Accommodations & Celebrations (Optional)
+                </label>
+                <textarea
+                  id="res-notes"
+                  name="notes"
+                  rows="3"
+                  placeholder="Tell us about allergies, anniversaries, or special seating requests..."
+                  class="w-full px-4 py-3 rounded-xl bg-[#0A1B12] border border-[#1E4631] text-white placeholder-[#5A6D61] text-sm focus:border-[#C9A15A] focus:outline-none transition-colors"
+                ></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="pt-2">
+                <button
+                  id="res-submit-btn"
+                  type="submit"
+                  class="btn-gold w-full py-4 text-xs sm:text-sm uppercase tracking-wider font-semibold cursor-pointer shadow-xl flex items-center justify-center gap-2"
+                >
+                  <span id="res-btn-spinner" class="hidden w-4 h-4 border-2 border-[#0F2A1D] border-t-transparent rounded-full animate-spin"></span>
+                  <span id="res-btn-text">Confirm Table Reservation</span>
+                  <svg id="res-btn-arrow" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Confirmation guarantee notice -->
+              <p class="text-[11px] text-[#A9C4A0]/70 text-center pt-2">
+                Instant confirmation code will be sent to your email with your reservation details.
+              </p>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  import { createReservation, apiConfigured, ApiError } from '../lib/api';
+
+  const form = document.getElementById('reservation-form') as HTMLFormElement | null;
+  const nameInput = document.getElementById('res-name') as HTMLInputElement | null;
+  const emailInput = document.getElementById('res-email') as HTMLInputElement | null;
+  const phoneInput = document.getElementById('res-phone') as HTMLInputElement | null;
+  const guestsSelect = document.getElementById('res-guests') as HTMLSelectElement | null;
+  const dateInput = document.getElementById('res-date') as HTMLInputElement | null;
+  const timeSelect = document.getElementById('res-time') as HTMLSelectElement | null;
+  const seatingSelect = document.getElementById('res-seating') as HTMLSelectElement | null;
+  const notesInput = document.getElementById('res-notes') as HTMLTextAreaElement | null;
+
+  const submitBtn = document.getElementById('res-submit-btn') as HTMLButtonElement | null;
+  const btnSpinner = document.getElementById('res-btn-spinner');
+  const btnText = document.getElementById('res-btn-text');
+  const btnArrow = document.getElementById('res-btn-arrow');
+
+  const alertError = document.getElementById('res-alert-error');
+  const errorText = document.getElementById('res-error-text');
+  const alertSuccess = document.getElementById('res-alert-success');
+  const confirmCode = document.getElementById('res-confirm-code');
+  const fieldsContainer = document.getElementById('res-fields-container');
+  const bookAnotherBtn = document.getElementById('res-book-another');
+
+  // Set default date to today
+  if (dateInput && !dateInput.value) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+    dateInput.min = today;
+  }
+
+  function setLoading(loading: boolean) {
+    if (submitBtn) submitBtn.disabled = loading;
+    if (loading) {
+      btnSpinner?.classList.remove('hidden');
+      btnArrow?.classList.add('hidden');
+      if (btnText) btnText.textContent = 'Processing Reservation...';
+    } else {
+      btnSpinner?.classList.add('hidden');
+      btnArrow?.classList.remove('hidden');
+      if (btnText) btnText.textContent = 'Confirm Table Reservation';
+    }
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    alertError?.classList.add('hidden');
+
+    const name = nameInput?.value.trim() || '';
+    const email = emailInput?.value.trim() || '';
+    const phone = phoneInput?.value.trim() || '';
+    const guests = parseInt(guestsSelect?.value || '2', 10);
+    const date = dateInput?.value || '';
+    const time = timeSelect?.value || '19:00';
+    const seating = (seatingSelect?.value || 'main') as 'main' | 'counter' | 'patio' | 'private';
+    const notes = notesInput?.value.trim() || '';
+
+    // Validation checks
+    let hasError = false;
+    if (!name) {
+      document.getElementById('err-res-name')?.classList.remove('hidden');
+      hasError = true;
+    } else {
+      document.getElementById('err-res-name')?.classList.add('hidden');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      document.getElementById('err-res-email')?.classList.remove('hidden');
+      hasError = true;
+    } else {
+      document.getElementById('err-res-email')?.classList.add('hidden');
+    }
+
+    if (!phone) {
+      document.getElementById('err-res-phone')?.classList.remove('hidden');
+      hasError = true;
+    } else {
+      document.getElementById('err-res-phone')?.classList.add('hidden');
+    }
+
+    if (!date) {
+      document.getElementById('err-res-date')?.classList.remove('hidden');
+      hasError = true;
+    } else {
+      document.getElementById('err-res-date')?.classList.add('hidden');
+    }
+
+    if (hasError) return;
+
+    setLoading(true);
+
+    try {
+      if (apiConfigured) {
+        // Send live request to backend
+        const res = await createReservation({
+          name,
+          email,
+          phone,
+          guests,
+          date,
+          time,
+          seating,
+          notes
+        });
+
+        if (confirmCode) confirmCode.textContent = res.confirmationCode || 'VH-CONFIRMED';
+        fieldsContainer?.classList.add('hidden');
+        alertSuccess?.classList.remove('hidden');
+      } else {
+        // Simulated client demo delay
+        await new Promise((r) => setTimeout(r, 700));
+
+        const simulatedCode = `VH-${Math.floor(1000 + Math.random() * 9000)}`;
+        if (confirmCode) confirmCode.textContent = simulatedCode;
+        fieldsContainer?.classList.add('hidden');
+        alertSuccess?.classList.remove('hidden');
+      }
+    } catch (err: any) {
+      let msg = 'Failed to process reservation.';
+      if (err instanceof ApiError) {
+        msg = err.getFormattedValidationMessage();
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      if (errorText) errorText.textContent = msg;
+      alertError?.classList.remove('hidden');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  bookAnotherBtn?.addEventListener('click', () => {
+    alertSuccess?.classList.add('hidden');
+    fieldsContainer?.classList.remove('hidden');
+    form?.reset();
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.value = today;
+    }
+  });
+</script>
+

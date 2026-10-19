@@ -1,0 +1,47 @@
+---
+interface Props {
+  badge: string;
+  title: string;
+  description: string;
+  bgImage: string;
+}
+
+const { badge, title, description, bgImage } = Astro.props;
+---
+
+<section class="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden bg-[#0A1B12] text-[#F6F1E7] border-b border-[#1E4631]">
+  <!-- Background Image with Dark Green Gradient Overlay -->
+  <div class="absolute inset-0 z-0">
+    <img
+      src={bgImage}
+      alt={title}
+      class="w-full h-full object-cover opacity-25 filter blur-[1px]"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A1B12] via-[#0A1B12]/80 to-[#0A1B12]/90"></div>
+  </div>
+
+  <!-- Decorative Hearth Glow -->
+  <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[20rem] bg-[#C9A15A]/10 rounded-full blur-[120px] z-0" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Breadcrumb Label -->
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F4D36]/40 border border-[#C9A15A]/30 text-[#C9A15A] text-xs font-semibold tracking-wider uppercase mb-5">
+      <a href="/" class="hover:text-white transition-colors">Home</a>
+      <span class="text-[#A9C4A0]/60">/</span>
+      <span>{badge}</span>
+    </div>
+
+    <!-- Title with Per-Word Reveal Animation -->
+    <h1 class="reveal font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
+      {title}
+    </h1>
+
+    <!-- Description -->
+    <p class="reveal text-base sm:text-lg text-[#A9C4A0] leading-relaxed max-w-2xl mx-auto">
+      {description}
+    </p>
+  </div>
+</section>
+
