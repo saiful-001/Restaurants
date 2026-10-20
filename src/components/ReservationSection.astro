@@ -281,7 +281,8 @@ import { RESTAURANT_INFO } from '../data/restaurant';
 <script>
   import { createReservation, apiConfigured, ApiError } from '../lib/api';
 
-  const form = document.getElementById('reservation-form') as HTMLFormElement | null;
+  function initReservationSection() {
+    const form = document.getElementById('reservation-form') as HTMLFormElement | null;
   const nameInput = document.getElementById('res-name') as HTMLInputElement | null;
   const emailInput = document.getElementById('res-email') as HTMLInputElement | null;
   const phoneInput = document.getElementById('res-phone') as HTMLInputElement | null;
@@ -411,14 +412,20 @@ import { RESTAURANT_INFO } from '../data/restaurant';
     }
   });
 
-  bookAnotherBtn?.addEventListener('click', () => {
-    alertSuccess?.classList.add('hidden');
-    fieldsContainer?.classList.remove('hidden');
-    form?.reset();
-    if (dateInput) {
-      const today = new Date().toISOString().split('T')[0];
-      dateInput.value = today;
-    }
-  });
+    bookAnotherBtn?.addEventListener('click', () => {
+      alertSuccess?.classList.add('hidden');
+      fieldsContainer?.classList.remove('hidden');
+      form?.reset();
+      if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+      }
+    });
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initReservationSection();
+  }
+  document.addEventListener('astro:page-load', initReservationSection);
 </script>
 

@@ -124,8 +124,17 @@ const currentYear = new Date().getFullYear();
 </footer>
 
 <script>
-  const backToTopBtn = document.getElementById('back-to-top-btn');
-  backToTopBtn?.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  function initFooter() {
+    const backToTopBtn = document.getElementById('back-to-top-btn');
+    if (backToTopBtn) {
+      backToTopBtn.onclick = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+    }
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initFooter();
+  }
+  document.addEventListener('astro:page-load', initFooter);
 </script>

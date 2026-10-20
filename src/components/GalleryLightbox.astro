@@ -161,80 +161,92 @@ const galleryItems = IMAGES.gallery.slice(0, 8);
 </section>
 
 <script>
-  // Accessible Lightbox Controller
-  const triggers = document.querySelectorAll<HTMLButtonElement>('.gallery-trigger');
-  const dialog = document.getElementById('gallery-lightbox') as HTMLDialogElement | null;
-  const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
-  const lbCaption = document.getElementById('lb-caption');
-  const lbPhotographer = document.getElementById('lb-photographer');
-  const lbCounter = document.getElementById('lb-counter');
-  const closeBtn = document.getElementById('lb-close');
-  const prevBtn = document.getElementById('lb-prev');
-  const nextBtn = document.getElementById('lb-next');
+  function initGalleryLightbox() {
+    const triggers = document.querySelectorAll<HTMLButtonElement>('.gallery-trigger');
+    const dialog = document.getElementById('gallery-lightbox') as HTMLDialogElement | null;
+    const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
+    const lbCaption = document.getElementById('lb-caption');
+    const lbPhotographer = document.getElementById('lb-photographer');
+    const lbCounter = document.getElementById('lb-counter');
+    const closeBtn = document.getElementById('lb-close');
+    const prevBtn = document.getElementById('lb-prev');
+    const nextBtn = document.getElementById('lb-next');
 
-  let currentIndex = 0;
-  const items = Array.from(triggers).map((el) => ({
-    url: el.getAttribute('data-url') || '',
-    alt: el.getAttribute('data-alt') || '',
-    caption: el.getAttribute('data-caption') || '',
-    photographer: el.getAttribute('data-photographer') || 'Unsplash'
-  }));
+    if (!triggers.length || !dialog) return;
 
-  function updateLightbox(index: number) {
-    if (index < 0) index = items.length - 1;
-    if (index >= items.length) index = 0;
-    currentIndex = index;
+    let currentIndex = 0;
+    const items = Array.from(triggers).map((el) => ({
+      url: el.getAttribute('data-url') || '',
+      alt: el.getAttribute('data-alt') || '',
+      caption: el.getAttribute('data-caption') || '',
+      photographer: el.getAttribute('data-photographer') || 'Unsplash'
+    }));
 
-    const item = items[currentIndex];
-    if (lbImg) {
-      lbImg.style.opacity = '0';
-      setTimeout(() => {
-        lbImg.src = item.url;
-        lbImg.alt = item.alt;
-        lbImg.style.opacity = '1';
-      }, 150);
+    function updateLightbox(index: number) {
+      if (index < 0) index = items.length - 1;
+      if (index >= items.length) index = 0;
+      currentIndex = index;
+
+      const item = items[currentIndex];
+      if (lbImg) {
+        lbImg.style.opacity = '0';
+        setTimeout(() => {
+          lbImg.src = item.url;
+          lbImg.alt = item.alt;
+          lbImg.style.opacity = '1';
+        }, 150);
+      }
+      if (lbCaption) lbCaption.textContent = item.caption;
+      if (lbPhotographer) lbPhotographer.textContent = `Photo by ${item.photographer} on Unsplash`;
+      if (lbCounter) lbCounter.textContent = `${currentIndex + 1} / ${items.length}`;
     }
-    if (lbCaption) lbCaption.textContent = item.caption;
-    if (lbPhotographer) lbPhotographer.textContent = `Photo by ${item.photographer} on Unsplash`;
-    if (lbCounter) lbCounter.textContent = `${currentIndex + 1} / ${items.length}`;
+
+    triggers.forEach((trigger, idx) => {
+      trigger.onclick = () => {
+        updateLightbox(idx);
+        if (dialog && typeof dialog.showModal === 'function') {
+          dialog.showModal();
+          dialog.classList.remove('hidden');
+        }
+      };
+    });
+
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        dialog?.close();
+      };
+    }
+
+    if (prevBtn) {
+      prevBtn.onclick = () => {
+        updateLightbox(currentIndex - 1);
+      };
+    }
+
+    if (nextBtn) {
+      nextBtn.onclick = () => {
+        updateLightbox(currentIndex + 1);
+      };
+    }
+
+    dialog.onkeydown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        updateLightbox(currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        updateLightbox(currentIndex + 1);
+      }
+    };
+
+    dialog.onclick = (e) => {
+      if (e.target === dialog) {
+        dialog.close();
+      }
+    };
   }
 
-  triggers.forEach((trigger, idx) => {
-    trigger.addEventListener('click', () => {
-      updateLightbox(idx);
-      if (dialog && typeof dialog.showModal === 'function') {
-        dialog.showModal();
-        dialog.classList.remove('hidden');
-      }
-    });
-  });
-
-  closeBtn?.addEventListener('click', () => {
-    dialog?.close();
-  });
-
-  prevBtn?.addEventListener('click', () => {
-    updateLightbox(currentIndex - 1);
-  });
-
-  nextBtn?.addEventListener('click', () => {
-    updateLightbox(currentIndex + 1);
-  });
-
-  // Keyboard navigation
-  dialog?.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      updateLightbox(currentIndex - 1);
-    } else if (e.key === 'ArrowRight') {
-      updateLightbox(currentIndex + 1);
-    }
-  });
-
-  // Close when clicking dialog backdrop
-  dialog?.addEventListener('click', (e) => {
-    if (e.target === dialog) {
-      dialog.close();
-    }
-  });
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initGalleryLightbox();
+  }
+  document.addEventListener('astro:page-load', initGalleryLightbox);
 </script>
 

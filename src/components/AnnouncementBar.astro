@@ -44,31 +44,40 @@ import { ANNOUNCEMENT } from '../data/restaurant';
 </aside>
 
 <script>
-  const bar = document.getElementById('announcement-bar');
-  const dismissBtn = document.getElementById('dismiss-announcement');
+  function initAnnouncementBar() {
+    const bar = document.getElementById('announcement-bar');
+    const dismissBtn = document.getElementById('dismiss-announcement');
 
-  try {
-    if (sessionStorage.getItem('verdant-announcement-dismissed') === 'true') {
-      if (bar) bar.style.display = 'none';
-    }
-  } catch (e) {}
-
-  dismissBtn?.addEventListener('click', () => {
-    if (!bar) return;
-    bar.style.maxHeight = `${bar.offsetHeight}px`;
-    bar.style.overflow = 'hidden';
-    requestAnimationFrame(() => {
-      bar.style.transition = 'max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease';
-      bar.style.maxHeight = '0px';
-      bar.style.opacity = '0';
-      bar.style.paddingTop = '0px';
-      bar.style.paddingBottom = '0px';
-      setTimeout(() => {
-        bar.style.display = 'none';
-      }, 300);
-    });
     try {
-      sessionStorage.setItem('verdant-announcement-dismissed', 'true');
+      if (sessionStorage.getItem('verdant-announcement-dismissed') === 'true') {
+        if (bar) bar.style.display = 'none';
+      }
     } catch (e) {}
-  });
+
+    if (dismissBtn) {
+      dismissBtn.onclick = () => {
+        if (!bar) return;
+        bar.style.maxHeight = `${bar.offsetHeight}px`;
+        bar.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+          bar.style.transition = 'max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease';
+          bar.style.maxHeight = '0px';
+          bar.style.opacity = '0';
+          bar.style.paddingTop = '0px';
+          bar.style.paddingBottom = '0px';
+          setTimeout(() => {
+            bar.style.display = 'none';
+          }, 300);
+        });
+        try {
+          sessionStorage.setItem('verdant-announcement-dismissed', 'true');
+        } catch (e) {}
+      };
+    }
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initAnnouncementBar();
+  }
+  document.addEventListener('astro:page-load', initAnnouncementBar);
 </script>

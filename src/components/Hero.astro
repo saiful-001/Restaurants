@@ -466,17 +466,28 @@ import { RESTAURANT_INFO, HERO_ROTATING_WORDS } from '../data/restaurant';
         currentX += (mouseX - currentX) * 0.08;
         currentY += (mouseY - currentY) * 0.08;
 
+        const isSettled = Math.abs(currentX) < 0.1 && Math.abs(currentY) < 0.1 && mouseX === 0 && mouseY === 0;
+
         parallaxItems?.forEach((el) => {
-          const depth = parseFloat(el.getAttribute('data-depth') || '0.03');
-          const moveX = currentX * depth;
-          const moveY = currentY * depth;
-          el.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+          if (isSettled) {
+            el.style.transform = '';
+          } else {
+            const depth = parseFloat(el.getAttribute('data-depth') || '0.03');
+            const moveX = currentX * depth;
+            const moveY = currentY * depth;
+            el.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+          }
         });
 
-        if (Math.abs(mouseX - currentX) > 0.1 || Math.abs(mouseY - currentY) > 0.1) {
+        if (!isSettled && (Math.abs(mouseX - currentX) > 0.05 || Math.abs(mouseY - currentY) > 0.05)) {
           requestAnimationFrame(updateParallax);
         } else {
           ticking = false;
+          if (mouseX === 0 && mouseY === 0) {
+            parallaxItems?.forEach((el) => {
+              el.style.transform = '';
+            });
+          }
         }
       }
     }
@@ -514,11 +525,14 @@ import { RESTAURANT_INFO, HERO_ROTATING_WORDS } from '../data/restaurant';
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
     counters.forEach((el) => observer.observe(el));
   }
 
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setupHero();
+  }
   document.addEventListener('astro:page-load', setupHero);
 </script>

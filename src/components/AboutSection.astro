@@ -119,46 +119,70 @@ import { RESTAURANT_INFO } from '../data/restaurant';
 </section>
 
 <script>
-  // IntersectionObserver for Animated Metric Counters (runs once)
-  const counterBoxes = document.querySelectorAll('.counter-value');
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const el = entry.target as HTMLElement;
-        const targetNumber = parseInt(el.getAttribute('data-target') || '0', 10);
-        const rawString = el.getAttribute('data-raw') || '';
-        
-        let startTime: number | null = null;
-        const duration = 1600; // ms
+  let aboutCounterObserver: IntersectionObserver | null = null;
 
-        function step(timestamp: number) {
-          if (!startTime) startTime = timestamp;
-          const progress = Math.min((timestamp - startTime) / duration, 1);
-          // Ease-out cubic
-          const easedProgress = 1 - Math.pow(1 - progress, 3);
-          const currentVal = Math.floor(easedProgress * targetNumber);
+  document.addEventListener('astro:before-swap', () => {
+    if (aboutCounterObserver) {
+      aboutCounterObserver.disconnect();
+      aboutCounterObserver = null;
+    }
+  });
 
-          if (rawString.includes('K')) {
-            el.textContent = `${currentVal}K`;
-          } else if (rawString.includes('%')) {
-            el.textContent = `${currentVal}%`;
-          } else {
-            el.textContent = currentVal.toString();
+  function initAboutCounters() {
+    if (aboutCounterObserver) {
+      aboutCounterObserver.disconnect();
+      aboutCounterObserver = null;
+    }
+
+    const counterBoxes = document.querySelectorAll<HTMLElement>('.counter-value');
+    if (!counterBoxes.length) return;
+
+    aboutCounterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const targetNumber = parseInt(el.getAttribute('data-target') || '0', 10);
+          const rawString = el.getAttribute('data-raw') || '';
+          
+          let startTime: number | null = null;
+          const duration = 1600;
+
+          function step(timestamp: number) {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const easedProgress = 1 - Math.pow(1 - progress, 3);
+            const currentVal = Math.floor(easedProgress * targetNumber);
+
+            if (rawString.includes('K')) {
+              el.textContent = `${currentVal}K`;
+            } else if (rawString.includes('%')) {
+              el.textContent = `${currentVal}%`;
+            } else {
+              el.textContent = currentVal.toString();
+            }
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              el.textContent = rawString;
+            }
           }
 
-          if (progress < 1) {
-            requestAnimationFrame(step);
-          } else {
-            el.textContent = rawString;
-          }
+          requestAnimationFrame(step);
+          aboutCounterObserver?.unobserve(el);
         }
+      });
+    }, { threshold: 0.2 });
 
-        requestAnimationFrame(step);
-        counterObserver.unobserve(el);
-      }
+    counterBoxes.forEach((box) => {
+      box.textContent = '0';
+      aboutCounterObserver?.observe(box);
     });
-  }, { threshold: 0.5 });
+  }
 
-  counterBoxes.forEach((box) => counterObserver.observe(box));
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initAboutCounters();
+  }
+  document.addEventListener('astro:page-load', initAboutCounters);
 </script>
 
