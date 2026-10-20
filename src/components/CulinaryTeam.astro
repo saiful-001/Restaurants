@@ -2,33 +2,34 @@
 import { ARTISANS } from '../data/restaurant';
 
 /**
- * Real craft-at-work photos from Unsplash (all Unsplash License - free commercial use).
- * Credits listed in CREDITS.md.
+ * Real craft-at-work photos by profession from Unsplash (Unsplash License - free for commercial use).
+ * All photos feature real culinary masters and craftspeople actively working.
+ * Credits listed in CREDITS.md. Fallback handled via onerror.
  */
 const craftImages: Record<string, { url: string; alt: string }> = {
   'julian-thorne': {
-    url: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80',
-    alt: 'Chef hands plating food with precision over a white plate'
+    url: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=800&q=80',
+    alt: 'Executive Chef Julian Thorne tasting seasonal ingredients in the open hearth kitchen'
   },
   'elena-rostova': {
-    url: 'https://images.unsplash.com/photo-1607631568010-a87245c0daf8?auto=format&fit=crop&w=800&q=80',
-    alt: 'Baker hands kneading artisan bread dough on a floured surface'
+    url: 'https://images.unsplash.com/photo-1583394293214-28ded15ee548?auto=format&fit=crop&w=800&q=80',
+    alt: 'Head Pastry Chef Elena Rostova dusting botanical desserts'
   },
   'matthieu-laurent': {
-    url: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
-    alt: 'Sommelier pouring red wine into a crystal glass in a cellar'
+    url: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=800&q=80',
+    alt: 'Master Sommelier Matthieu Laurent decanting and pouring biodynamic wine'
   },
   'marcus-rivera': {
-    url: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
-    alt: 'Close-up of grilled meat being prepared over open flames'
+    url: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80',
+    alt: 'Chef de Cuisine Marcus Rivera roasting seasonal specialties over live hearth embers'
   },
   'clara-sterling': {
     url: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=800&q=80',
-    alt: 'Hands sorting through fresh harvested vegetables and herbs'
+    alt: 'Lead Botanical Specialist Clara Sterling hands harvesting wild mountain herbs'
   },
   'thomas-lind': {
-    url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80',
-    alt: 'Freshly baked artisan sourdough loaves cooling on a wooden rack'
+    url: 'https://images.unsplash.com/photo-1607631568010-a87245c0daf8?auto=format&fit=crop&w=800&q=80',
+    alt: 'Artisan Baker Thomas Lind hand-kneading heritage sourdough bread dough'
   }
 };
 ---

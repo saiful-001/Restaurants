@@ -1119,9 +1119,9 @@ export const ARTISANS: ArtisanProfile[] = [
     process: 'Julian begins each service at 6:00 AM by grading the seasonal cords of white oak, fruitwood, and alder. Coals are built in tiered banks across our 16-foot hearth, maintaining distinct micro-climates ranging from 250°F for gentle smoking to 850°F for flash searing.',
     quote: 'The hearth strips away culinary pretension. There is only raw timber, red heat, and the purity of honest ingredients.',
     avatar: '/avatars/julian-thorne.svg',
-    heroImage: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=1200&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80'
     ],
@@ -1138,9 +1138,9 @@ export const ARTISANS: ArtisanProfile[] = [
     process: 'Elena ferments her doughs up to 48 hours to unlock digestible nutrients and floral aromas. Her custards, tarts, and gelatos are infused with garden-grown herbs like lemon verbena, rosemary, and mountain spruce tips.',
     quote: 'Dessert should not feel heavy or cloying; it should leave your palate singing with forest memories.',
     avatar: '/avatars/elena-rostova.svg',
-    heroImage: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1583394293214-28ded15ee548?auto=format&fit=crop&w=1200&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1583394293214-28ded15ee548?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80'
     ],
@@ -1157,9 +1157,9 @@ export const ARTISANS: ArtisanProfile[] = [
     process: 'Matthieu tastes over 1,200 bottles annually, hand-selecting exclusively unmanipulated cuvées that honor wild indigenous fermentations. He also leads our non-alcoholic distillation program using herbs gathered from our conservatory.',
     quote: 'Wine is bottled sunshine and rain; our mission is to present it with total respect for the hands that tended the vines.',
     avatar: '/avatars/matthieu-laurent.svg',
-    heroImage: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=1200&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=800&q=80'
     ],
@@ -1176,9 +1176,9 @@ export const ARTISANS: ArtisanProfile[] = [
     process: 'Practicing whole-animal nose-to-tail butchery, Marcus ensures every part of the pasture livestock is transformed into cured salumi, rich demi-glaces, or ember-crisped delicacies.',
     quote: 'The heat of the line demands absolute calm, deep respect, and flawless muscle memory.',
     avatar: '/avatars/marcus-rivera.svg',
-    heroImage: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80'
     ],
     linkedDishSlugs: ['wood-fired-wild-king-salmon', 'pasture-raised-wood-roasted-chicken', 'spiced-ember-roasted-bone-marrow'],
@@ -1194,9 +1194,9 @@ export const ARTISANS: ArtisanProfile[] = [
     process: 'Clara adheres to strict regenerative foraging rules: never taking more than 20% of a patch and always preserving mycelial roots so mushroom colonies thrive for future seasons.',
     quote: 'The forest offers a feast of aromatic complexity if you only know how to tread quietly and observe.',
     avatar: '/avatars/clara-sterling.svg',
-    heroImage: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=1200&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=800&q=80'
     ],
     linkedDishSlugs: ['wild-forest-morel-broth', 'hearth-braised-morel-risotto', 'foraged-elderberry-sorbet'],
@@ -1212,9 +1212,9 @@ export const ARTISANS: ArtisanProfile[] = [
     process: 'Using our heirloom sourdough starter nurtured since 2012, Thomas ferments sourdough loaves for up to 36 hours before baking directly on the oven stone at 700°F.',
     quote: 'Flour should be treated like fresh milk—it is alive, highly perishable, and profoundly flavorful when freshly ground.',
     avatar: '/avatars/thomas-lind.svg',
-    heroImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1607631568010-a87245c0daf8?auto=format&fit=crop&w=1200&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1607631568010-a87245c0daf8?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80'
     ],
     linkedDishSlugs: ['hearth-burrata-mission-fig-flatbread', 'heritage-sourdough-cast-iron-pancakes', 'warm-hearth-brioche-smoked-honey'],

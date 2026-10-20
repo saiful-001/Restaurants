@@ -17,14 +17,14 @@ const seasonalCards = FULL_MENU.filter((d) => SEASONAL_HARVEST.dishSlugs.include
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Section Editorial Header -->
-    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-14">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 sm:mb-10">
       <div class="max-w-2xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#2A6647]/10 dark:bg-[#A9C4A0]/15 border border-[#2A6647]/20 dark:border-[#A9C4A0]/30 text-[#2A6647] dark:text-[#A9C4A0] text-xs font-bold uppercase tracking-wider mb-4 reveal-fade">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2A6647]/10 dark:bg-[#A9C4A0]/15 border border-[#2A6647]/20 dark:border-[#A9C4A0]/30 text-[#2A6647] dark:text-[#A9C4A0] text-xs font-bold uppercase tracking-wider mb-3 reveal-fade">
           <span class="w-2 h-2 rounded-full bg-[#2A6647] dark:bg-[#A9C4A0] animate-ping" aria-hidden="true"></span>
           <span>{SEASONAL_HARVEST.seasonLabel}</span>
         </div>
 
-        <h2 id="seasonal-harvest-heading" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--text-main)] tracking-tight leading-tight mb-4 reveal">
+        <h2 id="seasonal-harvest-heading" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--text-main)] tracking-tight leading-tight mb-3 reveal">
           {SEASONAL_HARVEST.seasonTitle}
           <span class="block text-xl sm:text-2xl text-[var(--accent-gold)] font-medium mt-1">
             {SEASONAL_HARVEST.subtitle}
@@ -38,7 +38,7 @@ const seasonalCards = FULL_MENU.filter((d) => SEASONAL_HARVEST.dishSlugs.include
 
       <!-- Partner Farms Badges -->
       <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0 reveal" style="transition-delay: 200ms;">
-        <span class="text-xs uppercase tracking-wider text-[var(--text-muted)] font-bold mb-1">
+        <span class="text-xs uppercase tracking-wider text-[var(--text-muted)] font-bold">
           Rooted In Regenerative Soil:
         </span>
         <div class="flex flex-wrap gap-2">
@@ -53,8 +53,8 @@ const seasonalCards = FULL_MENU.filter((d) => SEASONAL_HARVEST.dishSlugs.include
     </div>
 
     <!-- Seasonal Ingredients Strip (Chips with animated staggered entrance) -->
-    <div class="mb-14 p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] shadow-sm reveal" style="transition-delay: 250ms;">
-      <div class="flex items-center justify-between mb-4">
+    <div class="mb-8 sm:mb-10 p-5 sm:p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] shadow-sm reveal" style="transition-delay: 250ms;">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-4">
         <span class="text-xs uppercase tracking-wider font-bold text-[var(--accent-gold)]">
           Peak Spring Harvest Ingredients:
         </span>
@@ -85,7 +85,7 @@ const seasonalCards = FULL_MENU.filter((d) => SEASONAL_HARVEST.dishSlugs.include
 
     <!-- Featured Seasonal Dish (Large Editorial Layout: Image + Narrative) -->
     {featuredDish && (
-      <div class="card-clean overflow-hidden mb-12 shadow-xl border-2 border-[#2A6647]/30 dark:border-[#A9C4A0]/30 reveal" style="transition-delay: 300ms;">
+      <div class="card-clean overflow-hidden mb-8 sm:mb-10 shadow-xl border-2 border-[#2A6647]/30 dark:border-[#A9C4A0]/30 reveal" style="transition-delay: 300ms;">
         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
           
           <div class="lg:col-span-7 relative aspect-[16/10] lg:aspect-[16/11] overflow-hidden bg-[var(--bg-muted)]">
@@ -159,7 +159,7 @@ const seasonalCards = FULL_MENU.filter((d) => SEASONAL_HARVEST.dishSlugs.include
     )}
 
     <!-- Row of 4 Seasonal Dish Cards Linking to Detail Pages -->
-    <div class="mb-14">
+    <div class="mb-8 sm:mb-10">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
           More Spring Harvest Creations

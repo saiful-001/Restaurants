@@ -103,33 +103,46 @@ const restaurantSchema = {
     <!-- Astro View Transitions -->
     <ClientRouter />
 
-    <!-- Inline Head Theme Resolver to prevent theme flash (FOUC) -->
+    <!-- Inline Head Theme Resolver to prevent theme flash (FOUC) and persist across page navigation -->
     <script is:inline>
       (function() {
         document.documentElement.classList.add('js');
-        var themes = ['light', 'dark', 'ember', 'saffron'];
-        try {
-          var stored = localStorage.getItem('verdant-theme');
-          if (stored && themes.indexOf(stored) !== -1) {
-            document.documentElement.setAttribute('data-theme', stored);
-            if (stored === 'dark' || stored === 'ember') {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-            }
-          } else {
-            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            var t = prefersDark ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', t);
-            if (prefersDark) {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-            }
+        var themes = ['dark', 'light', 'ember', 'saffron'];
+
+        function resolveTheme() {
+          try {
+            var stored = localStorage.getItem('verdant-theme');
+            return (stored && themes.indexOf(stored) !== -1) ? stored : 'dark';
+          } catch (e) {
+            return 'dark';
           }
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'light');
         }
+
+        function applyCurrentTheme(targetEl) {
+          var el = targetEl || document.documentElement;
+          var theme = resolveTheme();
+          el.setAttribute('data-theme', theme);
+          if (theme === 'dark' || theme === 'ember') {
+            el.classList.add('dark');
+          } else {
+            el.classList.remove('dark');
+          }
+        }
+
+        // Apply immediately to current document
+        applyCurrentTheme(document.documentElement);
+
+        // Crucial for Astro View Transitions: apply to incoming document BEFORE swap
+        document.addEventListener('astro:before-swap', function(e) {
+          if (e && e.newDocument && e.newDocument.documentElement) {
+            applyCurrentTheme(e.newDocument.documentElement);
+          }
+        });
+
+        // Re-ensure on after-swap
+        document.addEventListener('astro:after-swap', function() {
+          applyCurrentTheme(document.documentElement);
+        });
       })();
     </script>
   </head>
@@ -138,16 +151,37 @@ const restaurantSchema = {
 
     <!-- Animation & Lifecycle Trigger Script -->
     <script>
+      let currentRevealObserver: IntersectionObserver | null = null;
+
+      document.addEventListener('astro:before-swap', () => {
+        document.documentElement.classList.remove('js-loaded');
+        if (currentRevealObserver) {
+          currentRevealObserver.disconnect();
+          currentRevealObserver = null;
+        }
+      });
+
       function initPageEnhancements() {
-        document.documentElement.classList.add('js-loaded');
+        // Remove js-loaded first to reset staggered words & collage animations
+        document.documentElement.classList.remove('js-loaded');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            document.documentElement.classList.add('js-loaded');
+          });
+        });
+
+        // Disconnect previous observer if any
+        if (currentRevealObserver) {
+          currentRevealObserver.disconnect();
+        }
 
         // Scroll Reveal with IntersectionObserver
-        const revealObserver = new IntersectionObserver(
+        currentRevealObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
                 entry.target.classList.add('in');
-                revealObserver.unobserve(entry.target);
+                currentRevealObserver?.unobserve(entry.target);
               }
             });
           },
@@ -156,14 +190,14 @@ const restaurantSchema = {
 
         document.querySelectorAll('.reveal, .reveal-fade').forEach((el, index) => {
           const htmlEl = el as HTMLElement;
+          htmlEl.classList.remove('in');
           if (!htmlEl.style.transitionDelay) {
             htmlEl.style.transitionDelay = `${(index % 4) * 90}ms`;
           }
-          revealObserver.observe(el);
+          currentRevealObserver?.observe(el);
         });
       }
 
-      window.addEventListener('DOMContentLoaded', initPageEnhancements);
       document.addEventListener('astro:page-load', initPageEnhancements);
     </script>
   </body>

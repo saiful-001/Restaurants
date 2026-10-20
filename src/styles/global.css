@@ -1,4 +1,5 @@
 @import "@fontsource-variable/fraunces";
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -21,24 +22,25 @@
 }
 
 :root {
-  --bg-primary: #F6F1E7;
-  --bg-surface: #FFFFFF;
-  --bg-surface-elevated: #FCF9F3;
-  --bg-muted: #ECE4D6;
-  --bg-dark: #0F2A1D;
-  --bg-dark-surface: #173B29;
-  --text-main: #17241D;
-  --text-muted: #5A6D61;
+  /* Default is Dark Green and Gold look from reference image */
+  --bg-primary: #0A1B12;
+  --bg-surface: #0F2A1D;
+  --bg-surface-elevated: #153827;
+  --bg-muted: #1A3E2C;
+  --bg-dark: #06130C;
+  --bg-dark-surface: #0D2418;
+  --text-main: #F6F1E7;
+  --text-muted: #9DB4A5;
   --text-on-dark: #F6F1E7;
   --text-on-dark-muted: #A9C4A0;
-  --border-color: #E2DBD0;
-  --border-dark: #234E37;
-  --accent-gold: #C9A15A;
-  --accent-gold-hover: #B88F46;
+  --border-color: #1F4632;
+  --border-dark: #2B5940;
+  --accent-gold: #D4B06D;
+  --accent-gold-hover: #E2C285;
   --accent-sage: #A9C4A0;
-  --brand-forest: #0F2A1D;
+  --brand-forest: #0A1B12;
   --brand-mid: #1F4D36;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 [data-theme="dark"] {
@@ -60,6 +62,27 @@
   --brand-forest: #0A1B12;
   --brand-mid: #1F4D36;
   color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg-primary: #F6F1E7;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FCF9F3;
+  --bg-muted: #ECE4D6;
+  --bg-dark: #0F2A1D;
+  --bg-dark-surface: #173B29;
+  --text-main: #17241D;
+  --text-muted: #5A6D61;
+  --text-on-dark: #F6F1E7;
+  --text-on-dark-muted: #A9C4A0;
+  --border-color: #E2DBD0;
+  --border-dark: #234E37;
+  --accent-gold: #C9A15A;
+  --accent-gold-hover: #B88F46;
+  --accent-sage: #A9C4A0;
+  --brand-forest: #0F2A1D;
+  --brand-mid: #1F4D36;
+  color-scheme: light;
 }
 
 [data-theme="ember"] {
@@ -117,6 +140,10 @@ body {
   overflow-x: hidden;
 }
 
+button, input, select, textarea, a, nav, h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+}
+
 /* Typography Helpers */
 .font-serif {
   font-family: var(--font-serif);
@@ -124,6 +151,10 @@ body {
 
 .font-sans {
   font-family: var(--font-sans);
+}
+
+.font-script {
+  font-family: 'Caveat', cursive, serif;
 }
 
 /* Buttons */
@@ -257,9 +288,9 @@ body {
   display: inline-block;
   position: relative;
   overflow: hidden;
-  vertical-align: bottom;
-  min-width: 6.5ch;
-  height: 1.15em;
+  vertical-align: baseline;
+  min-width: 6ch;
+  height: 1.18em;
   text-align: left;
 }
 
@@ -268,19 +299,22 @@ body {
   top: 0;
   left: 0;
   opacity: 0;
+  visibility: hidden;
   transform: translateY(110%);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, visibility 0.45s;
   will-change: transform, opacity;
   white-space: nowrap;
 }
 
 .hero-rotate-word.is-active {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
 }
 
 .hero-rotate-word.is-exiting {
   opacity: 0;
+  visibility: hidden;
   transform: translateY(-110%);
 }
 
@@ -389,11 +423,22 @@ body {
 /* Fallback when JS is disabled: ensure all elements are visible */
 html:not(.js) .reveal,
 html:not(.js) .hero-word,
-html:not(.js) .hero-collage-item,
-html:not(.js) .hero-rotate-word {
+html:not(.js) .hero-collage-item {
   opacity: 1 !important;
   transform: none !important;
   clip-path: none !important;
+}
+
+html:not(.js) .hero-rotate-word {
+  display: none !important;
+}
+
+html:not(.js) .hero-rotate-word:first-child {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: static !important;
+  transform: none !important;
 }
 
 /* Documentation code blocks styling */
@@ -446,6 +491,7 @@ html:not(.js) .hero-rotate-word {
 
   .hero-rotate-word {
     opacity: 0 !important;
+    visibility: hidden !important;
     position: absolute !important;
     transform: none !important;
     display: none !important;
@@ -453,6 +499,7 @@ html:not(.js) .hero-rotate-word {
 
   .hero-rotate-word:first-child {
     opacity: 1 !important;
+    visibility: visible !important;
     display: inline !important;
     position: static !important;
   }

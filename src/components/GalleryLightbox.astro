@@ -1,18 +1,8 @@
 ---
 import { IMAGES } from '../data/images';
 
-const spans = [
-  'col-span-1 md:col-span-2 aspect-[16/10]',
-  'col-span-1 aspect-[4/5]',
-  'col-span-1 aspect-square',
-  'col-span-1 aspect-square',
-  'col-span-1 aspect-[4/5]',
-  'col-span-1 aspect-square',
-  'col-span-1 aspect-square',
-  'col-span-1 md:col-span-2 aspect-[16/10]'
-];
-const galleryItems = IMAGES.gallery.slice(0, 8).map((item, i) => ({ ...item, span: spans[i] }));
-
+// 8 curated gallery images formatted in an even 4-column balanced grid
+const galleryItems = IMAGES.gallery.slice(0, 8);
 ---
 
 <section
@@ -38,12 +28,12 @@ const galleryItems = IMAGES.gallery.slice(0, 8).map((item, i) => ({ ...item, spa
       </p>
     </div>
 
-    <!-- Asymmetric Gallery Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+    <!-- Balanced Gallery Grid (2 rows of 4 on desktop, 4 rows of 2 on tablet, 8 on mobile) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
       {galleryItems.map((item, idx) => (
         <button
           type="button"
-          class={`gallery-trigger group reveal relative overflow-hidden rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-[#C9A15A] ${item.span}`}
+          class="gallery-trigger group reveal relative overflow-hidden rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-[#C9A15A] col-span-1 aspect-[4/3]"
           data-index={idx}
           data-url={item.url}
           data-alt={item.alt}

@@ -6,11 +6,47 @@ const isActive = (href: string) => {
   if (href === '/') return currentPath === '/';
   return currentPath.startsWith(href);
 };
+
+// 4 Complete Color Themes Configuration
+const THEMES_CONFIG = [
+  {
+    id: 'dark',
+    name: 'Dark',
+    sub: 'Forest green & gold',
+    swatchBg: '#0A1B12',
+    swatchBorder: '#D4B06D',
+    iconType: 'moon'
+  },
+  {
+    id: 'light',
+    name: 'Light',
+    sub: 'Warm cream & charcoal',
+    swatchBg: '#F6F1E7',
+    swatchBorder: '#C9A15A',
+    iconType: 'sun'
+  },
+  {
+    id: 'ember',
+    name: 'Ember',
+    sub: 'Terracotta & charcoal',
+    swatchBg: '#1F1B19',
+    swatchBorder: '#D96B43',
+    iconType: 'flame'
+  },
+  {
+    id: 'saffron',
+    name: 'Saffron & Olive',
+    sub: 'Olive, saffron & ivory',
+    swatchBg: '#232B1E',
+    swatchBorder: '#C28210',
+    iconType: 'olive'
+  }
+];
 ---
 
 <header
   id="main-navbar"
-  class="sticky top-0 z-40 w-full transition-all duration-300 backdrop-blur-md bg-[var(--bg-primary)]/90 border-b border-[var(--border-color)]"
+  class="sticky top-0 z-50 w-full transition-all duration-300 backdrop-blur-md bg-[var(--bg-primary)]/90 border-b border-[var(--border-color)]"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
     <!-- Brand Logo -->
@@ -30,27 +66,27 @@ const isActive = (href: string) => {
           {RESTAURANT_INFO.name}
         </span>
         <span class="block text-[10px] uppercase tracking-[0.2em] font-medium text-[var(--accent-gold)] mt-0.5">
-          Botanical & Hearth
+          Botanical &amp; Hearth
         </span>
       </div>
     </a>
 
     <!-- Desktop Navigation Links (Real Multi-Page Routes) -->
-    <nav class="hidden lg:flex items-center gap-6 xl:gap-7 text-sm font-medium" aria-label="Main Navigation">
+    <nav class="hidden lg:flex items-center gap-6 xl:gap-8 text-xs uppercase tracking-widest font-semibold" aria-label="Main Navigation">
       {NAVIGATION_LINKS.map((link) => {
         const active = isActive(link.href);
         return (
           <a
             href={link.href}
-            class={`relative py-1 transition-colors group ${
+            class={`relative py-1.5 transition-colors group ${
               active
-                ? 'text-[var(--text-main)] font-semibold'
+                ? 'text-[var(--text-main)] font-bold'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
             }`}
           >
             {link.label}
             <span
-              class={`absolute bottom-0 left-0 h-0.5 bg-[var(--accent-gold)] transition-all duration-300 ${
+              class={`absolute -bottom-0.5 left-0 h-[2px] bg-[var(--accent-gold)] transition-all duration-300 ${
                 active ? 'w-full' : 'w-0 group-hover:w-full'
               }`}
             ></span>
@@ -59,29 +95,89 @@ const isActive = (href: string) => {
       })}
     </nav>
 
-    <!-- Right Controls: Theme Toggle & Reserve CTA -->
+    <!-- Right Controls: Theme Dropdown Selector & Reserve CTA -->
     <div class="flex items-center gap-3">
-      <!-- Theme Toggle Button (Cycles 4 Themes: Light, Dark, Ember, Saffron & Olive) -->
-      <button
-        id="theme-toggle-btn"
-        type="button"
-        class="h-10 rounded-full flex items-center justify-center gap-1.5 px-3 border border-[var(--border-color)] bg-[var(--bg-surface)] text-[var(--text-main)] hover:border-[var(--accent-gold)] transition-all duration-200 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-[#C9A15A] text-xs font-semibold tracking-wide"
-        aria-label="Cycle theme: Light, Dark, Ember, Saffron & Olive"
-        title="Toggle Theme"
-      >
-        <span id="theme-icon" aria-hidden="true">☀️</span>
-        <span id="theme-label" class="hidden sm:inline">Light</span>
-      </button>
+      
+      <!-- Theme Dropdown Container -->
+      <div class="relative" id="theme-dropdown-wrapper">
+        <button
+          id="theme-dropdown-trigger"
+          type="button"
+          class="h-9 sm:h-10 rounded-full flex items-center justify-center gap-2 px-3 sm:px-3.5 border border-[var(--border-color)] bg-[var(--bg-surface)] text-[var(--text-main)] hover:border-[var(--accent-gold)] transition-all duration-200 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-[#C9A15A] text-xs font-semibold tracking-wide"
+          aria-label="Change color theme"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          <span id="header-theme-icon" class="w-4 h-4 flex items-center justify-center text-[var(--accent-gold)]"></span>
+          <span id="header-theme-label" class="hidden sm:inline font-medium">Dark</span>
+          <svg
+            id="theme-chevron-icon"
+            class="w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
 
-      <!-- Desktop Reserve CTA -->
+        <!-- Dropdown Menu Box -->
+        <div
+          id="theme-dropdown-menu"
+          class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] shadow-2xl p-2 z-[60] backdrop-blur-xl transition-all duration-200"
+          role="menu"
+          aria-orientation="vertical"
+        >
+          <div class="px-3 py-1.5 border-b border-[var(--border-color)]/60 mb-1">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-[var(--text-muted)]">Select Theme Palette</span>
+          </div>
+
+          {THEMES_CONFIG.map((t) => (
+            <button
+              type="button"
+              class="theme-select-opt w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs font-medium hover:bg-[var(--bg-primary)] transition-colors cursor-pointer group"
+              data-theme-id={t.id}
+              role="menuitem"
+            >
+              <div class="flex items-center gap-2.5">
+                <span
+                  class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border shadow-xs"
+                  style={`background-color: ${t.swatchBg}; border-color: ${t.swatchBorder};`}
+                >
+                  {t.iconType === 'moon' && (
+                    <svg class="w-3 h-3 text-[#D4B06D]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+                  )}
+                  {t.iconType === 'sun' && (
+                    <svg class="w-3 h-3 text-[#C9A15A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2" /></svg>
+                  )}
+                  {t.iconType === 'flame' && (
+                    <svg class="w-3 h-3 text-[#D96B43]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-.5 2.5-2 5-4 7-1.5 1.5-2 3.5-2 5.5A6 6 0 0 0 12 21a6 6 0 0 0 6-6.5c0-2.5-1.5-5-3.5-7.5-.5 2-1.5 3-2.5 3.5C12 9 12 5 12 2z" /></svg>
+                  )}
+                  {t.iconType === 'olive' && (
+                    <svg class="w-3 h-3 text-[#C28210]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22s4-1 8-5c4-4 7-11 7-11s-7 3-11 7c-4 4-5 8-5 8z" /><path d="M14 6c2 1 4 3 5 5" /><path d="M9 11c1 2 3 4 5 5" /><circle cx="17" cy="8" r="2" fill="currentColor" /></svg>
+                  )}
+                </span>
+                <div>
+                  <span class="block font-semibold text-[var(--text-main)] group-hover:text-[var(--accent-gold)] transition-colors">{t.name}</span>
+                  <span class="block text-[10px] text-[var(--text-muted)]">{t.sub}</span>
+                </div>
+              </div>
+
+              <span class="theme-check-icon hidden text-[var(--accent-gold)]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Desktop Book a Table Gold Pill CTA -->
       <a
         href="/reservation"
-        class="hidden sm:inline-flex btn-gold text-xs sm:text-sm py-2 px-5 tracking-wide uppercase font-semibold"
+        class="hidden sm:inline-flex items-center gap-2 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-[#0A1B12] text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-full transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
       >
-        <span>Reserve Table</span>
-        <svg class="w-4 h-4 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
+        <span>Book a Table</span>
+        <span aria-hidden="true">→</span>
       </a>
 
       <!-- Mobile Hamburger Toggle -->
@@ -109,6 +205,26 @@ const isActive = (href: string) => {
     class="lg:hidden hidden border-b border-[var(--border-color)] bg-[var(--bg-surface)]/95 backdrop-blur-lg px-6 pt-4 pb-8 transition-all duration-300"
   >
     <nav class="flex flex-col gap-3" aria-label="Mobile Navigation">
+      <!-- Mobile Theme Selector Options -->
+      <div class="pb-3 border-b border-[var(--border-color)]/60">
+        <span class="text-xs uppercase tracking-wider font-semibold text-[var(--text-muted)] block mb-2">Theme Palette</span>
+        <div class="grid grid-cols-2 gap-2">
+          {THEMES_CONFIG.map((t) => (
+            <button
+              type="button"
+              class="theme-select-opt flex items-center gap-2 p-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-left hover:border-[var(--accent-gold)] transition-colors"
+              data-theme-id={t.id}
+            >
+              <span
+                class="w-4 h-4 rounded-full shrink-0 border shadow-xs"
+                style={`background-color: ${t.swatchBg}; border-color: ${t.swatchBorder};`}
+              ></span>
+              <span class="text-xs font-semibold text-[var(--text-main)] truncate">{t.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {NAVIGATION_LINKS.map((link) => {
         const active = isActive(link.href);
         return (
@@ -143,91 +259,169 @@ const isActive = (href: string) => {
 </header>
 
 <script>
-  // Theme Toggle Controller — 4 Themes Cycling (Light, Dark, Ember, Saffron & Olive)
-  const THEMES = ['light', 'dark', 'ember', 'saffron'] as const;
-  type ThemeName = typeof THEMES[number];
-
-  const THEME_META: Record<ThemeName, { icon: string; label: string }> = {
-    light:   { icon: '☀️', label: 'Light' },
-    dark:    { icon: '🌙', label: 'Dark' },
-    ember:   { icon: '🔥', label: 'Ember' },
-    saffron: { icon: '🫒', label: 'Saffron & Olive' }
+  // Theme Dropdown & Palette Controller
+  const THEME_ICONS: Record<string, string> = {
+    dark: `<svg class="w-4 h-4 text-[#D4B06D]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+    light: `<svg class="w-4 h-4 text-[#C9A15A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>`,
+    ember: `<svg class="w-4 h-4 text-[#D96B43]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-.5 2.5-2 5-4 7-1.5 1.5-2 3.5-2 5.5A6 6 0 0 0 12 21a6 6 0 0 0 6-6.5c0-2.5-1.5-5-3.5-7.5-.5 2-1.5 3-2.5 3.5C12 9 12 5 12 2z"/></svg>`,
+    saffron: `<svg class="w-4 h-4 text-[#C28210]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22s4-1 8-5c4-4 7-11 7-11s-7 3-11 7c-4 4-5 8-5 8z"/><path d="M14 6c2 1 4 3 5 5"/><path d="M9 11c1 2 3 4 5 5"/><circle cx="17" cy="8" r="2" fill="currentColor"/></svg>`
   };
 
-  const toggleBtn = document.getElementById('theme-toggle-btn');
-  const themeIcon = document.getElementById('theme-icon');
-  const themeLabel = document.getElementById('theme-label');
+  const THEME_LABELS: Record<string, string> = {
+    dark: 'Dark',
+    light: 'Light',
+    ember: 'Ember',
+    saffron: 'Saffron & Olive'
+  };
 
-  function syncThemeUI(theme: ThemeName) {
-    const meta = THEME_META[theme] || THEME_META.light;
-    if (themeIcon) themeIcon.textContent = meta.icon;
-    if (themeLabel) themeLabel.textContent = meta.label;
+  function getActiveTheme(): string {
+    const valid = ['dark', 'light', 'ember', 'saffron'];
+    try {
+      const stored = localStorage.getItem('verdant-theme');
+      if (stored && valid.includes(stored)) return stored;
+    } catch (e) {}
+    const current = document.documentElement.getAttribute('data-theme');
+    return current && valid.includes(current) ? current : 'dark';
   }
 
-  function getActiveTheme(): ThemeName {
-    const current = document.documentElement.getAttribute('data-theme') as ThemeName;
-    return THEMES.includes(current) ? current : 'light';
-  }
-
-  // Initial sync
-  syncThemeUI(getActiveTheme());
-
-  toggleBtn?.addEventListener('click', () => {
-    const current = getActiveTheme();
-    const nextIndex = (THEMES.indexOf(current) + 1) % THEMES.length;
-    const nextTheme = THEMES[nextIndex];
-
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    if (nextTheme === 'dark' || nextTheme === 'ember') {
+  function applyTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark' || theme === 'ember') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
 
     try {
-      localStorage.setItem('verdant-theme', nextTheme);
+      localStorage.setItem('verdant-theme', theme);
     } catch (e) {}
 
-    syncThemeUI(nextTheme);
-  });
+    // Update Header Trigger UI
+    const headerIcon = document.getElementById('header-theme-icon');
+    const headerLabel = document.getElementById('header-theme-label');
+    if (headerIcon) headerIcon.innerHTML = THEME_ICONS[theme] || THEME_ICONS.dark;
+    if (headerLabel) headerLabel.textContent = THEME_LABELS[theme] || 'Theme';
 
-  // Mobile Drawer Controller
-  const mobileToggle = document.getElementById('mobile-menu-toggle');
-  const mobileDrawer = document.getElementById('mobile-drawer');
-  const hamburgerIcon = document.getElementById('hamburger-icon');
-  const closeIcon = document.getElementById('close-icon');
-  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-
-  let isDrawerOpen = false;
-
-  function setDrawerState(open: boolean) {
-    isDrawerOpen = open;
-    mobileToggle?.setAttribute('aria-expanded', String(open));
-    if (open) {
-      mobileDrawer?.classList.remove('hidden');
-      hamburgerIcon?.classList.add('hidden');
-      closeIcon?.classList.remove('hidden');
-    } else {
-      mobileDrawer?.classList.add('hidden');
-      hamburgerIcon?.classList.remove('hidden');
-      closeIcon?.classList.add('hidden');
-    }
+    // Update checkmark indicators in dropdown
+    document.querySelectorAll<HTMLElement>('.theme-select-opt').forEach((opt) => {
+      const optId = opt.getAttribute('data-theme-id');
+      const checkIcon = opt.querySelector('.theme-check-icon');
+      if (optId === theme) {
+        checkIcon?.classList.remove('hidden');
+        opt.classList.add('bg-[var(--brand-mid)]/15', 'font-bold');
+      } else {
+        checkIcon?.classList.add('hidden');
+        opt.classList.remove('bg-[var(--brand-mid)]/15', 'font-bold');
+      }
+    });
   }
 
-  mobileToggle?.addEventListener('click', () => {
-    setDrawerState(!isDrawerOpen);
-  });
+  function closeThemeDropdown() {
+    const trigger = document.getElementById('theme-dropdown-trigger');
+    const menu = document.getElementById('theme-dropdown-menu');
+    const chevron = document.getElementById('theme-chevron-icon');
+    menu?.classList.add('hidden');
+    trigger?.setAttribute('aria-expanded', 'false');
+    chevron?.classList.remove('rotate-180');
+  }
 
-  mobileLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      setDrawerState(false);
+  function openThemeDropdown() {
+    const trigger = document.getElementById('theme-dropdown-trigger');
+    const menu = document.getElementById('theme-dropdown-menu');
+    const chevron = document.getElementById('theme-chevron-icon');
+    menu?.classList.remove('hidden');
+    trigger?.setAttribute('aria-expanded', 'true');
+    chevron?.classList.add('rotate-180');
+  }
+
+  function setupThemeDropdown() {
+    const trigger = document.getElementById('theme-dropdown-trigger');
+    if (!trigger) return;
+
+    trigger.onclick = (e) => {
+      e.stopPropagation();
+      const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeThemeDropdown();
+      } else {
+        openThemeDropdown();
+      }
+    };
+
+    // Theme option selections
+    document.querySelectorAll<HTMLElement>('.theme-select-opt').forEach((btn) => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const themeId = btn.getAttribute('data-theme-id') || 'dark';
+        applyTheme(themeId);
+        closeThemeDropdown();
+      };
     });
+
+    // Sync initial state
+    applyTheme(getActiveTheme());
+  }
+
+  // Mobile Drawer Controller
+  function setupMobileDrawer() {
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+    let isDrawerOpen = false;
+
+    function setDrawerState(open: boolean) {
+      isDrawerOpen = open;
+      mobileToggle?.setAttribute('aria-expanded', String(open));
+      if (open) {
+        mobileDrawer?.classList.remove('hidden');
+        hamburgerIcon?.classList.add('hidden');
+        closeIcon?.classList.remove('hidden');
+      } else {
+        mobileDrawer?.classList.add('hidden');
+        hamburgerIcon?.classList.remove('hidden');
+        closeIcon?.classList.add('hidden');
+      }
+    }
+
+    if (mobileToggle) {
+      mobileToggle.onclick = () => setDrawerState(!isDrawerOpen);
+    }
+
+    mobileLinks.forEach((link) => {
+      (link as HTMLElement).onclick = () => setDrawerState(false);
+    });
+  }
+
+  // Global listeners registered once
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('#theme-dropdown-wrapper')) {
+      closeThemeDropdown();
+    }
   });
 
-  // Close drawer on Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && isDrawerOpen) {
-      setDrawerState(false);
+    if (e.key === 'Escape') {
+      closeThemeDropdown();
+      const mobileToggle = document.getElementById('mobile-menu-toggle');
+      const mobileDrawer = document.getElementById('mobile-drawer');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      const closeIcon = document.getElementById('close-icon');
+      if (mobileDrawer && !mobileDrawer.classList.contains('hidden')) {
+        mobileDrawer.classList.add('hidden');
+        mobileToggle?.setAttribute('aria-expanded', 'false');
+        hamburgerIcon?.classList.remove('hidden');
+        closeIcon?.classList.add('hidden');
+      }
     }
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    setupThemeDropdown();
+    setupMobileDrawer();
   });
 </script>

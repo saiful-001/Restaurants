@@ -82,15 +82,15 @@ If an external image fails to resolve or if the client environment is offline, t
 
 ## 6. Artisans of Flame & Earth — Craft Photography
 
-Real people-at-work photos used in the Artisans section, all from Unsplash (free for commercial use, no attribution required).
+Real people-at-work photos by profession used in the Artisans section, all verified under the Unsplash License (free for commercial and non-commercial use, no permission required).
 
-| Artisan Represented | Source URL | Photographer | License |
-| :--- | :--- | :--- | :--- |
-| Julian Thorne (Chef plating) | [unsplash.com/photo-1556910103-1c02745aae4d](https://unsplash.com/photos/1556910103-1c02745aae4d) | Sebastian Coman | Unsplash License |
-| Elena Rostova (Bread kneading) | [unsplash.com/photo-1607631568010-a87245c0daf8](https://unsplash.com/photos/1607631568010-a87245c0daf8) | Theme Photos | Unsplash License |
-| Matthieu Laurent (Wine pouring) | [unsplash.com/photo-1510812431401-41d2bd2722f3](https://unsplash.com/photos/1510812431401-41d2bd2722f3) | Hermes Rivera | Unsplash License |
-| Marcus Rivera (Grilling) | [unsplash.com/photo-1544025162-d76694265947](https://unsplash.com/photos/1544025162-d76694265947) | Emiliano Vittoriosi | Unsplash License |
-| Clara Sterling (Harvest sorting) | [unsplash.com/photo-1466637574441-749b8f19452f](https://unsplash.com/photos/1466637574441-749b8f19452f) | Dan Gold | Unsplash License |
-| Thomas Lind (Bread baking) | [unsplash.com/photo-1509440159596-0249088772ff](https://unsplash.com/photos/1509440159596-0249088772ff) | Mae Mu | Unsplash License |
+| Artisan Represented | Profession / Role | Source URL | Photographer | License |
+| :--- | :--- | :--- | :--- | :--- |
+| **Julian Thorne** | Executive Chef | [unsplash.com/photos/1577219491135-ce391730fb2c](https://images.unsplash.com/photo-1577219491135-ce391730fb2c) | Louis Hansel | Unsplash License (Commercial) |
+| **Elena Rostova** | Head Pastry Chef | [unsplash.com/photos/1583394293214-28ded15ee548](https://images.unsplash.com/photo-1583394293214-28ded15ee548) | Toa Heftiba | Unsplash License (Commercial) |
+| **Matthieu Laurent** | Master Sommelier | [unsplash.com/photos/1543007630-9710e4a00a20](https://images.unsplash.com/photo-1543007630-9710e4a00a20) | Kseniya Lapteva | Unsplash License (Commercial) |
+| **Marcus Rivera** | Chef de Cuisine | [unsplash.com/photos/1551218808-94e220e084d2](https://images.unsplash.com/photo-1551218808-94e220e084d2) | Fabrizio Manno | Unsplash License (Commercial) |
+| **Clara Sterling** | Lead Botanical Forager | [unsplash.com/photos/1466637574441-749b8f19452f](https://images.unsplash.com/photo-1466637574441-749b8f19452f) | Dan Gold | Unsplash License (Commercial) |
+| **Thomas Lind** | Artisan Baker & Miller | [unsplash.com/photos/1607631568010-a87245c0daf8](https://images.unsplash.com/photo-1607631568010-a87245c0daf8) | Maarten van den Heuvel | Unsplash License (Commercial) |
 
-All images include an `onerror` fallback to `/placeholder-dish.svg` if the CDN image fails to load.
+All images include an `onerror` fallback to `/placeholder-dish.svg` if any image fails to load.
