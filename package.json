@@ -3,11 +3,11 @@
   "type": "module",
   "version": "1.0.0",
   "description": "Production-grade, award-winning restaurant landing page template built with Astro 6, TypeScript, and Tailwind CSS 4.",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview"
-  },
+"scripts": {
+  "dev": "astro dev",
+  "build": "node ./node_modules/astro/astro.js check && node ./node_modules/astro/astro.js build",
+  "preview": "astro preview"
+},
   "allowScripts": {
     "esbuild": true,
     "sharp": true
